@@ -152,11 +152,9 @@ define([
           on(this.clearBtn, 'click', lang.hitch(this, "_onClearClicked")),
           on(this.exportBtn, 'click', lang.hitch(this, "_onExportClicked")),
           on(this.layerList, 'change', lang.hitch(this, "_onLayerListChange")),
-          on(this.routeId, 'blur', lang.hitch(this, "_onRouteIdBlur")),
           // routeId Intiellisense support
           on(this.routeId, 'keydown', lang.hitch(this, "_onRouteIdKeydown")),
           // Clear routeId or routeName when the other is entered.
-          on(this.routeId, 'input', lang.hitch(this, "_onRouteIdInput")),
           on(this.fromMeasureTextBox, 'keypress', lang.hitch(this, "_onFromMeasureChange")),
           // Clear results on input focus
           on(this.routeId, 'focus', lang.hitch(this, "_activateRouteId")),
@@ -483,26 +481,6 @@ define([
 
       _onAddToToggle: function (e) {
         this._addToResults = e;
-      },
-
-      _onRouteNameBlur: function (e) {
-        // Delete contents of route id.
-        if (e && e.currentTarget && e.currentTarget.value) {
-          this._resetDropdown();
-        }
-      },
-
-      _onRouteIdInput: function (e) {
-        if (e && e.currentTarget && e.currentTarget.value) {
-          dojo.byId("routeName").value = "";
-        }
-      },
-
-      _onRouteIdBlur: function (e) {
-        // Delete contents of route name.
-        if (e && e.currentTarget && e.currentTarget.value) {
-          dojo.byId("routeName").value = "";
-        }
       },
 
       _onFromMeasureChange: function (e) {
