@@ -1,0 +1,77 @@
+<div>
+    <div data-dojo-attach-point="tabcontainer">
+        <div data-dojo-attach-point="tabNode1" class= "tabNode1" id="tabNode1">
+            <div data-dojo-attach-point="identifyContainer" id="identifyContainer">
+                <div data-dojo-attach-point="contentsdiv" style="display: none">
+                <table style="width: 100%">
+                    <tr>
+                        <td style="text-align:center">
+                            <button title="${nls.selectAllButtonTooltip}" data-dojo-attach-point="selectAllButton" class="jimu-btn" style="width:100%;display:inline-block">
+                                <img data-dojo-attach-point="selectAllIcon" src="" style="float:left">${nls.selectAllButtonText}
+                                <div id="selectAllStatus" style="float:right">OFF</div>
+                            </button>
+                        </td>
+                    </tr>
+                </table>
+                <table style="width: 100%">
+                    <tr data-dojo-attach-point="layerListRow">
+                        <td class="m2g-header" data-dojo-attach-point="layerListText">${nls.networkLayerText}</td>
+                        <td style="float:right"><Select data-dojo-type="dijit/form/Select" data-dojo-attach-point="layerList" class="m2g-select"></Select></td>
+                    </tr>
+                    <tr data-dojo-attach-point="routeIdRow">
+                        <td class="m2g-header">${nls.routeIdText}</td>
+                        <td style="float:right"><input data-dojo-type="dijit/form/ComboBox" data-dojo-attach-point="routeId" id="routeId" style="width:170px;height:28px;margin-right:2px"></input>
+                            <button title="${nls.selectRouteBtnTooltip}" data-dojo-attach-point="selectRouteBtn" class="btn-select-route"></button></td>
+                    </tr>
+                    <tr data-dojo-attach-point="fromMeasureRow">
+                        <td class="m2g-header" data-dojo-attach-point="fromMeasureText">${nls.measureText}</td>
+                        <td style="float:right"><input type="text" data-dojo-attach-point="fromMeasureTextBox" data-dojo-type="dijit/form/NumberTextBox" data-dojo-props=${nls.measureBoxProps} id="fromMeasure" class="m2g-input"/></td>
+                    </tr>
+                </table>
+                <table style="width: 100%">
+                    <tr>
+                        <td style="float:right"><button data-dojo-attach-point="locateBtn" class="jimu-btn">${nls.locateButtonText}</button>
+                        <button data-dojo-attach-point="clearBtn" class="jimu-btn">${nls.clearButtonText}</button></td>
+                    </tr>
+                </table>
+                <table style="width: 100%">
+                    <tr>
+                        <td style="padding-top: 10px;padding-bottom: 10px;">
+                            <input data-dojo-type="dijit/form/CheckBox" data-dojo-attach-point="intersectionToggle" id="intersectionToggle"/><label for="intersectionToggle" style="padding-left: 10px;">${nls.intersectionLabel}</label>
+                        </td>
+                        <td>
+                            <span id="intersection-tooltip" class="tooltip">🛈</span>
+                            <div data-dojo-type="dijit/Tooltip" data-dojo-props="connectId: 'intersection-tooltip'">${nls.intersectionTooltip}</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding-top: 10px;padding-bottom: 10px;">
+                            <input data-dojo-type="dijit/form/CheckBox" data-dojo-attach-point="addToToggle" id="addToToggle"/><label for="addToToggle" style="padding-left: 10px;">${nls.addToLabel}</label>
+                        </td>
+                        <td>
+                            <span id="addto-tooltip" class="tooltip">🛈</span>
+                            <div data-dojo-type="dijit/Tooltip" data-dojo-props="connectId: 'addto-tooltip'">${nls.addToTooltip}</div>
+                        </td>
+                    </tr>
+                </table>
+                </div>
+                <div data-dojo-attach-point="progressbar"></div>
+                </div>
+            </div>
+        <div data-dojo-attach-point="tabNode2">
+            <table style="padding-top: 10px; width: 100%">
+                <tr>
+                    <td style="width: 30%;"><div id="resultCounter" data-dojo-attach-point="resultCounter">${nls.resultCounter}</div></td>
+                    <td>
+                        <span id="result-tooltip" class="tooltip">🛈</span>
+                        <div data-dojo-type="dijit/Tooltip" data-dojo-props="connectId: 'result-tooltip'">${nls.resultTooltip1}<br><br>${nls.resultTooltip2}</div>
+                    </td>
+                    <td style="float:right"><button data-dojo-attach-point="exportBtn" class="jimu-btn">${nls.exportButtonText}</button></td>
+                </tr>
+                <tr>
+                    <td><div id="resultmessage" data-dojo-attach-point="resultmessage"></div></td>
+                </tr>
+            </table>
+            <div data-dojo-attach-point="resultsdiv"></div>
+    </div>
+</div>

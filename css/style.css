@@ -1,0 +1,239 @@
+.btn-select-route{
+    background: url(../images/selectRouteGray.png) no-repeat;
+    background-position: center;
+    width: 28px;
+    height: 28px;
+    float: right;
+    background-color: #FFFFFF;
+}
+
+.btn-select-route-active{
+    background: url(../images/selectRouteWhite.png) no-repeat;
+    background-position: center;
+    width: 28px;
+    height: 28px;
+    float: right;
+    background-color: #777777;
+}
+
+.m2g-header{
+    font-size: 14px;
+}
+
+.m2g-input{
+  width: 200px;
+  height: 28px;
+}
+
+.m2g-input .dijitTextBox .dijitInputInner{
+    text-align: left !important;
+}
+
+.LRSLocator-widget .dijitTextBox .dijitInputInner {
+  text-align: left;
+}
+
+.tooltip{
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none;
+}
+
+.m2g-select{
+    width: 200px;
+    height: 28px;
+    overflow: hidden;
+}
+
+.result-row{
+    color: #0000ee;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.scrolldiv{
+    width: 100%;
+    height: 550px;
+    overflow: auto;
+    float: left;
+}
+
+.tabNode1{
+    padding-top: 10px;
+}
+
+/*used for the controller List*/
+.search-list-container,
+.relate-list-container {
+  min-width: 100%;
+  height: 800px;
+  vertical-align: middle;
+  float: left;
+  position: relative;
+  overflow: auto;	
+}
+
+.relate-list-item {
+  line-height: 40px;
+  font-size: 11.5px;
+  white-space: pre;
+  position: relative;
+  margin: 1px 0;
+  border-radius: 8px;
+  border-color: lightgray;
+  border-style: solid;
+  border-width: 1px;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.search-list-item {
+  line-height: 30px;
+  font-size: 11.5px;
+  white-space: pre;
+  position: relative;
+  min-height: 40px;
+}
+
+.result-wrap{
+  white-space: pre-wrap;
+}
+
+.search-list-item .label,
+.relate-list-item .label {
+  padding-left: 40px;
+  padding-right: 10px;
+  padding-bottom: 3px;
+  cursor: default;
+}
+
+.search-list-item ._title,
+.relate-list-item ._title{
+  padding-left: 40px;
+  padding-right: 10px;
+  padding-bottom: 3px;
+  margin-right: 22px;
+  cursor:default;
+  font-weight: bolder;
+}
+
+.relate-list-item ._title {
+  cursor:pointer;
+}
+
+.search-list-item .labellink{
+  color: #0000ee;
+  text-decoration: underline;
+  padding-left: 40px;
+  padding-right: 10px;
+  padding-bottom: 3px;
+  cursor: pointer;
+  outline: none;
+}
+
+.search-list-item .iconDiv,
+.relate-list-item .iconDiv {
+  text-align: center;
+  position: absolute;
+  height: 100%;
+  left: 0;
+}
+
+.relate-list-item .iconDiv {
+  left: 5px;
+  top: 2px;
+}
+
+.search-list-item .linksdiv {
+  text-align: center;
+  width: 100%;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.search-list-item .linkIcon {
+  display: inline-block;
+  padding-right: 4px;
+}
+
+.search-list-item .iconDiv:before {
+  content: '';
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+}
+
+.search-list-item .iconDiv svg {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.search-list-item.alt {
+  background-color: #ebebeb;
+}
+
+.search-list-item.selected {
+  background-color: #d9dde0;
+}
+
+.search-list-item.selected.alt {
+  background-color: #d9dde0;
+}
+
+.search-list-item:hover,
+.relate-list-item:hover  {
+  background-color: #e3eefa;
+  box-shadow:inset 0px 0px 0px 1px #89a4c8;
+}
+
+.search-list-item.alt:hover {
+  background-color: #e3eefa;
+  box-shadow:inset 0px 0px 0px 1px #89a4c8;
+}
+
+.search-list-item.selected:hover {
+  background-color: #e3eefa;
+  box-shadow:inset 0px 0px 0px 1px #89a4c8;
+}
+
+.search-list-item.selected.alt:hover {
+  background-color: #e3eefa;
+  box-shadow:inset 0px 0px 0px 1px #89a4c8;
+}
+
+.search-list-item .removediv:before {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+    margin-right: -0.25em;
+    /* Adjusts for spacing */
+  }
+  
+  .search-list-item .removediv svg {
+    display: inline-block;
+    vertical-align: middle;
+  }
+  
+  .search-list-item .removediv {
+    text-align: center;
+    position: absolute;
+    height: 100%;
+    width: 22px;
+    right: 0;
+    padding-top: 4px;
+  }
+  
+  .search-list-item .removedivImg {
+    display: inline-block;
+    vertical-align: top;
+    /* background-image: url("images/i_remove_info.png"); */
+    background-image: url('../../../jimu.js/css/images/black_close_default.png');
+    background-repeat: no-repeat;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+  }

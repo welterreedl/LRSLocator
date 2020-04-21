@@ -1,0 +1,84 @@
+<div style="width:100%;height:100%;">
+  <div class="settings-section" data-dojo-attach-point="searchesSection">
+    <table class="setting-table input-table" cellspacing="0">
+      <tbody>
+
+        <tr>
+          <td class="first">Route Search Tolerance for Map Click (pixels)</td>
+          <td class="second">
+            <input type="text" data-dojo-type="dijit/form/NumberTextBox" data-dojo-attach-point="tolerancePixels" required="true" 
+              data-dojo-attach-event="Blur:_onTolerancePixelsBlur" />
+          </td>
+          <td class="third">
+            <span id="tooltip-3" class="tooltip-3 c-tooltip">🛈</span>
+            <div data-dojo-type="dijit/Tooltip" data-dojo-props="connectId: 'tooltip-3'">
+              Enter the route search distance in pixels to be used on map click.
+              By using pixels the search distance will vary according to the map scale.
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="first">Route Search Tolerance for Feature Action (meters)</td>
+          <td class="second">
+            <input type="text" data-dojo-type="dijit/form/NumberTextBox" data-dojo-attach-point="FeatureTolerancePixels" required="true" 
+              data-dojo-attach-event="Blur:_onFeatureTolerancePixelsBlur" />
+          </td>
+          <td class="third">
+            <span id="tooltip-4" class="tooltip-4 c-tooltip">🛈</span>
+            <div data-dojo-type="dijit/Tooltip" data-dojo-props="connectId: 'tooltip-4'">
+              Enter the route search distance in pixels to be used with the feature action.
+              This will be the tolerance used for every feature, no matter the scale.
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="first">Route Selection Distance (optional)</td>
+          <td class="second">
+            <input type="text" data-dojo-type="dijit/form/NumberTextBox" data-dojo-attach-point="routeSearchDistance" required="false" 
+              data-dojo-attach-event="Blur:_onRouteSearchDistanceBlur" />
+          </td>
+          <td class="third">
+            <span id="tooltip-5" class="tooltip-5 c-tooltip">🛈</span>
+            <div data-dojo-type="dijit/Tooltip" data-dojo-props="connectId: 'tooltip-5'">
+              Enter the route search distance to be used on Locate clicked.
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="first">Route Selection Units</td>
+          <td class="second">
+            <select data-dojo-attach-point="routeSearchUnits" data-dojo-type="dijit/form/Select" 
+              data-dojo-attach-event="Blur:_onRouteSearchUnitsBlur">
+              <option value="FEET">FEET</option>
+              <option value="METERS">METERS</option>
+            </select>
+        </td>
+          <td class="third">
+            <span id="tooltip-6" class="tooltip-6 c-tooltip">🛈</span>
+            <div data-dojo-type="dijit/Tooltip" data-dojo-props="connectId: 'tooltip-6'">
+              Select the route search units to be used on Locate clicked.
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="first">Intersection Point Layer Service URL</td>
+          <td class="second">
+            <input type="text" data-dojo-type="jimu/dijit/ServiceURLInput" data-dojo-attach-point="intersectionLayerUrl" data-dojo-attach-event="Blur:_onIntersectionLayerUrlBlur" data-dojo-props="style:{width:'100%'}" required="true" placeHolder='Intersection Layer URL (point only)'/>
+        </td>
+          <td class="third">
+            <span id="tooltip-7" class="tooltip-7 c-tooltip">🛈</span>
+            <div data-dojo-type="dijit/Tooltip" data-dojo-props="connectId: 'tooltip-7'">
+              Input the intersection service URL to snapped to. Must be a Feature Service (Point) to work properly.
+            </div>
+          </td>
+        </tr>
+
+
+      </tbody>
+    </table>
+  </div>
+</div>

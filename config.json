@@ -1,0 +1,8 @@
+{
+    "routeSearchDistance": 25,
+    "routeSearchUnits": "FEET",
+    "showToMeasure": false,
+    "tolerancePixels": 5,
+    "FeatureTolerancePixels": 25,
+    "intersectionLayerUrl": null
+}

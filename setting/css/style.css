@@ -1,0 +1,38 @@
+/* jimu-widget-coordinate-setting */
+
+.jimu-widget-csv-setting {
+  margin: 0;
+  padding: 0;
+  font-size: 15px;
+}
+
+.jimu-widget-csv-setting .dijitArrowButtonContainer {
+  width: 17px;
+}
+
+.jimu-widget-csv-setting .setting-table>thead>tr>th,
+.jimu-widget-csv-setting .setting-table>tbody>tr>td {
+  height: 40px;
+  line-height: 40px;
+  vertical-align: middle;
+}
+
+.jimu-widget-csv-setting .input-table>tbody>tr>.first {
+  width: auto;
+  text-align: right;
+  padding-right: 15px;
+  min-width: 200px;
+}
+
+.jimu-widget-csv-setting .input-table>tbody>tr>.second {
+  width: 50%;
+}
+
+.jimu-widget-csv-setting .input-table>tbody>tr>.third {
+  padding-left: 15px;
+  width: 50px;
+}
+
+.jimu-widget-csv-setting .jimu-checkbox .checkbox {
+  margin: 12px 0;
+}
