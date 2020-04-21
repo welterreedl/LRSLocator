@@ -16,7 +16,7 @@ Add an LRSServer map service to the webmap used in Web Appbuilder.
 
 ### Contributors
 - Liam Welter-Reed: [WelterReedL@michigan.gov](mailto:welterreedl@michigan.gov)
-- Michigan Department of Transportation GIS Unit:[MDOT-GIS@michigan.gov](mailto:mdot-gis@michigan.gov)
+- Michigan Department of Transportation GIS Unit: [MDOT-GIS@michigan.gov](mailto:mdot-gis@michigan.gov)
 - Esri
 
 ### Contact
