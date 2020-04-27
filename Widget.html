@@ -25,7 +25,7 @@
                     </tr>
                     <tr data-dojo-attach-point="fromMeasureRow">
                         <td class="m2g-header" data-dojo-attach-point="fromMeasureText">${nls.measureText}</td>
-                        <td style="float:right"><input type="text" data-dojo-attach-point="fromMeasureTextBox" data-dojo-type="dijit/form/NumberTextBox" data-dojo-props=${nls.measureBoxProps} id="fromMeasure" class="m2g-input"/></td>
+                        <td style="float:right"><input type="number" data-dojo-attach-point="fromMeasureTextBox" data-dojo-type="dijit/form/NumberTextBox" data-dojo-props=${nls.measureBoxProps} id="fromMeasure" class="m2g-input"/></td>
                     </tr>
                 </table>
                 <table style="width: 100%">
@@ -39,7 +39,7 @@
                         <td style="padding-top: 10px;padding-bottom: 10px;">
                             <input data-dojo-type="dijit/form/CheckBox" data-dojo-attach-point="intersectionToggle" id="intersectionToggle"/><label for="intersectionToggle" style="padding-left: 10px;">${nls.intersectionLabel}</label>
                         </td>
-                        <td>
+                        <td style="padding-top: 10px;padding-bottom: 10px;">
                             <span id="intersection-tooltip" class="tooltip">🛈</span>
                             <div data-dojo-type="dijit/Tooltip" data-dojo-props="connectId: 'intersection-tooltip'">${nls.intersectionTooltip}</div>
                         </td>
@@ -48,16 +48,24 @@
                         <td style="padding-top: 10px;padding-bottom: 10px;">
                             <input data-dojo-type="dijit/form/CheckBox" data-dojo-attach-point="addToToggle" id="addToToggle"/><label for="addToToggle" style="padding-left: 10px;">${nls.addToLabel}</label>
                         </td>
-                        <td>
+                        <td style="padding-top: 10px;padding-bottom: 10px;">
                             <span id="addto-tooltip" class="tooltip">🛈</span>
                             <div data-dojo-type="dijit/Tooltip" data-dojo-props="connectId: 'addto-tooltip'">${nls.addToTooltip}</div>
                         </td>
                     </tr>
+                    <tr>
+                        <td style="padding-top: 10px;padding-bottom: 10px;"><div id="resultmessage" data-dojo-attach-point="resultmessage"></div></td>
+                    </tr>
+                    <hr>
+                    <tr>
+                        <td>
+                            <div data-dojo-attach-point="progressbar"></div>
+                        </td>
+                    </tr>
                 </table>
                 </div>
-                <div data-dojo-attach-point="progressbar"></div>
-                </div>
             </div>
+        </div>
         <div data-dojo-attach-point="tabNode2">
             <table style="padding-top: 10px; width: 100%">
                 <tr>
@@ -67,9 +75,6 @@
                         <div data-dojo-type="dijit/Tooltip" data-dojo-props="connectId: 'result-tooltip'">${nls.resultTooltip1}<br><br>${nls.resultTooltip2}</div>
                     </td>
                     <td style="float:right"><button data-dojo-attach-point="exportBtn" class="jimu-btn">${nls.exportButtonText}</button></td>
-                </tr>
-                <tr>
-                    <td><div id="resultmessage" data-dojo-attach-point="resultmessage"></div></td>
                 </tr>
             </table>
             <div data-dojo-attach-point="resultsdiv"></div>

@@ -155,7 +155,7 @@ return declare(null, {
     
     geometryToMeasure: function(/*int*/ networkLayerId, params, callback, errback) {
         params = this._mixinGDBVersion(params);
-        return this._requestWithFilter("/networkLayers/"+networkLayerId+"/geometryToMeasure", params, null, callback, errback, 
+        return this._requestWithFilter("/networkLayers/"+networkLayerId+"/geometryToMeasure", params, { usePost: true }, callback, errback, 
             lang.hitch(this, function(response) {
                 // Apply the response-level spatial reference to each nested geometry
                 array.forEach(response.locations, function(loc) {
@@ -172,7 +172,7 @@ return declare(null, {
     
     measureToGeometry: function(/*int*/ networkLayerId, params, callback, errback) {
         params = this._mixinGDBVersion(params);
-        return this._requestWithFilter("/networkLayers/"+networkLayerId+"/measureToGeometry", params, null, callback, errback, 
+        return this._requestWithFilter("/networkLayers/"+networkLayerId+"/measureToGeometry", params, { usePost: true }, callback, errback, 
             lang.hitch(this, function(response) {
                 // Apply the response-level spatial reference to each nested geometry
                 array.forEach(response.locations, function(loc) {

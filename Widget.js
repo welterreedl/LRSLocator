@@ -17,12 +17,15 @@ define([
   'dijit/form/ComboBox',
   'dijit/form/Select',
   'dijit/form/CheckBox',
+  'dijit/form/Button',
   'dijit/registry',
   'dojo/_base/html',
   'dijit/ProgressBar',
   'esri/request',
   'esri/tasks/query',
   'esri/tasks/QueryTask',
+  'esri/tasks/FeatureSet',
+  'esri/tasks/ProjectParameters',
   'jimu/BaseWidget',
   'jimu/MapManager',
   'jimu/LayerStructure',
@@ -71,8 +74,8 @@ define([
   'dojo/i18n!esri/nls/jsapi'
 ],
   function (array, declare, lang, Deferred, DeferredList, dom, domConstruct, domStyle, keys, number, on, all, query, topic,
-    WidgetsInTemplateMixin, ComboBox, Select, CheckBox, registry, html, ProgressBar,
-    esriRequest, Query, QueryTask,
+    WidgetsInTemplateMixin, ComboBox, Select, CheckBox, Button, registry, html, ProgressBar,
+    esriRequest, Query, QueryTask, FeatureSet, ProjectParameters,
     BaseWidget, MapManager, LayerStructure, Message, TabContainer, utils, exportUtils, GeojsonConverters, Popup, zoomToUtils,
     Dialog, Memory, Observable, OnDemandGrid, DijitRegistry, ColumnResizer, Selection, Selector, NumberTextBox,
     Color, Point, Polyline, ScreenPoint, geodesicUtils, Graphic, GraphicsLayer, FeatureLayer, PopupTemplate, SimpleMarkerSymbol, SimpleLineSymbol, TextSymbol, LabelClass, SpatialReference,
@@ -145,6 +148,7 @@ define([
 
         this.own(
           on(this._resultList, 'highlight-route', lang.hitch(this, '_onHighlightClicked')),
+          on(this._resultList, 'remove-highlight', lang.hitch(this, '_onRemoveHighlightClicked')),
           on(this._resultList, 'click', lang.hitch(this, '_onResultClicked')),
           on(this._resultList, 'dblclick', lang.hitch(this, '_onResultDoubleClicked')),
           on(this._resultList, 'remove', lang.hitch(this, '_onRemoveClicked')),
@@ -426,6 +430,7 @@ define([
         this._resultList.parentWidget = this;
         //make sure text-align left
         dojo.addClass(this.fromMeasureTextBox, 'text-align', 'left');
+        //this.locateBtn.set('disabled', true);
         this._startupFinished = true;
       },
 
@@ -485,7 +490,7 @@ define([
 
       _onFromMeasureChange: function (e) {
         // Make sure input is a number, or minus sign in the first position (text box has no value)
-        if (this._validChar.indexOf(e.charCode) < 0 || (e.charCode == this._minusChar && this.fromMeasureTextBox.value)) {
+        if (this._validChar.indexOf(e.charCode) < 0 && e.ctrlKey == false || (e.charCode == this._minusChar && this.fromMeasureTextBox.value && e.ctrlKey == false)) {
           e.preventDefault();
         }
       },
@@ -660,14 +665,8 @@ define([
         else {
           var location = { "x": e.mapPoint.x, "y": e.mapPoint.y, "wkid": e.mapPoint.spatialReference.wkid };
         }
-        if (this._directionalLineLayer) {
-          this._directionalLineLayer.clear();
-          if (dojo.query(".dls-symbol").length > 0) {
-            console.log("Additional directional symbols found after clearing main layer");
-          }
-          //dojo.query("g#marker-feature-action-layer_layer").children(".dls-symbol").forEach(dojo.destroy);
-        }
 
+        this._removeHighlight();
 
         this._standBy(true);
 
@@ -717,11 +716,8 @@ define([
 
               if (results.features.length == 1) {
                 // Set the route id.
-                if (!this._addToResults) {
-                this._resultList.clear();
-                this._resultLayer.clear();
-                this._resultLayer.redraw();
-                }
+                this.clearList();
+
                 this._routeId = results.features[0].attributes[this._routeIdFieldName];
 
                 // Show it in the dropdown
@@ -729,12 +725,9 @@ define([
                 this.routeId.set("store", new Memory({data: data}));
                 this.routeId.set("value", String(this._routeId));
                 // Highlight the geometry
-                if (this._directionalLineLayer) {
-                  this._directionalLineLayer.clear();
-                }
-                this._routeGraphic = new Graphic(geometryEngine.generalize(results.features[0].geometry, 3, true, 'yards'), this._directionalLine);
-                this._directionalLineLayer.add(this._routeGraphic);
-                this.map.addLayer(this._directionalLineLayer, 1);
+                this._removeHighlight();
+
+                this._highlightRoute(results.features[0].geometry);
             
                 this._standBy(false);
 
@@ -810,22 +803,15 @@ define([
                   var row = grid.row(event);
                   this._routeId = row.data.RouteId;
                   // geometry is in the data store, just highlight it
-                  if (this._directionalLineLayer) {
-                    this._directionalLineLayer.clear();
-                  }
-                  this._routeGraphic = new Graphic(geometryEngine.generalize(row.data.geometry, 3, true, 'yards'), this._directionalLine);
-                  this._directionalLineLayer.add(this._routeGraphic)
+                  this._highlightRoute(row.data.geometry);
+
                   dom.byId('SelectRoute').disabled = false;
                 }));
 
                 // Select clicked
                 on(dom.byId('SelectRoute'), "click", lang.hitch(this, function (e) {
                   e.preventDefault();
-                  if (!this._addToResults) {
-                    this._resultList.clear();
-                    this._resultLayer.clear();
-                    this._resultLayer.redraw();
-                    }
+                  this.clearList();
                   this.selectRouteDialog.hide();
                   // Show it in the dropdown
                   var data = [{name: this._routeId + ""}];
@@ -976,9 +962,7 @@ define([
                 console.log(msg);
                 this._showWarning({ "message": msg });
                 // Clear any highlight
-                if (this._directionalLineLayer) {
-                  this._directionalLineLayer.clear();
-                }
+                this._removeHighlight();
               }
             }),
             draggable: true
@@ -1020,9 +1004,8 @@ define([
       },
 
       _onLocateClicked: function () {
-        // Clear the results and any graphics.
-        this._clearResults();
-        this.map.graphics.clear();
+        // Clear the results.
+        this.clearList();
         // Standby...
         this._standBy(true);
         var routeId = dojo.byId("routeId").value;
@@ -1030,37 +1013,16 @@ define([
         this._createRequest(routeId, null, fromMeasure, null);
       },
 
-      _clearResults: function () {
-        // Clear any results
-        if (!this._addToResults) {
-          this._resultList.clear();
-          this._resultLayer.clear();
-          this._resultLayer.redraw();
-          }
-      },
-
       _createRequest: function (routeId, routeName, fromMeasure, toMeasure) {
-
         // Validate inputs
-        if (!routeId && !routeName) {
-          var msg;
-          if (this._routeNameFieldName) {
-            msg = "Please enter or select a route id or route name.";
-          } else {
-            msg = "Please enter or select a route id.";
-          }
+        if (!routeId) {
+          var msg = "Please enter or select a route id.";
           var err = { "message": msg };
           this._showError(err);
           return;
         }
         if (!fromMeasure) {
-          // var err = { "message": "Please enter a from measure." };
-          // this._showError(err);
-          // return;
-
           // Zoom to route and show its attributes
-          // *****DEBUG*****HERE*****
-          // Create the routeTask
           var params = {
             lrsSupport: this._lrsSupport,
             map: this.map,
@@ -1069,44 +1031,9 @@ define([
           var routeTask = new RouteTask(params);
           routeTask.getRouteById(routeId, true).then(lang.hitch(this, "_showEntireRoute")).otherwise(lang.hitch(this, "_showError"));
           
-        } else {
-
-          // If routeName is supplied lookup routeId then _runRequest
-          // else _runRequest.
-          if (routeName) {
-            this.routeName = routeName;
-            // Query routes for name
-            var qt = new QueryTask(this._networkLayerUrl);
-            var query = new Query();
-            query.outFields = [this._routeIdFieldName];
-            if (this._routeNameFieldName) {
-              query.outFields.push(this._routeNameFieldName)
-            }
-            query.returnGeometry = false;
-            query.where = this._routeNameFieldName + " = '" + routeName + "'";
-            qt.execute(query).then(lang.hitch(this, function (results) {
-
-              if (results.features.length == 1) {
-                var rid = results.features[0].attributes["Route_ID"];
-                this._runRequest(rid, fromMeasure, toMeasure);
-              } else {
-                // Display error message.
-                var msg = "Unable to locate route name: " + this.routeName;
-                console.log("MeasureToRoute - ", msg);
-                var err = { "message": msg };
-                this._showError(err);
-              }
-
-            })).otherwise(lang.hitch(this, function (err) {
-              console.log("MeasureToGeometry _createRequest - error:", err);
-              // Display error message
-              this._showError(err);
-            }));
-
-          } else {
-            this._runRequest(routeId, fromMeasure, toMeasure);
-          }
-
+        } 
+        else {
+          this._runRequest(routeId, fromMeasure, toMeasure);
         }
       },
 
@@ -1149,21 +1076,25 @@ define([
         m2gRequest.then(lang.hitch(this, "_showResponseAllResults")).otherwise(lang.hitch(this, "_showError"));
       },
 
+      _showEntireRoute: function (response) {
+        this._highlightRoute(response.geometry);
+        this._showWarning({message: "To see full results, enter a mile point."})
+        this._standBy(false);
+      },
+
       _showWarning: function (warn) {
         this._standBy(false);
-        this.map.graphics.clear();
         var rdiv = dojo.byId("resultmessage");
-        rdiv.innerHTML += '<font color="green">Warning: ' + warn.message + '</font>';
-        this._tabContainer.selectTab(this.nls.resultsLabel);
+        rdiv.innerHTML = '<font color="green" style="font-size: larger;">Warning: ' + warn.message + '</font>';
+        this._tabContainer.selectTab(this.nls.identifyLabel);
       },
 
       _showError: function (error) {
         this._standBy(false);
-        this.map.graphics.clear();
         console.log(error);
         var rdiv = dojo.byId("resultmessage");
-        rdiv.innerHTML = '<font color="red">Error: ' + error.message + '</font>';
-        this._tabContainer.selectTab(this.nls.resultsLabel);
+        rdiv.innerHTML = '<font color="red" style="font-size: larger;">Error: ' + error.message + '</font>';
+        this._tabContainer.selectTab(this.nls.identifyLabel);
       },
 
       _onClearClicked: function () {
@@ -1180,7 +1111,6 @@ define([
       _clearAll: function (caller) {
         if (caller) {
         this._foundNetworkLayerId = null;
-        this.map.graphics.clear();
         this.clearSelection();
         this._resetDropdown();
         dojo.byId("fromMeasure").value = "";
@@ -1246,14 +1176,20 @@ define([
               line: filename
           }
         }
-        let jsonObj = {
-          type: 'FeatureCollection',
-          features: []
-        };
-        array.forEach(featureSet.features, function (feature) {
-          jsonObj.features.push(GeojsonConverters.arcgisToGeoJSON(feature))
-        });
-        Shapefile.download(jsonObj, options);
+        // The geometry is projected to WGS84 due to GeoJSON standard.
+        this._featureSetToWGS84(featureSet)
+        .then(
+          function (outputFeatures) {
+            let jsonObj = {
+              type: 'FeatureCollection',
+              features: []
+            };
+            array.forEach(outputFeatures.features, function (feature) {
+              jsonObj.features.push(GeojsonConverters.arcgisToGeoJSON(feature))
+            });
+            Shapefile.download(jsonObj, options);
+          }
+        )
       },
 
       _exportToGeoJSON: function (filename) {
@@ -1278,21 +1214,84 @@ define([
         Csv.download();
       },
 
-      clearSelection: function () {
-        if (this._directionalLineLayer) {
-          this._directionalLineLayer.clear();
-          if (dojo.query(".dls-symbol").length > 0){
-            console.log("Additional directional symbols found after clearing main layer");
+      _featureSetToWGS84: function(featureSet) {
+        var ret = new Deferred();
+        var getSR = function (featureset) {
+          if (featureset.spatialReference) {
+            return featureset.spatialReference;
+          }
+          // Get spatial refrence from graphics
+          var sf;
+          array.some(featureset.features, function(feature) {
+            if (feature.geometry && feature.geometry.spatialReference){
+              sf = feature.geometry.spatialReference;
+              return true;
+            }
+          });
+          return sf;
+        }
+        var sf = getSR(featureSet);
+        if (!sf) {
+          ret.resolve([]);
+        } else {
+          var wkid = parseInt(sf.wkid, 10);
+
+          if (wkid === 4326) {
+            ret.resolve(featureSet);
+          } else if (sf.isWebMercator()) {
+            var outFeatureset = new FeatureSet();
+            var features = [];
+            array.forEach(featureSet.features, function(feature) {
+              var g = new Graphic(feature.toJson());
+              g.geometry = webMercatorUtils.webMercatorToGeographic(feature.geometry);
+              features.push(g);
+            });
+            outFeatureset.features = features;
+            outFeatureset.geometryType = featureSet.geometryType;
+            outFeatureset.fieldAliases = featureSet.fieldAliases;
+            outFeatureset.fields = featureSet.fields;
+            ret.resolve(outFeatureset);
+          } else {
+            var params = new ProjectParameters();
+            params.geometries = array.map(featureSet.features, function(feature) {
+              return feature.geometry;
+            });
+            params.outSR = new SpatialReference(4326);
+
+            var gs = esriConfig && esriConfig.defaults && esriConfig.defaults.geometryService;
+            var existGS = gs && gs.declaredClass === "esri.tasks.GeometryService";
+            if (!existGS) {
+              gs = utils.getArcGISDefaultGeometryService();
+            }
+
+            gs.project(params).then(function(geometries) {
+              var outFeatureset = new FeatureSet();
+              var features = [];
+              array.forEach(featureSet.features, function(feature, i) {
+                var g = new Graphic(feature.toJson());
+                g.geometry = geometries[i];
+                features.push(g);
+              });
+              outFeatureset.features = features;
+              outFeatureset.geometryType = featureSet.geometryType;
+              outFeatureset.fieldAliases = featureSet.fieldAliases;
+              outFeatureset.fields = featureSet.fields;
+              ret.resolve(outFeatureset);
+            }, function(err) {
+              console.error(err);
+              ret.resolve([]);
+            });
           }
         }
+        return ret;
+      },
+
+      clearSelection: function () {
+        this._removeHighlight();
         // Clear infoWindow and any results
         this.map.infoWindow.hide();
         if (this._startupFinished == true) {
-          if (!this._addToResults) {
-            this._resultList.clear();
-            this._resultLayer.clear();
-            this._resultLayer.redraw();
-            }
+          this.clearList();
         }
         // Unsubscribe to result click events
         if (this._resultClickEvents) {
@@ -1300,10 +1299,18 @@ define([
             this._resultClickEvents[idx].remove();
           }
         }
-        let rcounter = dojo.byId("resultCounter");
-        rcounter.innerHTML = this.nls.resultCounter + this._resultList.items.length;
-        let rdiv = dojo.byId("resultmessage");
-        rdiv.innerHTML = "";
+      },
+
+      clearList: function () {
+        if (!this._addToResults) {
+          this._resultList.clear();
+          this._resultLayer.clear();
+          this._resultLayer.redraw();
+          let rcounter = dojo.byId("resultCounter");
+          rcounter.innerHTML = this.nls.resultCounter + this._resultList.items.length;
+          let rdiv = dojo.byId("resultmessage");
+          rdiv.innerHTML = "";
+          }
       },
 
       _onRouteIdKeydown: function (e) {
@@ -1365,20 +1372,21 @@ define([
       },
 
       _onHighlightClicked: function(e) {
-        if (this._directionalLineLayer) {
-          this._directionalLineLayer.clear();
-          this.map.removeLayer(this._directionalLineLayer);
-          if (dojo.query(".dls-symbol").length > 0){
-            console.warn("Additional directional symbols found after clearing main layer");
-          }
-        }
+        this._directionalLineLayer.clear();
+        this.map.removeLayer(this._directionalLineLayer);
+        this._resultList._setHighlightLink(e.id);
         var geom = e.geometry;
         // Highlight it on the map...
-        var geometry = new esri.geometry.Polyline(JSON.parse(geom));
+        var geometry = new Polyline(JSON.parse(geom));
         geometry.setSpatialReference(this.map.spatialReference);
         this._routeGraphic = new Graphic(geometry, this._directionalLine);
         this._directionalLineLayer.add(this._routeGraphic);
         this.map.addLayer(this._directionalLineLayer, 1);
+      },
+
+      _onRemoveHighlightClicked: function (e) {
+        this._directionalLineLayer.clear();
+        this.map.removeLayer(this._directionalLineLayer);
       },
 
       _onResultClicked: function(e) {
@@ -1462,7 +1470,9 @@ define([
             var links = [{
               geometry: this._resultContent[idx].attributes.RouteGeometry,
               popuptype: "geometry",
-              alias: "Highlight Route"
+              alias: "Highlight Route",
+              highlighted: "false",
+              id: "id_" + idx + this._resultList.items.length
             }];
             let labelSymbol = new TextSymbol().setColor(new Color("#000000"));
             labelSymbol.font.setSize("7pt");
@@ -1613,12 +1623,25 @@ define([
         return dfd.promise;
       },
 
-      _highlightRoute: function (evt) {
-        this._directionalLineLayer.clear();
-        let geometry = new esri.geometry.Polyline(evt.geometry);
+      _highlightRoute: function (routeGeometry) {
+        this._removeHighlight();
+        let geometry = new Polyline(routeGeometry);
         geometry.setSpatialReference(this.map.spatialReference);
-        let routeGraphic = new Graphic(evt.geometry, this._directionalLine);
+        this.map.setExtent(geometry.getExtent().expand(1.5), true);
+        let routeGraphic = new Graphic(geometry, this._directionalLine);
         this._directionalLineLayer.add(routeGraphic);
+        this.map.addLayer(this._directionalLineLayer, 1);
+      },
+
+      _removeHighlight: function () {
+        if (dojo.query(".labellink > a").length > 0) {
+          dojo.query(".labellink > a").forEach(function (element) {
+            element.innerHTML = "Highlight Route";
+            element.title = "Highlight Route";
+            element.dataset.highlighted = "false";
+          })
+        }
+        this._directionalLineLayer.clear();
       },
 
       _populateAllResults: function (resultLocations, routeLayers, geoPoint, mapPoint) {

@@ -193,7 +193,7 @@ define(['dojo/_base/declare',
         // console.info(item.links);
         array.forEach(item.links, function(link){
           if(link.popuptype === "geometry"){
-            var linkText = domConstruct.toDom("<p><a data-geometry='" + JSON.stringify(link.geometry) + "' title='" + link.alias + "'>" + link.alias + "</a></p>");
+            var linkText = domConstruct.toDom("<p><a data-geometry='" + JSON.stringify(link.geometry) + "' data-highlighted='" + link.highlighted + "' data-id='" + link.id + "' title='" + link.alias + "'>" + link.alias + "</a></p>");
             this.own(on(linkText, 'click', lang.hitch(this, "_onHighlightRouteClick")));
             domConstruct.place(linkText, linksDiv, 'before');
             domClass.add(linkText, 'labellink');
@@ -326,10 +326,32 @@ define(['dojo/_base/declare',
       },
 
       _onHighlightRouteClick: function(evt) {
-        if (evt.target.dataset.hasOwnProperty("geometry")) {
+        if (evt.target.dataset.highlighted == "false" && evt.target.dataset.hasOwnProperty("geometry")) {
+        evt.target.innerHTML = "Remove Highlight";
+        evt.target.title = "Remove Highlight";
+        evt.target.dataset.highlighted = "true";
         let eventGeometry = evt.target.dataset.geometry;
-        this.emit('highlight-route', {geometry: eventGeometry});
+        let eventId = evt.target.dataset.id;
+        this.emit('highlight-route', {geometry: eventGeometry, id: eventId});
         }
+        else if (evt.target.dataset.highlighted == "true" && evt.target.dataset.hasOwnProperty("geometry")) {
+        evt.target.innerHTML = "Highlight Route";
+        evt.target.title = "Highlight Route";
+        evt.target.dataset.highlighted = "false";
+        let eventGeometry = evt.target.dataset.geometry;
+        let eventId = evt.target.dataset.id;
+        this.emit('remove-highlight', {geometry: eventGeometry, id: eventId});
+        }
+      },
+
+      _setHighlightLink: function (id) {
+        dojo.query(".labellink > a").forEach(function (element) {
+          if (element.dataset.id !== id) {
+            element.innerHTML = "Highlight Route";
+            element.title = "Highlight Route";
+            element.dataset.highlighted = "false";
+          }
+        })
       },
 
       _getItemById: function(id) {
