@@ -1147,17 +1147,17 @@ define([
 
       _onExportPopupOK: function () {
       let exportConfig = this.ExportPopupContent.getConfig();
-
-      if (exportConfig.filetype === "csv") {
-        this._exportToCsv(exportConfig.filename, exportConfig.layers);
-      }
-      else if (exportConfig.filetype === "geojson") {
-        this._exportToGeoJSON(exportConfig.filename, exportConfig.layers);
-      }
-      /*else if (exportConfig.filetype === "shp") {
-        this._exportToShapefile(exportConfig.filename, exportConfig.layers);
-      }*/
-      if (layers.length > 0) {
+      
+      if (exportConfig.layers.length > 0) {
+        if (exportConfig.filetype === "csv") {
+          this._exportToCsv(exportConfig.filename, exportConfig.layers);
+        }
+        else if (exportConfig.filetype === "geojson") {
+          this._exportToGeoJSON(exportConfig.filename, exportConfig.layers);
+        }
+        /*else if (exportConfig.filetype === "shp") {
+          this._exportToShapefile(exportConfig.filename, exportConfig.layers);
+        }*/
         this.ExportPopup.close();
       }
       else {
