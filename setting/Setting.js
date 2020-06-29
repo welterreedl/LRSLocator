@@ -1,24 +1,10 @@
-///////////////////////////////////////////////////////////////////////////
-// Copyright © 2014 - 2018 Esri. All Rights Reserved.
-//
-// Licensed under the Apache License Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//    http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-///////////////////////////////////////////////////////////////////////////
-
 define([
   'dojo/_base/declare',
   'jimu/BaseWidgetSetting',
   'dijit/_WidgetsInTemplateMixin',
+  'dojo/_base/array',
   'dojo/_base/lang',
+  'dojo/_base/html',
   'dojo/on',
   'dojo/Deferred',
   'dojo/dom-style',
@@ -28,18 +14,24 @@ define([
   'jimu/portalUtils',
   'jimu/portalUrlUtils',
   'jimu/utils',
-  "dojo/store/Memory",
+  'jimu/dijit/SimpleTable',
+  'dojo/store/Memory',
   'dijit/form/ValidationTextBox',
   'dijit/form/ComboBox',
   'jimu/dijit/CheckBox',
+  'jimu/dijit/Popup',
+  'dojo/keys',
   'dijit/form/SimpleTextarea',
-  'jimu/dijit/ServiceURLInput'
+  './libs/ServiceURLInputValidate',
+  './libs/SingleSearchEdit'
 ],
 function (
   declare,
   BaseWidgetSetting,
   _WidgetsInTemplateMixin,
+  array,
   lang,
+  html,
   on,
   Deferred,
   domStyle,
@@ -49,15 +41,38 @@ function (
   portalUtils,
   portalUrlUtils,
   utils,
+  SimpleTable,
   Memory,
-  ServiceURLInput) {
+  ValidationTextBox,
+  ComboBox,
+  CheckBox,
+  Popup,
+  keys,
+  SimpleTextarea,
+  ServiceURLInputValidate,
+  SingleSearchEdit) {
   return declare([BaseWidgetSetting, _WidgetsInTemplateMixin], {
 
-    baseClass: 'jimu-widget-csv-setting',
+    baseClass: 'LRSLocator-widget-setting',
     memoryFormat: new Memory(),
     memoryLayout: new Memory(),
     _portalPrintTaskURL: null,
     validUrl: true,
+
+    postCreate: function () {
+      this.own(on(this.NetworkLayerTable,'actions-edit',lang.hitch(this,function(tr){
+        this.popupState = 'EDIT';
+        this._showSingleSearchEdit(tr);
+      })),
+      on(this.NetworkLayerTable,'row-delete',lang.hitch(this,function(tr){
+        delete tr.singleSearch;
+      })));
+      this.intersectionLayerUrl.setProcessFunction(
+        lang.hitch(this, '_onIntersectionServiceFetch'),lang.hitch(this, '_onServiceFetchError'));
+      this.mapServiceUrl.setProcessFunction(
+        lang.hitch(this, '_onLRSServiceFetch'),lang.hitch(this, '_onServiceFetchError'));
+
+    },
 
     startup: function () {
       this.inherited(arguments);
@@ -65,118 +80,246 @@ function (
     },
 
     getConfig: function() {
-      // this.config.networkLayerUrl = utils.stripHTML(this.networkLayerUrl.get('value'));
-      // this.config.routeIdFieldName = utils.stripHTML(this.routeIdFieldName.get('value'));
-      // this.config.routeNameFieldName = utils.stripHTML(this.routeNameFieldName.get('value'));
-      // Just get the value from the NumberTextBox
-      this.config.routeSearchDistance = this.routeSearchDistance.get('value');
-      this.config.routeSearchUnits = utils.stripHTML(this.routeSearchUnits.get('value'));
-      this.config.tolerancePixels = this.tolerancePixels.get('value');
-      this.config.FeatureTolerancePixels = this.FeatureTolerancePixels.get('value');
+      var enablerows = this.NetworkLayerTable.getRowDataArrayByFieldValue('enable', true);
+      if (this.mapServiceUrl._status !== 'valid') {
+        new Message({
+          message: this.nls.lrsservicewarning
+        });
+        return false;
+      }
+      if (this.intersectionLayerUrl._status !== 'valid' && this.intersectionLayerUrl.value.length > 0) {
+        new Message({
+          message: this.nls.intersectionlayerwarning
+        });
+        return false;
+      }
+      if (enablerows.length < 1) {
+        new Message({
+          message: this.nls.lrsenablewarning
+        });
+        return false;
+      }
+    
+      this.config.layers = this._getAllLayers();
+      var MapServiceUrl = this.mapServiceUrl.get('value');
+      if (MapServiceUrl.endsWith("/")) {
+        MapServiceUrl = MapServiceUrl.substring(0, MapServiceUrl.length - 1);
+      }
+      this.config.mapServiceUrl = MapServiceUrl;
       this.config.intersectionLayerUrl = this.intersectionLayerUrl.get('value');
-      console.log(this.config);
       return this.config;
     },
 
     setConfig: function (config) {
-      console.info("Func: setConfig");
+      this._initSearchesTable();
       this.config = config;
-      // this.loadNetworkLayerUrl(config);
-      // this.loadRouteIdFieldName(config);
-      // this.loadRouteNameFieldName(config);
-      this.loadRouteSearchDistance(config);
-      this.loadRouteSearchUnits(config);
-      this.loadTolerancePixels(config);
-      this.loadFeatureTolerancePixels(config);
-      this.loadIntersectionLayerUrl(config);
+      this.loadIntersectionLayerUrl();
+      this.loadMapServiceUrl();
     },
 
-    _onNetworkLayerUrlBlur: function () {
-      this.networkLayerUrl.set('value', utils.stripHTML(this.networkLayerUrl.get('value')));
+    _createSingleSearch:function(args){
+      if (args.enable === null) {
+        args.enable == true
+      }
+      var rowData = {
+        name: (args && args.name)||'',
+        enable: args.enable
+      };
+      var result = this.NetworkLayerTable.addRow(rowData);
+      if(!result.success){
+        return null;
+      }
+      result.tr.singleSearch = args;
+      return result.tr;
     },
 
-    _onRouteIdFieldNameBlur: function () {
-      this.routeIdFieldName.set('value', utils.stripHTML(this.routeIdFieldName.get('value')));
+    _showSingleSearchEdit: function (tr) {
+      this._openSingleSearchEdit(this.nls.updateSearch, tr);
     },
 
-    _onRouteNameFieldNameBlur: function () {
-      this.routeNameFieldName.set('value', utils.stripHTML(this.routeNameFieldName.get('value')));
+    _openSingleSearchEdit: function(title, tr) {
+      this.defaultSingleSearchedit = new SingleSearchEdit({
+        nls: this.nls,
+        config: tr.singleSearch || {},
+        searchSetting: this,
+        layerUniqueCache: this.layerUniqueCache,
+        layerInfoCache: this.layerInfoCache,
+        tr: tr,
+        disableuvcache: this.config.disableuvcache,
+        mainConfig: this.config
+      });
+
+      this.popup6 = new Popup({
+        titleLabel: title,
+        autoHeight: false,
+        content: this.defaultSingleSearchedit,
+        container: 'main-page',
+        buttons: [{
+          label: this.nls.ok,
+          key: keys.ENTER,
+          onClick: lang.hitch(this, '_onSingleSearchEditOk')
+        }, {
+          label: this.nls.cancel,
+          key: keys.ESCAPE
+        }],
+        onClose: lang.hitch(this, '_onSingleSearchEditClose')
+      });
+      html.addClass(this.popup6.domNode, 'widget-setting-popup');
+      this.defaultSingleSearchedit.startup();
     },
 
-    _onRouteSearchDistanceBlur: function () {
-      this.routeSearchDistance.set('value', utils.stripHTML(this.routeSearchDistance.get('value')));
+    _onSingleSearchEditOk: function() {
+      var sConfig = this.defaultSingleSearchedit.getConfig();
+
+      if (sConfig.length < 0) {
+        new Message({
+          message: this.nls.warning
+        });
+        return;
+      }
+
+      if(this.popupState === 'ADD'){
+        this.NetworkLayerTable.editRow(this.defaultSingleSearchedit.tr, {
+          name: sConfig.name
+        });
+        this.defaultSingleSearchedit.tr.singleSearch = sConfig;
+        this.popupState = '';
+      }else{
+        this.NetworkLayerTable.editRow(this.defaultSingleSearchedit.tr, {
+          name: sConfig.name
+        });
+        this.defaultSingleSearchedit.tr.singleSearch = sConfig;
+      }
+
+      this.popup6.close();
+      this.popupState = '';
     },
 
-    _onRouteSearchUnitsBlur: function () {
-      this.routeSearchUnits.set('value', utils.stripHTML(this.routeSearchUnits.get('value')));
+    _onSingleSearchEditClose: function() {
+      if(this.popupState === 'ADD'){
+        this.NetworkLayerTable.deleteRow(this.defaultSingleSearchedit.tr);
+      }
+      this.defaultSearchSymedit = null;
+      this.popup6 = null;
     },
 
-    _onTolerancePixelsBlur: function () {
-      this.tolerancePixels.set('value', this.tolerancePixels.get('value'));
+    _initSearchesTable: function(){
+      this.NetworkLayerTable.clear();
+      var layers = this.config && this.config.layers;
+      array.forEach(layers, lang.hitch(this, function(layerConfig, index) {
+        this._createSingleSearch(layerConfig);
+      }));
     },
 
-    _onFeatureTolerancePixelsBlur: function () {
-      this.FeatureTolerancePixels.set('value', this.FeatureTolerancePixels.get('value'));
+    _clearNetworkTable: function () {
+      this.NetworkLayerTable.clear();
+    },
+
+    _getAllLayers: function () {
+      var trs = this.NetworkLayerTable._getNotEmptyRows();
+      var allLayers = array.map(trs, lang.hitch(this, function (item) {
+        var rowData = this.NetworkLayerTable.getRowData(item);
+        item.singleSearch.enable = rowData.enable;
+        return item.singleSearch;
+      }));
+      return allLayers;
+    },
+
+    _onLRSServiceFetch: function (evt) {
+      if (evt.url.endsWith("/")) {
+        evt.url = evt.url.substring(0, evt.url.length - 1);
+      }
+      if (evt.data.supportedExtensions) {
+        var supportedExtensions = evt.data.supportedExtensions.split(", ");
+        if (array.indexOf(supportedExtensions, "LRSServer") > -1) {
+          // This is a valid LRS map service from ArcMap
+          if (this.config.mapServiceUrl != evt.url) {
+            var layerInfo = evt.url + '/exts/LRSServer/'
+            this._createNetworkLayers(layerInfo);
+          }
+          return true;
+        }
+        else if (array.indexOf(supportedExtensions, "LRServer") > -1) {
+          // This is a valid LRS map service from ArcGIS Pro
+          if (this.config.mapServiceUrl != evt.url) {
+            var layerInfo = evt.url + '/exts/LRServer/'
+            this._createNetworkLayers(layerInfo);
+          }
+          return true;
+        }
+        else {
+          return false;
+        }
+      }
+      else {
+        return false;
+      }
+
+    },
+
+    _onIntersectionServiceFetch: function (evt) {
+      if (evt.data.advancedQueryCapabilities.supportsQueryWithDistance === true && evt.data.geometryType == "esriGeometryPoint") {
+        return true;
+      }
+      else {
+        return false
+      }
+    },
+
+    _onServiceFetchError: function(){
+    },
+
+    _createNetworkLayers: function (url) {
+      var widgetScope = this;
+      this._clearNetworkTable();
+      this.config.lrsservice = url;
+      url = url + 'networkLayers';
+      var networkLayers = new esriRequest({
+        url: url,
+        content: { f: "json" },
+        handleAs: "json"
+      })
+      networkLayers.then(function (response) {
+        var networkLayerDefaults = [];
+        array.forEach(response.networkLayers, lang.hitch(this, function (layer, index) {
+          var layerConfig = {};
+          var routeIdField = array.filter(layer.fields, lang.hitch(this, function (field) {
+            if (field.name == layer.compositeRouteIdFieldName) {
+              return field;
+            }
+            })
+          )
+          layerConfig.name = layer.name;
+          layerConfig.url = url + "/" + layer.id.toString();
+          layerConfig.titlefield = null;
+          layerConfig.enable = true;
+          layerConfig.fields = {'all':false,'field':[]};
+          layerConfig.fields.field.push(
+            {"name": routeIdField[0].name, "alias": routeIdField[0].alias, "type": routeIdField[0].type},
+            {"name": "Milepoint", "alias": "Milepoint", "type": "esriFieldTypeDouble", "numberformat": layer.measurePrecision + "|,|", "isnumber": true},
+            {"name": "BMP", "alias": "Begin Milepoint", "type": "esriFieldTypeDouble", "isnumber": true},
+            {"name": "EMP", "alias": "End Milepoint", "type": "esriFieldTypeDouble", "isnumber": true},
+            {"name": "Length", "alias": "Total Length", "type": "esriFieldTypeDouble", "isnumber": true},
+            {"name": "Latitude", "alias": "Latitude", "type": "esriFieldTypeDouble", "isnumber": true},
+            {"name": "Longitude", "alias": "Longitude", "type": "esriFieldTypeDouble", "isnumber": true},
+            {"name": "SearchDate", "alias": "Search Date", "type": "esriFieldTypeDate", "dateformat": '{"date":"M/d/yyyy h:mm a", "format":"shortDateShortTime"}', "isdate": true},
+            {"name": "QueryNumber", "alias": "Query Number", "type": "esriFieldTypeInteger", "isnumber": true, "hideinpopup": true}
+          )
+          networkLayerDefaults.push(layerConfig);
+        })
+        )
+        for (args in networkLayerDefaults) {
+          lang.hitch(widgetScope, widgetScope._createSingleSearch(networkLayerDefaults[args]));
+        }
+      })
     },
 
     _onIntersectionLayerUrlBlur: function () {
       this.intersectionLayerUrl.set('value', this.intersectionLayerUrl.get('value'));
     },
 
-    loadNetworkLayerUrl: function () {
-      this._getNetworkLayerUrl().then(
-        lang.hitch(this, function (networkLayerUrl) {
-          this.networkLayerUrl.set('value', networkLayerUrl);
-        })
-      );
-    },
-
-    loadRouteIdFieldName: function () {
-      this._getRouteIdFieldName().then(
-        lang.hitch(this, function (routeIdFieldName) {
-          this.routeIdFieldName.set('value', routeIdFieldName);
-        })
-      );
-    },
-
-    loadRouteNameFieldName: function () {
-      this._getRouteNameFieldName().then(
-        lang.hitch(this, function (routeNameFieldName) {
-          this.routeNameFieldName.set('value', routeNameFieldName);
-        })
-      );
-    },
-
-    loadRouteSearchDistance: function () {
-      this._getRouteSearchDistance().then(
-        lang.hitch(this, function (routeSearchDistance) {
-          this.routeSearchDistance.set('value', routeSearchDistance);
-        })
-      );
-    },
-
-    loadRouteSearchUnits: function () {
-      this._getRouteSearchUnits().then(
-        lang.hitch(this, function (routeSearchUnits) {
-          this.routeSearchUnits.set('value', routeSearchUnits);
-        })
-      );
-    },
-
-    loadTolerancePixels: function () {
-      this._getTolerancePixels().then(
-        lang.hitch(this, function (tolerancePixels) {
-          this.tolerancePixels.set('value', tolerancePixels);
-        })
-      );
-    },
-
-    loadFeatureTolerancePixels: function () {
-      this._getFeatureTolerancePixels().then(
-        lang.hitch(this, function (FeatureTolerancePixels) {
-          this.FeatureTolerancePixels.set('value', FeatureTolerancePixels);
-        })
-      );
+    _onMapServiceUrlBlur: function () {
+      this.mapServiceUrl.set('value', this.mapServiceUrl.get('value'));
     },
 
     loadIntersectionLayerUrl: function () {
@@ -187,59 +330,35 @@ function (
       );
     },
 
-    _getNetworkLayerUrl: function () {
-      var nlDef = new Deferred();
-      var networkLayerUrl = this.config && this.config.networkLayerUrl ? this.config.networkLayerUrl : 'No network layer URL available.';
-      nlDef.resolve(networkLayerUrl);
-      return nlDef;
-    },
-
-    _getRouteIdFieldName: function () {
-      var ridDef = new Deferred();
-      var routeIdFieldName = this.config && this.config.routeIdFieldName ? this.config.routeIdFieldName : 'No network layer route id field name available.';
-      ridDef.resolve(routeIdFieldName);
-      return ridDef;
-    },
-
-    _getRouteNameFieldName: function () {
-      var rnDef = new Deferred();
-      var routeNameFieldName = this.config && this.config.routeNameFieldName ? this.config.routeNameFieldName : 'No network layer route name field name available.';
-      rnDef.resolve(routeNameFieldName);
-      return rnDef;
-    },
-    
-    _getRouteSearchDistance: function () {
-      var rnDef = new Deferred();
-      var routeSearchDistance = this.config && this.config.routeSearchDistance ? this.config.routeSearchDistance : 'No route search distance available.';
-      rnDef.resolve(routeSearchDistance);
-      return rnDef;
-    },
-        
-    _getRouteSearchUnits: function () {
-      var rnDef = new Deferred();
-      var routeSearchUnits = this.config && this.config.routeSearchUnits ? this.config.routeSearchUnits : 'No route search units available.';
-      rnDef.resolve(routeSearchUnits);
-      return rnDef;
-    },
-        
-    _getTolerancePixels: function () {
-      var rnDef = new Deferred();
-      var tolerancePixels = this.config && this.config.tolerancePixels ? this.config.tolerancePixels : 'No route search tolerance available.';
-      rnDef.resolve(tolerancePixels);
-      return rnDef;
-    },
-
-    _getFeatureTolerancePixels: function () {
-      var rnDef = new Deferred();
-      var FeatureTolerancePixels = this.config && this.config.FeatureTolerancePixels ? this.config.FeatureTolerancePixels : 'No feature tolerance available.';
-      rnDef.resolve(FeatureTolerancePixels);
-      return rnDef;
+    loadMapServiceUrl: function () {
+      this._getMapServiceUrl().then(
+        lang.hitch(this, function (MapServiceUrl) {
+          this.mapServiceUrl.set('value', MapServiceUrl);
+        })
+      );
     },
 
     _getIntersectionLayerUrl: function () {
       var rnDef = new Deferred();
-      var IntersectionLayerUrl = this.config && this.config.intersectionLayerUrl ? this.config.intersectionLayerUrl : 'No service URL available.';
+      var IntersectionLayerUrl = this.config && this.config.intersectionLayerUrl ? this.config.intersectionLayerUrl : null;
+      if (IntersectionLayerUrl !== null) {
+        if (IntersectionLayerUrl.endsWith("/")) {
+          IntersectionLayerUrl = IntersectionLayerUrl.substring(0, IntersectionLayerUrl.length - 1);
+        }
+      }
       rnDef.resolve(IntersectionLayerUrl);
+      return rnDef;
+    },
+
+    _getMapServiceUrl: function () {
+      var rnDef = new Deferred();
+      var MapServiceUrl = this.config && this.config.mapServiceUrl ? this.config.mapServiceUrl : null;
+      if (MapServiceUrl !== null) {
+        if (MapServiceUrl.endsWith("/")) {
+          MapServiceUrl = MapServiceUrl.substring(0, MapServiceUrl.length - 1);
+        }
+      }
+      rnDef.resolve(MapServiceUrl);
       return rnDef;
     }
     

@@ -26,12 +26,12 @@ define([
 ) {
 
 return declare(null, {
-    lrsSupport: null,
+    mapServiceUrl: null,
     networkLayer: null,
     map: null,
     
     constructor: function(params) {
-        this.lrsSupport = params.lrsSupport;
+        this.mapServiceUrl = params.mapServiceUrl;
         this.map = params.map;
         if (params.networkLayer) {
             this.networkLayer = params.networkLayer;
@@ -77,7 +77,7 @@ return declare(null, {
             query.returnGeometry = false;
         } 
         
-        var queryUrl = this.lrsSupport.lrsMapLayerConfig.url + "/" + this.networkLayer.id;
+        var queryUrl = this.mapServiceUrl + "/" + this.networkLayer.id;
         new QueryTask(queryUrl).execute(query, lang.hitch(this, function(featureSet) {
             if (featureSet && featureSet.features && featureSet.features.length > 0) {
                 defd.resolve(featureSet.features[0]);
@@ -120,7 +120,7 @@ return declare(null, {
         query.returnDistinctValues = true;
         query.orderByFields = [this.networkLayer.compositeRouteIdFieldName];
         
-        var queryUrl = this.lrsSupport.lrsMapLayerConfig.url + "/" + this.networkLayer.id;
+        var queryUrl = this.mapServiceUrl + "/" + this.networkLayer.id;
         new QueryTask(queryUrl).execute(query, lang.hitch(this, function(featureSet) {
             var matches = [];
             if (featureSet && featureSet.features) {

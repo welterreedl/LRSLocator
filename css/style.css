@@ -20,6 +20,12 @@
     font-size: 14px;
 }
 
+.identify-icon{
+  float: left;
+  width: 32px;
+  height: 32px;
+}
+
 .m2g-input{
   width: 200px;
   height: 28px;
@@ -31,6 +37,16 @@
 
 .LRSLocator-widget .dijitTextBox .dijitInputInner {
   text-align: left;
+}
+
+.LRSLocator-widget .loadingPanel {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(119, 119, 119, 0.5);
+  display: none;
 }
 
 .tooltip{

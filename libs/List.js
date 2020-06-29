@@ -322,7 +322,9 @@ define(['dojo/_base/declare',
         this._selectedNode = id;
         this.emit('remove', {
           index: this.selectedIndex, 
-          objectId: item.OID});
+          objectId: item.OID,
+          layerid: item.layerid
+        });
       },
 
       _onHighlightRouteClick: function(evt) {

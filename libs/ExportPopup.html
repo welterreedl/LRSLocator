@@ -1,15 +1,38 @@
 <div>
   <table style="margin:auto;">
     <tr>
-      <td>
+      <td style="padding-bottom: 20px;">
+          <label>
+              <span style="white-space: nowrap;">Choose layers to export</span>
+          </label>
+          <div style="max-height: 100px; overflow: auto;">                        
+              <table>
+                  <tr>
+                      <td style="vertical-align: top;"><div data-dojo-attach-point="_layerDiv1"></div></td>
+                      <td style="vertical-align: top; padding-left: 10px;"><div data-dojo-attach-point="_layerDiv2"></div></td>
+                  </tr>
+              </table>
+          </div>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding-bottom: 20px;">
+        <label>
+          <span style="white-space: nowrap;">Enter filename (no spaces or special characters)</span>
+        </label>
         <input type="text" data-dojo-type="dijit/form/ValidationTextBox" data-dojo-attach-point="filename" data-dojo-props=${nls.filenameBoxProps} id="filename" maxlength="30" style="text-align: right;"/>
       </td>
+    </tr>
+    <tr>
       <td>
-        <select name="select1"data-dojo-attach-point="filetype" data-dojo-type="dijit/form/Select">
-          <option value="csv" selected="selected">.csv</option>
-          <option value="shp">.shp</option>
-          <option value="geojson">.geojson</option>
-        </select>
+        <label>
+          <span style="white-space: nowrap;">Choose file format (multiple files will be zipped)</span>
+        </label>
+          <select name="select1"data-dojo-attach-point="filetype" style="width: 70%" data-dojo-type="dijit/form/Select">
+            <option value="csv" selected="selected">CSV</option>
+            <option value="geojson">GeoJSON</option>
+            <!--<option value="shp">Shapefile</option>-->
+          </select>
       </td>
     </tr>
   </table>

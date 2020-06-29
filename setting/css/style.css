@@ -1,38 +1,403 @@
-/* jimu-widget-coordinate-setting */
+.LRSLocator-widget-setting .btn-add-section,
+.widget-esearch-singlesearch-setting .btn-add-section{
+  display:inline-block;
+  overflow:hidden;
+  height:24px;
+  margin-left:1px;
+  margin-bottom:3px;
+  cursor:pointer;
+  font-size:13px;
+  color:#24B5CC;
+}
 
-.jimu-widget-csv-setting {
+.LRSLocator-widget-setting .btn-add-section .btn-add-label{
+  float:left;
+  height:100%;
+  line-height:24px;
+  vertical-align:middle;
+  margin-left:7px;
+  text-decoration: underline;
+}
+
+.LRSLocator-widget-setting .btn-add-section .btn-add-icon,
+.widget-esearch-singlesearch-setting .btn-add-section .btn-add-icon{
+  float:left;
+  height:100%;
+  width:14px;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-image: url(images/add.png);
+}
+
+.LRSLocator-widget-setting {
   margin: 0;
   padding: 0;
   font-size: 15px;
 }
 
-.jimu-widget-csv-setting .dijitArrowButtonContainer {
+.LRSLocator-widget-setting .dijitArrowButtonContainer {
   width: 17px;
 }
 
-.jimu-widget-csv-setting .setting-table>thead>tr>th,
-.jimu-widget-csv-setting .setting-table>tbody>tr>td {
+.LRSLocator-widget-setting .setting-table>thead>tr>th,
+.LRSLocator-widget-setting .setting-table>tbody>tr>td {
   height: 40px;
   line-height: 40px;
   vertical-align: middle;
 }
 
-.jimu-widget-csv-setting .input-table>tbody>tr>.first {
+.LRSLocator-widget-setting .input-table>tbody>tr>.first {
+  font-size: 0.63vw;
   width: auto;
   text-align: right;
   padding-right: 15px;
   min-width: 200px;
 }
 
-.jimu-widget-csv-setting .input-table>tbody>tr>.second {
-  width: 50%;
+.LRSLocator-widget-setting .input-table>tbody>tr>.second {
+  width: 80%;
 }
 
-.jimu-widget-csv-setting .input-table>tbody>tr>.third {
+.LRSLocator-widget-setting .input-table>tbody>tr>.third {
   padding-left: 15px;
   width: 50px;
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
 }
 
-.jimu-widget-csv-setting .jimu-checkbox .checkbox {
+.LRSLocator-widget-setting .jimu-checkbox .checkbox {
   margin: 12px 0;
+}
+
+.widget-esearch-singlesearch-setting {
+  height: 100%;
+  overflow-y: auto;
+}
+
+.widget-esearch-singlesearch-setting .btn-add-section{
+  margin-bottom:0;
+}
+
+.widget-esearch-singlesearch-setting .error-message-div {
+  border: 0px solid;
+  font-size: 11px;
+  color: red;
+  margin-left: 126px;
+}
+
+.widget-esearch-singlesearch-setting .jimu-checkbox .checkbox {
+  margin-top: 0;
+}
+
+.widget-esearch-singlesearch-setting .input-table > tbody > tr > td{
+height: 30px;
+line-height: 20px;
+vertical-align: middle;
+padding:4px 0;
+}
+
+.widget-esearch-singlesearch-setting .sort-fields-div{
+width: 100%;
+height: 30px;
+line-height: 30px;
+border: 1px solid #d2dae2;
+background-color: #e3ecf2;
+color: #7989a0;
+font-size: 14px;
+}
+
+.widget-esearch-singlesearch-setting .sort-fields-div span{
+float: left;
+display: inline-block;
+height: 30px;
+line-height: 30px;
+}
+
+.widget-esearch-singlesearch-setting .btn-sort-fields{
+width: 14px;
+height: 14px;
+background: center center no-repeat url(images/edit_disabled.png);
+cursor: default;
+}
+
+.widget-esearch-singlesearch-setting .btn-sort-fields.enabled{
+background: center center no-repeat url(images/edit_enabled.png);
+cursor: pointer;
+}
+
+.widget-esearch-singlesearch-setting .sorting-table{
+table-layout:fixed;
+width:100%;
+padding-top: 8px;
+}
+
+.widget-esearch-singlesearch-setting .sorting-table > tbody > tr > td{
+padding-top: 3px;
+padding-bottom: 3px;
+}
+
+.widget-esearch-singlesearch-setting .sort-fields-div span{
+float: left;
+display: inline-block;
+height: 30px;
+line-height: 30px;
+}
+
+.widget-esearch-singlesearch-setting .sort-arrow{
+width: 13px;
+}
+
+.widget-esearch-singlesearch-setting .sort-arrow.asc{
+background: center center no-repeat url(images/up_arrow.png);
+}
+
+.widget-esearch-singlesearch-setting .sort-arrow.desc{
+background: center center no-repeat url(images/down_arrow.png);
+}
+
+.widgets-Search-setting-include-button{
+  position:relative;
+  display: inline-block;
+  background:#8c8c8c;
+  padding:5px 18px 5px 10px;
+  color:white;
+  border-radius:3px;
+  cursor: pointer;
+  margin: 10px auto;
+}
+
+.widgets-Search-setting-include-button.enable{
+  background: #24b5cc;
+}
+
+.widgets-Search-setting-include-button.enable:hover{
+  background: #0090a7;
+}
+
+.widgets-Search-setting-include-button .include-arrow{
+  position:absolute;
+  right:4px;
+  top:45%;
+  width:0;
+  height:0;
+  border-top:3px solid transparent;
+  border-bottom:3px solid transparent;
+  border-left:5px solid white;
+}
+
+.widgets-Search-setting-include-all-button{
+  position:relative;
+  display: inline-block;
+  background:#8c8c8c;
+  padding:5px 18px 5px 10px;
+  color:white;
+  border-radius:3px;
+  cursor: pointer;
+  margin: 0 auto;
+}
+
+.widgets-Search-setting-include-all-button.enable{
+  background: #24b5cc;
+}
+
+.widgets-Search-setting-include-all-button.enable:hover{
+  background: #0090a7;
+}
+
+.widgets-Search-setting-include-all-button .include-arrow{
+  position:absolute;
+  right:4px;
+  top:45%;
+  width:0;
+  height:0;
+  border-top:3px solid transparent;
+  border-bottom:3px solid transparent;
+  border-left:5px solid white;
+}
+
+/***CSS for IncludeButton dijit***/
+.widgets-Search-setting-include-button{
+  position:relative;
+  display: inline-block;
+  background:#8c8c8c;
+  padding:5px 18px 5px 10px;
+  color:white;
+  border-radius:3px;
+  cursor: pointer;
+  margin: 10px auto;
+}
+
+.widgets-Search-setting-include-button.enable{
+  background: #24b5cc;
+}
+
+.widgets-Search-setting-include-button.enable:hover{
+  background: #0090a7;
+}
+
+.widgets-Search-setting-include-button .include-arrow{
+  position:absolute;
+  right:4px;
+  top:45%;
+  width:0;
+  height:0;
+  border-top:3px solid transparent;
+  border-bottom:3px solid transparent;
+  border-left:5px solid white;
+}
+
+/***CSS for SimpleTable dijit***/
+.jimu-simple-table{
+  width:100%;
+  margin:0;
+  padding:0;
+  overflow-x:hidden;
+  overflow-y:auto;
+  min-height: 465px;
+  position: relative;
+}
+
+.jimu-simple-table .simple-table-title{
+  font-size: 14px;
+}
+
+.jimu-simple-table .head-section{
+  width:100%;
+  height:36px;
+  overflow:hidden;
+}
+
+.jimu-simple-table .head-section .simple-table-tbody{
+  display: none;
+}
+
+.jimu-simple-table .body-section{
+  position: absolute;
+  top: 36px;
+  bottom: 0;
+  width:100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  border-left: 1px solid #eef2f5;
+  border-right: 1px solid #eef2f5;
+  border-bottom: 1px solid #eef2f5;
+  background-color: #fafafc;
+  color: #7989a0;
+}
+
+.jimu-simple-table .body-section .table-div{
+  margin: 0;
+  min-height: 100%;
+  background-image: url(images/table_under_line.png);
+  background-repeat: repeat;
+}
+
+.jimu-simple-table .body-section .simple-table-thead{
+  display: none;
+}
+
+.jimu-simple-table .table{
+  width:100%;
+  border-collapse:collapse;
+  table-layout:fixed;
+}
+
+.jimu-simple-table .simple-table-field.hidden-column > *,
+.jimu-simple-table .simple-table-cell.hidden-column > *{
+  display: none;
+}
+
+.jimu-simple-table .simple-table-field{
+  height: 36px;
+  line-height: 36px;
+}
+
+.jimu-simple-table .simple-table-cell{
+  height:40px;
+  line-height:40px;
+}
+
+.jimu-simple-table .radio-td.simple-table-cell {
+  padding-left: 24px;
+}
+
+.jimu-simple-table .checkbox-td.simple-table-cell {
+  padding-left: 42px;
+}
+
+.jimu-simple-table .actions-td.simple-table-cell {
+  padding-left: 24px;
+}
+
+.jimu-simple-table .simple-table-field,
+.jimu-simple-table .simple-table-cell{
+  vertical-align:middle;
+  padding-left:8px;
+  padding-right:8px;
+  padding-top:0;
+  padding-bottom:0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.jimu-simple-table .simple-table-field > *,
+.jimu-simple-table .simple-table-cell > *{
+  text-overflow: ellipsis;
+}
+
+.jimu-simple-table .simple-table-cell > *{
+  overflow: hidden;
+}
+
+.jimu-simple-table .simple-table-row:last-child .simple-table-cell{
+  border-bottom: 0;
+}
+
+.jimu-simple-table .simple-table-row .editable-div,
+.jimu-simple-table .simple-table-row .normal-text-div{
+  width: 100%;
+  height: 40px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.jimu-simple-table .simple-table-row .editable-input{
+  width:100%;
+}
+
+.jimu-simple-table .simple-table-row > .actions-td .action-item-parent{
+  display: none;
+  vertical-align:middle;
+}
+
+.jimu-simple-table .simple-table-row:hover > .actions-td .action-item-parent{
+  display: inline-block;
+}
+
+.jimu-simple-table .simple-table-row > .actions-td .action-item{
+  cursor:pointer;
+}
+
+.jimu-simple-table.jimu-layer-field-chooser,
+.jimu-simple-table.searchLayerFieldsTable{
+  min-height: 500px;
+  max-height: 500px;
+}
+
+.jimu-simple-table.searches-table{
+  max-height: 425px;
+  height: 425px;
+}
+
+.jimu-simple-table.values-table{
+  max-height: 117px;
+}
+
+.jimu-simple-table.user-values-table{
+  max-height: 306px;
 }

@@ -7,7 +7,7 @@
                     <tr>
                         <td style="text-align:center">
                             <button title="${nls.selectAllButtonTooltip}" data-dojo-attach-point="selectAllButton" class="jimu-btn" style="width:100%;display:inline-block">
-                                <img data-dojo-attach-point="selectAllIcon" src="" style="float:left">${nls.selectAllButtonText}
+                                <img data-dojo-attach-point="selectAllIcon" src="" class="identify-icon">${nls.selectAllButtonText}
                                 <div id="selectAllStatus" style="float:right">OFF</div>
                             </button>
                         </td>
@@ -35,7 +35,7 @@
                     </tr>
                 </table>
                 <table style="width: 100%">
-                    <tr>
+                    <tr data-dojo-attach-point="intersectionContainer">
                         <td style="padding-top: 10px;padding-bottom: 10px;">
                             <input data-dojo-type="dijit/form/CheckBox" data-dojo-attach-point="intersectionToggle" id="intersectionToggle"/><label for="intersectionToggle" style="padding-left: 10px;">${nls.intersectionLabel}</label>
                         </td>

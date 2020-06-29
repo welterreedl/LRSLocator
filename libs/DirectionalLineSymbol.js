@@ -244,6 +244,15 @@ define([
             }
           });
         }
+        if (!layer.endEvent) {
+          layer.endEvent = layer.on('update-start', function(){
+            layer.graphics.forEach(function(graphic){
+              if (graphic.isDirectionalGraphic) {
+                graphic.getDojoShape().moveToFront();
+              }
+            })
+          })
+        }
         return this.inherited(arguments);
       },
 
