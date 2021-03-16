@@ -219,7 +219,7 @@ return declare(null, {
     
     translate: function(/*int*/ networkLayerId, params, callback, errback) {
         params = this._mixinGDBVersion(params);
-        return this._request("/networkLayers/"+networkLayerId+"/translate", params, null, callback, errback);
+        return this._request("/networkLayers/"+networkLayerId+"/translate", params, { usePost: true }, callback, errback);
     },
     
     checkEvents: function(/*int*/ networkLayerId, params, callback, errback) {

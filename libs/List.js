@@ -17,6 +17,7 @@
 define(['dojo/_base/declare',
     'dijit/_WidgetBase',
     'dojo/_base/lang',
+    'dojo/_base/html',
     'dojox/gfx',
     'dojo/on',
     'dojo/dom-construct',
@@ -33,6 +34,7 @@ define(['dojo/_base/declare',
   function(declare,
     _WidgetBase,
     lang,
+    html,
     gfx,
     on,
     domConstruct,
@@ -69,7 +71,9 @@ define(['dojo/_base/declare',
         }
         this.items.push(item);
         var div = domConstruct.create("div");
+        var table = domConstruct.create("table");
         domClass.add(div, 'search-list-item');
+        domClass.add(table, 'result-table');
         domAttr.set(div, "id", this.id.toLowerCase()+item.id);
 
         var iconDiv = domConstruct.create("div");
@@ -83,19 +87,19 @@ define(['dojo/_base/declare',
         domClass.add(removeDiv, 'removediv');
         domAttr.set(removeDiv, 'id', this.id.toLowerCase()+item.id);
 
-        var removeDivImg = domConstruct.create('div');
-        domClass.add(removeDivImg, 'removedivImg');
+        var removeDivImg = domConstruct.create('i');
+        domClass.add(removeDivImg, 'esri-icon-close');
         domConstruct.place(removeDivImg, removeDiv);
         domAttr.set(removeDivImg, 'id', this.id.toLowerCase()+item.id);
         domAttr.set(removeDivImg, 'title', item.removeResultMsg);
+        domAttr.set(removeDivImg, 'style', 'vertical-align: top; cursor: pointer;');
         this.own(on(removeDivImg, 'click', lang.hitch(this, this._onRemove)));
         }
 
-        var rTitle = domConstruct.create("p");
+        var rTitle = domConstruct.toDom("<tr><th>" + item.title + "</th></tr>");
         domAttr.set(rTitle, "id", this.id.toLowerCase()+item.id);
         domClass.add(rTitle, "_title");
-        rTitle.textContent = rTitle.innerText = item.title;
-        domConstruct.place(rTitle, div);
+        domConstruct.place(rTitle, table);
         if(item.alt){
           domClass.add(div, 'alt');
         }
@@ -104,64 +108,25 @@ define(['dojo/_base/declare',
         }
 
         if(item.rsltcontent !== ""){
-          var attArr = item.rsltcontent.split('<br>');
-          var attValArr, tHasColor, bIndex, eIndex, tColor, vHasColor, vColor;
+          var attArr = item.rsltcontent
           var label, attTitle, attVal;
           var arrayLength = attArr.length;
           for (var i = 0; i < arrayLength; i++) {
-            attValArr = attArr[i].split('::');
-            attTitle = domConstruct.create('font');
+            attTitle = domConstruct.toDom("<td>" + attArr[i].attribute + "</td>");
             domAttr.set(attTitle, 'id', this.id.toLowerCase()+item.id);
-            if(attValArr[0].toLowerCase().indexOf('<em>') > -1){
-              domStyle.set(attTitle, 'font-style', 'italic');
-            }
-            if(attValArr[0].toLowerCase().indexOf('<strong>') > -1){
-              domStyle.set(attTitle, 'font-weight', 'bold');
-            }
-            if(attValArr[0].toLowerCase().indexOf('<u>') > -1){
-              domStyle.set(attTitle, 'text-decoration', 'underline');
-            }
-            tHasColor = (attValArr[0].toLowerCase().indexOf("<font color='") > -1)?true:false;
-            if(tHasColor){
-              bIndex = attValArr[0].toLowerCase().indexOf("<font color='") + 13;
-              eIndex = attValArr[0].toLowerCase().indexOf("'>", bIndex);
-              tColor = attValArr[0].substr(bIndex, eIndex - bIndex);
-              domStyle.set(attTitle, 'color', tColor);
-            }
+            domClass.add(attTitle, 'attribute');
 
-            attTitle.textContent = attTitle.innerText = attValArr[0].replace(/<[\/]{0,1}(em|EM|strong|STRONG|font|FONT|u|U)[^><]*>/g, "")  + ": ";
-            label = domConstruct.create('p');
+            label = domConstruct.create('tr');
             domAttr.set(label, 'id', this.id.toLowerCase()+item.id);
             domClass.add(label, 'label');
-            attVal = domConstruct.create('font');
+            attVal = domConstruct.toDom("<td>" + attArr[i].value + "</td>");
+            domClass.add(attVal, 'value');
 
-            if(attValArr[1].toLowerCase().indexOf('<em>') > -1){
-              domStyle.set(attVal, 'font-style', 'italic');
-            }
-            if(attValArr[1].toLowerCase().indexOf('<strong>') > -1){
-              domStyle.set(attVal, 'font-weight', 'bold');
-            }
-            if(attValArr[1].toLowerCase().indexOf('<u>') > -1){
-              domStyle.set(attVal, 'text-decoration', 'underline');
-            }
-            vHasColor = (attValArr[1].toLowerCase().indexOf("<font color='") > -1)?true:false;
-            if(vHasColor){
-              bIndex = attValArr[1].toLowerCase().indexOf("<font color='") + 13;
-              eIndex = attValArr[1].toLowerCase().indexOf("'>", bIndex);
-              vColor = attValArr[1].substr(bIndex, eIndex - bIndex);
-              domStyle.set(attVal, 'color', vColor);
-            }
-
-            if (attValArr[1] === 'null') {
-              attVal.textContent = attVal.innerText = ": ";
-            } else {
-              var innerCont = domConstruct.toDom(attValArr[1].replace(/<[\/]{0,1}(em|EM|strong|STRONG|font|FONT|u|U)[^><]*>/g, ""));
-              domConstruct.place(innerCont, attVal);
-            }
             domConstruct.place(attTitle, label);
             domConstruct.place(attVal, label);
-            domConstruct.place(label, div);
+            domConstruct.place(label, table);
           }
+          domConstruct.place(table, div);
         }else{
           var label2 = domConstruct.create("p");
           domClass.add(label2, "label");
@@ -180,7 +145,8 @@ define(['dojo/_base/declare',
             if (item.labelsym) {
               var labeldescriptors = jsonUtils.getShapeDescriptors(item.labelsym);
               var labelshape = mySurface.createShape(labeldescriptors.defaultShape).setFill(labeldescriptors.fill).setStroke(labeldescriptors.stroke);
-              labelshape.applyTransform({ dx: 20, dy: 21 });
+              labelshape.applyTransform({ dx: 20, dy: 22 });
+              labelshape.setFont({ family: 'sans,Arial'});
             }
           }
         }
@@ -193,17 +159,17 @@ define(['dojo/_base/declare',
         // console.info(item.links);
         array.forEach(item.links, function(link){
           if(link.popuptype === "geometry"){
-            var linkText = domConstruct.toDom("<p><a data-geometry='" + JSON.stringify(link.geometry) + "' data-highlighted='" + link.highlighted + "' data-id='" + link.id + "' title='" + link.alias + "'>" + link.alias + "</a></p>");
+            var linkText = domConstruct.toDom("<p><a class='result-link-disabled' data-geometry='" + JSON.stringify(link.geometry) + "' data-highlighted='" + link.highlighted + "' data-id='" + link.id + "' title='" + link.alias + "'>" + link.alias + "</a></p>");
             this.own(on(linkText, 'click', lang.hitch(this, "_onHighlightRouteClick")));
             domConstruct.place(linkText, linksDiv, 'before');
-            domClass.add(linkText, 'labellink');
+            domClass.add(linkText, 'listlink');
           }
           else if(link.popuptype === "text"){
-            var linkText = domConstruct.toDom("<p><a href='" + link.link + "' target='_blank' title='" + link.alias + "'>" + link.alias + "</a></p>");
+            var linkText = domConstruct.toDom("<p><a class='result-link-disabled' href='" + link.link + "' target='_blank' title='" + link.alias + "'>" + link.alias + "</a></p>");
             domConstruct.place(linkText, linksDiv, 'before');
-            domClass.add(linkText, 'labellink');
+            domClass.add(linkText, 'listlink');
           }else{
-            var linkImg = domConstruct.toDom("<a href='" + link.link + "' target='_blank' title='" + link.alias + "'><img src='" + link.icon + "' alt='" + link.alias + "' border='0' width='20px' height='20px'></a>");
+            var linkImg = domConstruct.toDom("<a class='result-link-disabled' href='" + link.link + "' target='_blank' title='" + link.alias + "'><img src='" + link.icon + "' alt='" + link.alias + "' border='0' width='20px' height='20px'></a>");
             domConstruct.place(linkImg, linksDiv);
             domClass.add(linkImg, 'linkIcon');
           }
@@ -255,8 +221,7 @@ define(['dojo/_base/declare',
         this._selectedNode = id;
         this.emit('click', {
           index: this.selectedIndex, 
-          objectId: item.OID,
-          geometry: item.geometry});
+          graphic: item.graphic});
       },
 
       _onDblClick: function(evt) {
@@ -274,8 +239,7 @@ define(['dojo/_base/declare',
         this._selectedNode = id;
         this.emit('dblclick', {
           index: this.selectedIndex,
-          objectId: item.OID,
-          geometry: item.geometry});
+          graphic: item.graphic});
       },
 
       _onMouseOver: function(evt) {
@@ -322,35 +286,37 @@ define(['dojo/_base/declare',
         this._selectedNode = id;
         this.emit('remove', {
           index: this.selectedIndex, 
-          objectId: item.OID,
-          layerid: item.layerid
+          graphic: item.graphic
         });
       },
 
       _onHighlightRouteClick: function(evt) {
         if (evt.target.dataset.highlighted == "false" && evt.target.dataset.hasOwnProperty("geometry")) {
-        evt.target.innerHTML = "Remove Highlight";
-        evt.target.title = "Remove Highlight";
-        evt.target.dataset.highlighted = "true";
-        let eventGeometry = evt.target.dataset.geometry;
-        let eventId = evt.target.dataset.id;
-        this.emit('highlight-route', {geometry: eventGeometry, id: eventId});
+          html.replaceClass(evt.target, 'result-link-enabled', 'result-link-disabled');
+          evt.target.innerHTML = "Remove Highlight";
+          evt.target.title = "Remove Highlight";
+          evt.target.dataset.highlighted = "true";
+          let eventGeometry = evt.target.dataset.geometry;
+          let eventId = evt.target.dataset.id;
+          this.emit('highlight-route', {geometry: eventGeometry, id: eventId});
         }
         else if (evt.target.dataset.highlighted == "true" && evt.target.dataset.hasOwnProperty("geometry")) {
-        evt.target.innerHTML = "Highlight Route";
-        evt.target.title = "Highlight Route";
-        evt.target.dataset.highlighted = "false";
-        let eventGeometry = evt.target.dataset.geometry;
-        let eventId = evt.target.dataset.id;
-        this.emit('remove-highlight', {geometry: eventGeometry, id: eventId});
+          html.replaceClass(evt.target, 'result-link-disabled', 'result-link-enabled');
+          evt.target.innerHTML = "Highlight Result";
+          evt.target.title = "Highlight Result";
+          evt.target.dataset.highlighted = "false";
+          let eventGeometry = evt.target.dataset.geometry;
+          let eventId = evt.target.dataset.id;
+          this.emit('remove-highlight', {geometry: eventGeometry, id: eventId});
         }
       },
 
       _setHighlightLink: function (id) {
-        dojo.query(".labellink > a").forEach(function (element) {
+        dojo.query(".listlink > a").forEach(function (element) {
           if (element.dataset.id !== id) {
-            element.innerHTML = "Highlight Route";
-            element.title = "Highlight Route";
+            html.replaceClass(element, 'result-link-disabled', 'result-link-enabled');
+            element.innerHTML = "Highlight Result";
+            element.title = "Highlight Result";
             element.dataset.highlighted = "false";
           }
         })

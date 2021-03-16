@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// Copyright © 2014 Esri. All Rights Reserved.
+// Copyright © Esri. All Rights Reserved.
 //
 // Licensed under the Apache License Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 ///////////////////////////////////////////////////////////////////////////
-/*global define, window*/
+
 define([
     'dojo/_base/declare',
     'dijit/_WidgetBase',
@@ -26,18 +26,19 @@ define([
     'dojo/query',
     'dijit/registry',
     'jimu/utils',
-    'jimu/dijit/CheckBox'
+    'jimu/dijit/CheckBox',
+    'dijit/form/Select'
   ],
   function(declare, _WidgetBase, _TemplatedMixin, Evented, lang, html, array, on, query, registry,
-  jimuUtils, CheckBox) {
+  jimuUtils, CheckBox, Select) {
 
-    return declare([_WidgetBase, _TemplatedMixin, Evented], {
+    return declare("SimpleTable", [_WidgetBase, _TemplatedMixin, Evented], {
       baseClass: 'jimu-simple-table',
       declaredClass: 'jimu.dijit.SimpleTable',
       templateString: '<div>' +
         '<div class="head-section" data-dojo-attach-point="headDiv">' +
           '<div class="table-div" data-dojo-attach-point="headTableDiv">' +
-            '<table class="table" cellspacing="0" onselectstart="return false;"' +
+            '<table class="table" cellspacing="0"' +
               ' data-dojo-attach-point="tableInHeadSection">' +
               '<colgroup data-dojo-attach-point="headColgroup"></colgroup>' +
               '<thead class="simple-table-thead simple-table-title" ' +
@@ -47,7 +48,7 @@ define([
         '</div>' +
         '<div class="body-section" data-dojo-attach-point="bodyDiv">' +
           '<div class="table-div" data-dojo-attach-point="bodyTableDiv">' +
-            '<table class="table" cellspacing="0" onselectstart="return false;"' +
+            '<table class="table" cellspacing="0"' +
              'data-dojo-attach-point="tableInBodySection">' +
               '<colgroup data-dojo-attach-point="bodyColgroup"></colgroup>' +
               '<tbody class="simple-table-tbody" data-dojo-attach-point="tbody"></tbody>' +
@@ -72,6 +73,7 @@ define([
       autoHeight: true, //if true, automatically calculate the height
       selectable: false,
       fields: null,
+      singleClickEdit: false,
       /*
         //fieldInfo's attributes:
         //name:field name
@@ -84,12 +86,18 @@ define([
         //if text
           //editable:the text can be edited if true, default is false
           //unique:field value is unique in the column.
+        //if checkbox
+          //available values: true, false, null (null means the CheckBox is disabled)
+          //onChange: the callback function for checkbox value change event, you can get tr and
+          //CheckBox from this function
         //if actions
           //actions:['up','down','edit','delete']
         //if extension
           //create //function
           //setValue //function
           //getValue //function
+        //if dropdown
+          //options: an array of objects in the format of: {label: value, name: value}
       */
 
       //public methods:
@@ -193,7 +201,7 @@ define([
             html.create('col', {width:width}, this.bodyColgroup);
 
             var th = html.create('th', {
-              innerHTML: item.title,
+              innerHTML: jimuUtils.sanitizeHTML(item.title),
               title: item.title
             }, tr);
 
@@ -203,10 +211,10 @@ define([
               var cbx = new CheckBox({
                 label: item.title
               });
-              var iconNode = query('.checkbox', cbx.domNode)[0];
-              if(iconNode){
-                iconNode.style.marginTop = "10px";
-              }
+              // var iconNode = query('.checkbox', cbx.domNode)[0];
+              // if(iconNode){
+              //   iconNode.style.marginTop = "10px";
+              // }
               this.own(on(cbx.domNode, 'click', lang.hitch(this, function() {
                 if (cbx.getValue()) {
                   this._checkAllTdCheckBoxes(item.name);
@@ -243,17 +251,21 @@ define([
         return cbx;
       },
 
-      _getAllTdCheckBoxes: function(fieldName){
+      _getAllEnabledTdCheckBoxes: function(fieldName){
         var selector = ".simple-table-cell." + fieldName + " .jimu-checkbox";
         var doms = query(selector, this.tbody);
         var cbxes = array.map(doms, function(dom){
           return registry.byNode(dom);
         });
+        //just return enabled checkbox
+        cbxes = array.filter(cbxes, function(cbx){
+          return cbx.getStatus();
+        });
         return cbxes;
       },
 
       _checkAllTdCheckBoxes: function(fieldName){
-        var cbxes = this._getAllTdCheckBoxes(fieldName);
+        var cbxes = this._getAllEnabledTdCheckBoxes(fieldName);
         array.forEach(cbxes, function(cbx){
           if(!cbx.getValue()){
             cbx.setValue(true);
@@ -262,7 +274,7 @@ define([
       },
 
       _uncheckAllTdCheckBoxes: function(fieldName){
-        var cbxes = this._getAllTdCheckBoxes(fieldName);
+        var cbxes = this._getAllEnabledTdCheckBoxes(fieldName);
         array.forEach(cbxes, function(cbx){
           if(cbx.getValue()){
             cbx.setValue(false);
@@ -277,7 +289,7 @@ define([
       },
 
       _syncThCheckBoxStatusWithAllTdCheckBoxes: function(fieldName){
-        var cbxes = this._getAllTdCheckBoxes(fieldName);
+        var cbxes = this._getAllEnabledTdCheckBoxes(fieldName);
         //find enabled cbxes
         cbxes = array.filter(cbxes, lang.hitch(this, function(cbx){
           return cbx.getStatus();
@@ -302,9 +314,13 @@ define([
 
       clear: function() {
         var trs = this._getNotEmptyRows();
+        var data = array.map(trs, lang.hitch(this, function(tr){
+          return this.getRowData(tr);
+        }));
         html.empty(this.tbody);
-        array.forEach(trs, lang.hitch(this, function(tr) {
-          this._onDeleteRow(tr);
+        array.forEach(trs, lang.hitch(this, function(tr, index) {
+          var rowData = data[index];
+          this._onDeleteRow(tr, rowData);
         }));
         //this.addEmptyRow();
         this.updateUI();
@@ -365,23 +381,20 @@ define([
           var type = fieldMeta.type;
           var td = null;
           if (type === 'actions') {
-//My Edit
             td = this._createActionsTd(tr, fieldMeta, rowData);
-//End My Edit
           } else {
             if (type === "text") {
               td = this._createTextTd(tr, fieldMeta, fieldData);
             } else if (type === "radio") {
-//My Edit
               td = this._createRadioTd(tr, fieldMeta, fieldData, rowData);
-//My Edit
             } else if (type === 'checkbox') {
               td = this._createCheckboxTd(tr, fieldMeta, fieldData);
             } else if (type === "empty") {
               td = this._createEmptyTd(tr, fieldMeta);
-            }
-            else if(type === "extension"){
+            } else if(type === "extension") {
               td = this._createExtensionTd(tr, fieldMeta, fieldData);
+            } else if(type === "dropdown") {
+              td = this._createDropdownTd(tr, fieldMeta, fieldData);
             }
             if(fieldMeta.hidden){
               html.addClass(td, 'hidden-column');
@@ -404,9 +417,10 @@ define([
 
       deleteRow:function(tr){
         if(tr){
+          var rowData = this.getRowData(tr);
           html.destroy(tr);
           this.updateUI();
-          this._onDeleteRow(tr);
+          this._onDeleteRow(tr, rowData);
         }
       },
 
@@ -430,6 +444,12 @@ define([
             html.addClass(this.domNode, this._classVerticalScroll);
           }
         }
+
+        array.forEach(this.fields, lang.hitch(this, function(fieldMeta) {
+          if (fieldMeta.type === 'checkbox') {
+            this._delaySyncThCheckBoxStatusWithAllTdCheckBoxes(fieldMeta.name);
+          }
+        }));
       },
 
       _updateHeadTableWidth: function(){
@@ -446,13 +466,21 @@ define([
       },
 
       _updateHeight: function(){
-        if(this.autoHeight){
-          var rows = this.getRows();
+        var rows = this.getRows();
+        //main height
+        if (this.autoHeight) {
           var trCount = rows.length > 0 ? rows.length : 1;
           // var count = trCount + 1;
-          var height = this._headHeight + this._rowHeight * trCount + 1;
+          var height = this._headHeight + (this._rowHeight ) * trCount + 1;
           html.setStyle(this.domNode, 'height', height + 'px');
           // this.bodyDiv.style.overflowY = 'hidden';
+        }
+        //background row-ines height for issue #10727
+        if (rows && rows.length > 0 && this.bodyTableDiv) {
+          var size = html.getMarginSize(rows[0]);
+          if (size && size.h) {
+            html.setStyle(this.bodyTableDiv, "backgroundSize", "1px " + size.h + "px");
+          }
         }
       },
 
@@ -520,7 +548,7 @@ define([
         var td = html.toDom(strTd);
         html.addClass(td, fieldMeta.name);
         var textDiv = query('div', td)[0];
-        textDiv.innerHTML = fieldData || "";
+        textDiv.innerHTML = jimuUtils.sanitizeHTML(fieldData) || "";
         textDiv.title = fieldData || "";
         if (fieldMeta['class']) {
           html.addClass(td, fieldMeta['class']);
@@ -541,21 +569,27 @@ define([
         }
         var editableDiv = query('div', td)[0];
         var editableInput = query('input', td)[0];
-        editableDiv.innerHTML = fieldData || "";
+        editableDiv.innerHTML = jimuUtils.sanitizeHTML(fieldData) || "";
         if (editableDiv.innerHTML !== "") {
-          editableDiv.title = editableDiv.innerHTML;
+          editableDiv.title = editableDiv.innerText || editableDiv.innerHTML;
         }
         editableInput.value = editableDiv.innerHTML;
-        this.own(on(editableDiv, 'dblclick', lang.hitch(this, function(event) {
-          event.stopPropagation();
-          editableInput.value = editableDiv.innerHTML;
+        var editEvent = this.singleClickEdit ? 'click' : 'dblclick'; //default event is dbl-click
+        this.own(on(editableDiv, editEvent, lang.hitch(this, function (event) {
+          if (!this.singleClickEdit) {
+            event.stopPropagation();//for row-select evevt, after click
+          }
+          editableInput.value = editableDiv.innerText || editableDiv.innerHTML;
           html.setStyle(editableDiv, 'display', 'none');
           html.setStyle(editableInput, 'display', 'inline');
           editableInput.focus();
+          if (editableInput.select) {
+            editableInput.select();
+          }
         })));
         this.own(on(editableInput, 'blur', lang.hitch(this, function() {
-          editableInput.value = lang.trim(editableInput.value);
-          var oldValue = editableDiv.innerHTML;
+          editableInput.value = lang.trim(jimuUtils.sanitizeHTML(editableInput.value));
+          var oldValue = editableDiv.innerText || editableDiv.innerHTML;
           var newValue = editableInput.value;
           if (newValue !== '') {
             if (fieldMeta.unique) {
@@ -563,15 +597,10 @@ define([
               if (sameValueRows.length > 0) {
                 editableInput.value = oldValue;
               } else {
-                editableDiv.innerHTML = newValue;
+                editableDiv.innerHTML = jimuUtils.sanitizeHTML(newValue);
               }
             } else {
-              editableDiv.innerHTML = newValue;
-//My Add
-              var row = this.getRowData(tr);
-              if(fieldMeta.name === 'userlabel' && row.uservalue === ''){
-                this.editRow(tr, {userlabel: newValue, uservalue: newValue});
-              }
+              editableDiv.innerHTML = jimuUtils.sanitizeHTML(newValue);
             }
           } else {
             editableInput.value = oldValue;
@@ -583,13 +612,10 @@ define([
         return td;
       },
 
-      _createRadioTd: function(tr, fieldMeta, fieldData, rowData) {
-        var tdStr = '<td class="radio-td ' + fieldMeta.name + '"><input type="radio" /></td>';
+      _createRadioTd: function(tr, fieldMeta, fieldData) {
+        var tdStr = '<td class="radio-td ' + fieldMeta.name + '"><input class="jimu-radio-btn" type="radio" /></td>';
         var td = html.toDom(tdStr);
         html.addClass(td, 'simple-table-cell');
-        if(fieldMeta.name === 'sum' && !rowData.isnumber){
-          html.addClass(td, 'hidden-column');
-        }
         html.place(td, tr);
         if (fieldMeta['class']) {
           html.addClass(td, fieldMeta['class']);
@@ -616,13 +642,23 @@ define([
         var cbx = new CheckBox({
           onChange: lang.hitch(this, function(){
             this._delaySyncThCheckBoxStatusWithAllTdCheckBoxes(fieldMeta.name);
+            if(typeof fieldMeta.onChange === 'function'){
+              setTimeout(lang.hitch(this, function(){
+                fieldMeta.onChange(tr, cbx);
+              }), 200);
+            }
           })
         });
-        var value = fieldData === true;
-        cbx.setValue(value);
+        this.own(on(cbx, 'status-change', lang.hitch(this, function(){
+          this._delaySyncThCheckBoxStatusWithAllTdCheckBoxes(fieldMeta.name);
+        })));
+        // var value = fieldData === true;
+        // cbx.setValue(value);
+        this._setValueForCheckBox(cbx, fieldData);
         cbx.placeAt(td);
         return td;
       },
+
       _createActionsTd: function(tr, fieldMeta, rowData) {
         var tdStr = '<td class="actions-td">' +
         '<div class="action-item-parent jimu-float-leading"></div></td>';
@@ -681,7 +717,7 @@ define([
                 }
               }
             })));
-          } else if (item === 'edit' && (rowData.isnumber || rowData.isdate)) {
+          } else if (item === 'edit' && (typeof rowData.isnumber === 'boolean' || typeof rowData.isdate === 'boolean' ? rowData.isnumber || rowData.isdate : true)) {
             var editDiv = html.create('div', {
               'class': 'action-item jimu-float-leading row-edit-div jimu-icon jimu-icon-edit'
             }, actionItemParent);
@@ -751,6 +787,23 @@ define([
         return td;
       },
 
+      _createDropdownTd: function(tr, fieldMeta, fieldData){
+        var td = html.create('td', {
+          'class': fieldMeta.name
+        }, tr);
+        html.addClass(td, 'simple-table-cell');
+        html.addClass(td, 'dropdown-td');
+        if (fieldMeta['class']) {
+          html.addClass(td, fieldMeta['class']);
+        }
+        var dropdown = new Select({
+          options: fieldData
+        });
+        dropdown.placeAt(td);
+
+        return td;
+      },
+
       //tr is row you want to edit
       //rowData is like {name1:value1, name2: value2...}
       editRow: function(tr, rowData) {
@@ -801,9 +854,10 @@ define([
             this._editRadio(td, fieldMeta, fieldData);
           } else if (type === 'checkbox') {
             this._editCheckbox(td, fieldMeta, fieldData);
-          }
-          else if(type === 'extension'){
+          } else if (type === 'extension') {
             this._editExtension(td, fieldMeta, fieldData);
+          } else if (type === 'dropdown') {
+            this._editDropdown(td, fieldMeta, fieldData);
           }
         }));
         result.success = true;
@@ -816,14 +870,14 @@ define([
       _editNormalText: function(td, fieldMeta, fieldData) {
         /*jshint unused: false*/
         var normalTextDiv = query('div', td)[0];
-        normalTextDiv.innerHTML = fieldData || "";
+        normalTextDiv.innerHTML = jimuUtils.sanitizeHTML(fieldData) || "";
         normalTextDiv.title = normalTextDiv.innerHTML;
       },
 
       _editEditableText: function(td, fieldMeta, fieldData) {
         /*jshint unused: false*/
         var editableDiv = query('div', td)[0];
-        editableDiv.innerHTML = fieldData || "";
+        editableDiv.innerHTML = jimuUtils.sanitizeHTML(fieldData) || "";
         var editableInput = query('input', td)[0];
         editableInput.value = editableDiv.innerHTML;
       },
@@ -838,14 +892,33 @@ define([
         /*jshint unused: false*/
         var dom = query('.jimu-checkbox', td)[0];
         var cbx = registry.byNode(dom);
-        var newValue = fieldData === true;
-        cbx.setValue(newValue);
+        // var newValue = fieldData === true;
+        // cbx.setValue(newValue);
+        this._setValueForCheckBox(cbx, fieldData);
+      },
+
+      _setValueForCheckBox: function(cbx, value){
+        if(value === null){
+          cbx.setStatus(false);
+        }else{
+          cbx.setStatus(true);
+          if(value !== cbx.getValue()){
+            cbx.setValue(value);
+          }
+        }
       },
 
       _editExtension: function(td, fieldMeta, fieldData){
         if(fieldMeta.setValue && typeof fieldMeta.setValue === 'function'){
           fieldMeta.setValue(td, fieldData);
         }
+      },
+
+      _editDropdown: function(td, fieldMeta, fieldData) {
+        /*jshint unused: false*/
+        var dom = query('.dijitSelect', td)[0];
+        var dropdown = registry.byNode(dom);
+        dropdown.set('value', fieldData);
       },
 
       _getAllRows: function(){
@@ -922,15 +995,15 @@ define([
           }
           var name = fieldMeta.name;
           rowData[name] = null;
-          var td = query('.' + name, tr)[0];
+          var td = query('.simple-table-cell.' + name, tr)[0];
           if (td) {
             if (type === 'text') {
               if (fieldMeta.editable) {
                 var editableDiv = query('div', td)[0];
-                rowData[name] = editableDiv.innerHTML;
+                rowData[name] = editableDiv.innerText || editableDiv.innerHTML;
               } else {
                 var normalTextDiv = query('div', td)[0];
-                rowData[name] = normalTextDiv.innerHTML;
+                rowData[name] = normalTextDiv.innerText || normalTextDiv.innerHTML;
               }
             } else if (type === 'radio') {
               var radio = query('input', td)[0];
@@ -938,12 +1011,19 @@ define([
             } else if (type === 'checkbox') {
               var dom = query('.jimu-checkbox', td)[0];
               var cbx = registry.byNode(dom);
-              rowData[name] = cbx.getValue();
-            }
-            else if(type === 'extension'){
+              if(cbx.getStatus()){
+                rowData[name] = cbx.getValue();
+              }else{
+                rowData[name] = null;
+              }
+            } else if (type === 'extension') {
               if(fieldMeta.getValue && typeof fieldMeta.getValue === 'function'){
                 rowData[name] = fieldMeta.getValue(td, fieldMeta);
               }
+            } else if(type === 'dropdown') {
+              var dijitDom = query('.dijitSelect', td)[0];
+              var dropdown = registry.byNode(dijitDom);
+              rowData[name] = dropdown.get('value');
             }
           }
         }));
@@ -969,6 +1049,12 @@ define([
         return result;
       },
 
+      moveToTop: function(tr){
+        if(tr && tr.parentNode === this.tbody){
+          html.place(tr, this.tbody, 'first');
+        }
+      },
+
       _onClickRow: function(tr){
         this.emit('row-click', tr);
       },
@@ -989,8 +1075,8 @@ define([
         this.emit('row-edit', tr);
       },
 
-      _onDeleteRow: function(tr){
-        this.emit('row-delete', tr);
+      _onDeleteRow: function(tr, rowData){
+        this.emit('row-delete', tr, rowData);
       },
 
       _onEnterRow: function(tr){

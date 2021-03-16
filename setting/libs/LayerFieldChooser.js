@@ -15,7 +15,7 @@
 ///////////////////////////////////////////////////////////////////////////
 
 define(['dojo/_base/declare',
-  'jimu/dijit/SimpleTable',
+  './SimpleTable',
   'dojo/_base/lang',
   'dojo/_base/html',
   'dojo/_base/array',
@@ -28,17 +28,10 @@ function(declare, SimpleTable, lang, html, array, Deferred, esriRequest) {
     _def:null,
     _layerInfo:null,
     url:null,
+    returnId: false,
+    returnLayer: false,
     fields:[{name:'name', title:'Name', type:'text', editable:false}],
-    addedFields:[
-      {"name":"Milepoint","alias":"Milepoint","type":"esriFieldTypeDouble"},
-      {"name":"BMP","alias":"Begin Milepoint","type":"esriFieldTypeDouble"},
-      {"name":"EMP","alias":"End Milepoint","type":"esriFieldTypeDouble"},
-      {"name":"Length","alias":"Total Length","type":"esriFieldTypeDouble"},
-      {"name":"Latitude","alias":"Latitude","type":"esriFieldTypeDouble"},
-      {"name":"Longitude","alias":"Longitude","type":"esriFieldTypeDouble"},
-      {"name":"SearchDate","alias":"Search Date","type":"esriFieldTypeDate"},
-      {"name":"QueryNumber","alias":"Query Number","type":"esriFieldTypeInteger"}
-    ],
+    addedFields:[],
     selectable:true,
     fieldType:null,//string,number
 
@@ -63,11 +56,11 @@ function(declare, SimpleTable, lang, html, array, Deferred, esriRequest) {
       return def;
     },
 
-    setFieldItems:function(fields){
-      var filterFields = array.filter(fields, function(item) {
+    setFieldItems:function(response){
+      var filterFields = array.filter(response.fields, function(item) {
         return item.type !== 'esriFieldTypeOID' && item.type !== 'esriFieldTypeGeometry';
       });
-      this._addFieldItems(filterFields);
+      this._addFieldItems(filterFields, response);
       return lang.clone(filterFields);
     },
 
@@ -99,7 +92,7 @@ function(declare, SimpleTable, lang, html, array, Deferred, esriRequest) {
         var filterFields = [];
         if(response && response.fields){
           if(response.fields.length > 0){
-            filterFields = this.setFieldItems(response.fields);
+            filterFields = this.setFieldItems(response);
           }
           this.onRefreshed(response);
         }
@@ -112,7 +105,7 @@ function(declare, SimpleTable, lang, html, array, Deferred, esriRequest) {
       return def;
     },
 
-    _addFieldItems:function(fields){
+    _addFieldItems:function(fields, response) {
       let setFieldNames = array.map(this.addedFields, function (field) { return field.name;});
       var length = fields.length;
       if(fields && length !== undefined){
@@ -122,7 +115,7 @@ function(declare, SimpleTable, lang, html, array, Deferred, esriRequest) {
             continue;
           }
           else {
-          this._createFieldItem(fields[i]);
+          this._createFieldItem(fields[i], response);
           }
         }
         for(var i = 0; i < this.addedFields.length; i++){
@@ -131,7 +124,7 @@ function(declare, SimpleTable, lang, html, array, Deferred, esriRequest) {
       }
     },
 
-    _createFieldItem:function(fieldInfo){
+    _createFieldItem:function(fieldInfo, response) {
       if(this.fieldType === 'number'){
         if(!this._isNumberType(fieldInfo.type)){
           return false;
@@ -147,6 +140,12 @@ function(declare, SimpleTable, lang, html, array, Deferred, esriRequest) {
       };
       var result = this.addRow(rowData);
       if(result.success){
+        if (this.returnId) {
+          fieldInfo.parentId = response.id
+        }
+        if (this.returnLayer) {
+          fieldInfo.layer = response.name
+        }
         result.tr.fieldInfo = fieldInfo;
       }
       return result.success;

@@ -1,6 +1,144 @@
+.LRSLocator-widget-setting {
+  margin: 0;
+  padding: 0;
+  font-size: 15px;
+}
+
+.LRSLocator-widget-setting .tab-node-hidden {
+  width: 100% !important;
+  height: auto !important;
+  top: 10px !important;
+  bottom: 0 !important;
+  display: none;
+}
+
+.LRSLocator-widget-setting .tab-item-div {
+  user-select: none;
+}
+
+.LRSLocator-widget-setting .esriCTFullHeight {
+  height: 100%;
+}
+
+.LRSLocator-widget-setting .tab-node {
+  width: 100% !important;
+  height: auto !important;
+  top: 10px !important;
+  bottom: 0 !important;
+}
+
+.LRSLocator-widget-setting .statusTable {
+  width: 100%
+}
+
+.LRSLocator-widget-setting .statusRow {
+  font-weight: bold;
+  padding-left: 10px;
+}
+
+.LRSLocator-widget-setting .layer-symbol {
+  padding-left: 25px;
+  padding-top: 3px;
+}
+
+.LRSLocator-widget-setting .jimu-symbol-picker {
+  border: none;
+  display: block;
+}
+
+.LRSLocator-widget-setting .jimu-symbol-picker .symbol-node {
+  top: 0px;
+}
+
+.LRSLocator-widget-setting .extentMap {
+  width: 250px;
+  height: 250px;
+  float: right;
+  margin: 7px;
+  margin-top: unset;
+  border-radius: 15px;
+  border: 2px solid #a0acbf;
+}
+
+.LRSLocator-widget-setting .layer-error {
+  color: #cc3300
+}
+
+.LRSLocator-widget-setting .layer-warning {
+  color: #ffcc00
+}
+
+.LRSLocator-widget-setting .layer-success {
+  color: #339900
+}
+
+.LRSLocator-widget-setting .node-wrapper {
+  width: 100%;
+  overflow: hidden;
+  margin-top: 12px;
+  height: calc(100% - 30px);
+  overflow: auto;
+}
+
+.LRSLocator-widget-setting .fieldset {
+  height: auto;
+  width: 100%;
+  border: 1px solid #a0acbf;
+  border-radius: 5px;
+  color: #596679;
+  min-width: 0px;
+  margin-bottom: 10px;
+}
+
+.LRSLocator-widget-setting .legend {
+  margin-left: 20px;
+}
+
+.LRSLocator-widget-setting .symbolContainer {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+}
+
+.LRSLocator-widget-setting .symbolContainer .jimu-symbol-picker {
+  display: inline-block;
+}
+
+.LRSLocator-widget-setting .symbolContainer .jimu-symbol-picker .symbol-node {
+  top: 4px;
+}
+
+.LRSLocator-widget-setting .symbolContainer >div {
+  margin: 20px;
+  text-align: center;
+}
+
 .LRSLocator-widget-setting .btn-add-section,
-.widget-esearch-singlesearch-setting .btn-add-section{
+.LRSLocator-widget-setting-attributesetedit .btn-add-section,
+.LRSLocator-widget-setting-networklayeredit .btn-add-section{
   display:inline-block;
+  overflow:hidden;
+  user-select: none;
+  height:24px;
+  margin-top: 10px;
+  margin-left: 10px;
+  cursor:pointer;
+  font-size:13px;
+  color:#24B5CC;
+}
+
+.LRSLocator-widget-setting-AddDate .main-table {
+  border-spacing: 15px;
+}
+
+.LRSLocator-widget-setting-AddDate .calendarRow {
+  border-right: 1px solid #6868685e;
+  padding-right: 15px;
+}
+
+.LRSLocator-widget-setting .configBtn {
+  display:inline-block;
+  margin-right:10px;
   overflow:hidden;
   height:24px;
   margin-left:1px;
@@ -10,7 +148,30 @@
   color:#24B5CC;
 }
 
-.LRSLocator-widget-setting .btn-add-section .btn-add-label{
+.LRSLocator-widget-setting .configBtnIcon{
+  float:left;
+  height:100%;
+  width:14px;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-image: url(images/edit_enabled.png);
+}
+
+.LRSLocator-widget-setting .configBtnLabel{
+  float:left;
+  height:100%;
+  line-height:24px;
+  vertical-align:middle;
+  margin-left:7px;
+  text-decoration: underline;
+}
+
+.LRSLocator-widget-setting .tooltip{
+  float: right;
+  filter: invert(0.35);
+  user-select: none;
+}
+.LRSLocator-widget-setting .btn-add-section .btn-add-label {
   float:left;
   height:100%;
   line-height:24px;
@@ -20,7 +181,8 @@
 }
 
 .LRSLocator-widget-setting .btn-add-section .btn-add-icon,
-.widget-esearch-singlesearch-setting .btn-add-section .btn-add-icon{
+.LRSLocator-widget-setting-attributesetedit .btn-add-section .btn-add-icon,
+.LRSLocator-widget-setting-networklayeredit .btn-add-section .btn-add-icon{
   float:left;
   height:100%;
   width:14px;
@@ -29,28 +191,59 @@
   background-image: url(images/add.png);
 }
 
-.LRSLocator-widget-setting {
-  margin: 0;
-  padding: 0;
-  font-size: 15px;
-}
+
 
 .LRSLocator-widget-setting .dijitArrowButtonContainer {
   width: 17px;
 }
 
-.LRSLocator-widget-setting .setting-table>thead>tr>th,
-.LRSLocator-widget-setting .setting-table>tbody>tr>td {
-  height: 40px;
-  line-height: 40px;
-  vertical-align: middle;
+.LRSLocator-widget-setting .intersection-layer-div{
+  width: 100%;
+  height: 30px;
+  line-height: 30px;
+  border: 1px solid #d2dae2;
+  background-color: #f1f1f1;
+  color: #7989a0;
+  font-size: 14px;
+}
+
+.LRSLocator-widget-setting .EditTextBox{
+  position: relative;
+  text-overflow: ellipsis;
+}
+
+.LRSLocator-widget-setting .EditTextBox .edit-btn-enabled,
+.LRSLocator-widget-setting .EditTextBox .edit-btn-disabled{
+  background: center center no-repeat url(images/edit_2.png);
+  width: 16px;
+  height: 16px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  display: block;
+  margin: 7px;
+  box-sizing: border-box;
+}
+
+.LRSLocator-widget-setting .EditTextBox .edit-btn-enabled:hover{
+  filter: brightness(50%);
+  cursor: pointer;
+}
+
+.LRSLocator-widget-setting .EditTextBox .edit-btn-disabled:hover{
+  cursor: not-allowed;
+}
+
+.LRSLocator-widget-setting .flexRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px;
 }
 
 .LRSLocator-widget-setting .input-table>tbody>tr>.first {
-  font-size: 0.63vw;
   width: auto;
-  text-align: right;
-  padding-right: 15px;
   min-width: 200px;
 }
 
@@ -73,34 +266,40 @@
   margin: 12px 0;
 }
 
-.widget-esearch-singlesearch-setting {
+.LRSLocator-widget-setting-attributesetedit,
+.LRSLocator-widget-setting-networklayeredit {
   height: 100%;
   overflow-y: auto;
 }
 
-.widget-esearch-singlesearch-setting .btn-add-section{
+.LRSLocator-widget-setting-attributesetedit .btn-add-section,
+.LRSLocator-widget-setting-networklayeredit .btn-add-section {
   margin-bottom:0;
 }
 
-.widget-esearch-singlesearch-setting .error-message-div {
+.LRSLocator-widget-setting-attributesetedit .error-message-div,
+.LRSLocator-widget-setting-networklayeredit .error-message-div {
   border: 0px solid;
   font-size: 11px;
   color: red;
   margin-left: 126px;
 }
 
-.widget-esearch-singlesearch-setting .jimu-checkbox .checkbox {
+.LRSLocator-widget-setting-attributesetedit .jimu-checkbox .checkbox,
+.LRSLocator-widget-setting-networklayeredit .jimu-checkbox .checkbox {
   margin-top: 0;
 }
 
-.widget-esearch-singlesearch-setting .input-table > tbody > tr > td{
+.LRSLocator-widget-setting-attributesetedit .input-table > tbody > tr > td,
+.LRSLocator-widget-setting-networklayeredit .input-table > tbody > tr > td {
 height: 30px;
 line-height: 20px;
 vertical-align: middle;
 padding:4px 0;
 }
 
-.widget-esearch-singlesearch-setting .sort-fields-div{
+.LRSLocator-widget-setting-attributesetedit .sort-fields-div,
+.LRSLocator-widget-setting-networklayeredit .sort-fields-div {
 width: 100%;
 height: 30px;
 line-height: 30px;
@@ -110,56 +309,63 @@ color: #7989a0;
 font-size: 14px;
 }
 
-.widget-esearch-singlesearch-setting .sort-fields-div span{
+.LRSLocator-widget-setting-attributesetedit .sort-fields-div span,
+.LRSLocator-widget-setting-networklayeredit .sort-fields-div span {
 float: left;
-display: inline-block;
 height: 30px;
 line-height: 30px;
 }
 
-.widget-esearch-singlesearch-setting .btn-sort-fields{
+.LRSLocator-widget-setting-attributesetedit .btn-sort-fields,
+.LRSLocator-widget-setting-networklayeredit .btn-sort-fields {
 width: 14px;
 height: 14px;
 background: center center no-repeat url(images/edit_disabled.png);
 cursor: default;
 }
 
-.widget-esearch-singlesearch-setting .btn-sort-fields.enabled{
+.LRSLocator-widget-setting-attributesetedit .btn-sort-fields.enabled,
+.LRSLocator-widget-setting-networklayeredit .btn-sort-fields.enabled {
 background: center center no-repeat url(images/edit_enabled.png);
 cursor: pointer;
 }
 
-.widget-esearch-singlesearch-setting .sorting-table{
+.LRSLocator-widget-setting-attributesetedit .sorting-table,
+.LRSLocator-widget-setting-networklayeredit .sorting-table {
 table-layout:fixed;
 width:100%;
 padding-top: 8px;
 }
 
-.widget-esearch-singlesearch-setting .sorting-table > tbody > tr > td{
+.LRSLocator-widget-setting-attributesetedit .sorting-table > tbody > tr > td,
+.LRSLocator-widget-setting-networklayeredit .sorting-table > tbody > tr > td {
 padding-top: 3px;
 padding-bottom: 3px;
 }
 
-.widget-esearch-singlesearch-setting .sort-fields-div span{
+.LRSLocator-widget-setting-attributesetedit .sort-fields-div span,
+.LRSLocator-widget-setting-networklayeredit .sort-fields-div span {
 float: left;
-display: inline-block;
 height: 30px;
 line-height: 30px;
 }
 
-.widget-esearch-singlesearch-setting .sort-arrow{
+.LRSLocator-widget-setting-attributesetedit .sort-arrow,
+.LRSLocator-widget-setting-networklayeredit .sort-arrow {
 width: 13px;
 }
 
-.widget-esearch-singlesearch-setting .sort-arrow.asc{
+.LRSLocator-widget-setting-attributesetedit .sort-arrow.asc,
+.LRSLocator-widget-setting-networklayeredit .sort-arrow.asc {
 background: center center no-repeat url(images/up_arrow.png);
 }
 
-.widget-esearch-singlesearch-setting .sort-arrow.desc{
+.LRSLocator-widget-setting-attributesetedit .sort-arrow.desc,
+.LRSLocator-widget-setting-networklayeredit .sort-arrow.desc {
 background: center center no-repeat url(images/down_arrow.png);
 }
 
-.widgets-Search-setting-include-button{
+.LRSLocator-widget-setting-include-button {
   position:relative;
   display: inline-block;
   background:#8c8c8c;
@@ -170,15 +376,15 @@ background: center center no-repeat url(images/down_arrow.png);
   margin: 10px auto;
 }
 
-.widgets-Search-setting-include-button.enable{
+.LRSLocator-widget-setting-include-button.enable {
   background: #24b5cc;
 }
 
-.widgets-Search-setting-include-button.enable:hover{
+.LRSLocator-widget-setting-include-button.enable:hover {
   background: #0090a7;
 }
 
-.widgets-Search-setting-include-button .include-arrow{
+.LRSLocator-widget-setting-include-button .include-arrow {
   position:absolute;
   right:4px;
   top:45%;
@@ -189,7 +395,7 @@ background: center center no-repeat url(images/down_arrow.png);
   border-left:5px solid white;
 }
 
-.widgets-Search-setting-include-all-button{
+.LRSLocator-widget-setting-include-all-button {
   position:relative;
   display: inline-block;
   background:#8c8c8c;
@@ -200,15 +406,15 @@ background: center center no-repeat url(images/down_arrow.png);
   margin: 0 auto;
 }
 
-.widgets-Search-setting-include-all-button.enable{
+.LRSLocator-widget-setting-include-all-button.enable {
   background: #24b5cc;
 }
 
-.widgets-Search-setting-include-all-button.enable:hover{
+.LRSLocator-widget-setting-include-all-button.enable:hover {
   background: #0090a7;
 }
 
-.widgets-Search-setting-include-all-button .include-arrow{
+.LRSLocator-widget-setting-include-all-button .include-arrow {
   position:absolute;
   right:4px;
   top:45%;
@@ -220,7 +426,7 @@ background: center center no-repeat url(images/down_arrow.png);
 }
 
 /***CSS for IncludeButton dijit***/
-.widgets-Search-setting-include-button{
+.LRSLocator-widget-setting-include-button {
   position:relative;
   display: inline-block;
   background:#8c8c8c;
@@ -231,15 +437,15 @@ background: center center no-repeat url(images/down_arrow.png);
   margin: 10px auto;
 }
 
-.widgets-Search-setting-include-button.enable{
+.LRSLocator-widget-setting-include-button.enable {
   background: #24b5cc;
 }
 
-.widgets-Search-setting-include-button.enable:hover{
+.LRSLocator-widget-setting-include-button.enable:hover {
   background: #0090a7;
 }
 
-.widgets-Search-setting-include-button .include-arrow{
+.LRSLocator-widget-setting-include-button .include-arrow {
   position:absolute;
   right:4px;
   top:45%;
@@ -250,32 +456,41 @@ background: center center no-repeat url(images/down_arrow.png);
   border-left:5px solid white;
 }
 
-/***CSS for SimpleTable dijit***/
-.jimu-simple-table{
+.LRSLocator-widget-setting .jimu-simple-table,
+.LRSLocator-widget-setting-attributesetedit .jimu-simple-table,
+.LRSLocator-widget-setting-networklayeredit .jimu-simple-table {
   width:100%;
   margin:0;
   padding:0;
   overflow-x:hidden;
   overflow-y:auto;
-  min-height: 465px;
+  min-height: 100%;
   position: relative;
 }
 
-.jimu-simple-table .simple-table-title{
+.LRSLocator-widget-setting .jimu-simple-table .simple-table-title,
+.LRSLocator-widget-setting-attributesetedit .jimu-simple-table .simple-table-title,
+.LRSLocator-widget-setting-networklayeredit .jimu-simple-table .simple-table-title {
   font-size: 14px;
 }
 
-.jimu-simple-table .head-section{
+.LRSLocator-widget-setting .jimu-simple-table .head-section,
+.LRSLocator-widget-setting-attributesetedit .jimu-simple-table .head-section,
+.LRSLocator-widget-setting-networklayeredit .jimu-simple-table .head-section {
   width:100%;
   height:36px;
   overflow:hidden;
 }
 
-.jimu-simple-table .head-section .simple-table-tbody{
+.LRSLocator-widget-setting .jimu-simple-table .head-section .simple-table-tbody,
+.LRSLocator-widget-setting-attributesetedit .jimu-simple-table .head-section .simple-table-tbody,
+.LRSLocator-widget-setting-networklayeredit .jimu-simple-table .head-section .simple-table-tbody {
   display: none;
 }
 
-.jimu-simple-table .body-section{
+.LRSLocator-widget-setting .jimu-simple-table .body-section,
+.LRSLocator-widget-setting-attributesetedit .jimu-simple-table .body-section,
+.LRSLocator-widget-setting-networklayeredit .jimu-simple-table .body-section {
   position: absolute;
   top: 36px;
   bottom: 0;
@@ -289,52 +504,73 @@ background: center center no-repeat url(images/down_arrow.png);
   color: #7989a0;
 }
 
-.jimu-simple-table .body-section .table-div{
-  margin: 0;
-  min-height: 100%;
-  background-image: url(images/table_under_line.png);
-  background-repeat: repeat;
-}
-
-.jimu-simple-table .body-section .simple-table-thead{
+.LRSLocator-widget-setting .jimu-simple-table .body-section .simple-table-thead,
+.LRSLocator-widget-setting-attributesetedit .jimu-simple-table .body-section .simple-table-thead,
+.LRSLocator-widget-setting-networklayeredit .jimu-simple-table .body-section .simple-table-thead {
   display: none;
 }
 
-.jimu-simple-table .table{
+.LRSLocator-widget-setting .jimu-simple-table .table,
+.LRSLocator-widget-setting-attributesetedit .jimu-simple-table .table,
+.LRSLocator-widget-setting-networklayeredit .jimu-simple-table .table {
   width:100%;
   border-collapse:collapse;
   table-layout:fixed;
 }
 
-.jimu-simple-table .simple-table-field.hidden-column > *,
-.jimu-simple-table .simple-table-cell.hidden-column > *{
+.LRSLocator-widget-setting .jimu-simple-table .simple-table-field.hidden-column > *,
+.LRSLocator-widget-setting .jimu-simple-table .simple-table-cell.hidden-column > *,
+.LRSLocator-widget-setting-attributesetedit .jimu-simple-table .simple-table-field.hidden-column > *,
+.LRSLocator-widget-setting-attributesetedit .jimu-simple-table .simple-table-cell.hidden-column > *,
+.LRSLocator-widget-setting-networklayeredit .jimu-simple-table .simple-table-field.hidden-column > *,
+.LRSLocator-widget-setting-networklayeredit .jimu-simple-table .simple-table-cell.hidden-column > * {
   display: none;
 }
 
-.jimu-simple-table .simple-table-field{
+.LRSLocator-widget-setting .jimu-simple-table .simple-table-field,
+.LRSLocator-widget-setting-attributesetedit .jimu-simple-table .simple-table-field,
+.LRSLocator-widget-setting-networklayeredit .jimu-simple-table .simple-table-field {
   height: 36px;
   line-height: 36px;
 }
 
-.jimu-simple-table .simple-table-cell{
-  height:40px;
-  line-height:40px;
+.LRSLocator-widget-setting .jimu-simple-table .simple-table-cell,
+.LRSLocator-widget-setting-attributesetedit .jimu-simple-table .simple-table-cell,
+.LRSLocator-widget-setting-networklayeredit .jimu-simple-table .simple-table-cell {
+  height:30px;
+  line-height:30px;
 }
 
-.jimu-simple-table .radio-td.simple-table-cell {
+.LRSLocator-widget-setting .jimu-simple-table .radio-td.simple-table-cell,
+.LRSLocator-widget-setting-attributesetedit .jimu-simple-table .radio-td.simple-table-cell,
+.LRSLocator-widget-setting-networklayeredit .jimu-simple-table .radio-td.simple-table-cell {
   padding-left: 24px;
 }
 
-.jimu-simple-table .checkbox-td.simple-table-cell {
+.LRSLocator-widget-setting .jimu-simple-table .body-section .simple-table-tbody td.simple-table-cell > .jimu-checkbox,
+.LRSLocator-widget-setting-attributesetedit .jimu-simple-table .body-section .simple-table-tbody td.simple-table-cell > .jimu-checkbox,
+.LRSLocator-widget-setting-networklayeredit .jimu-simple-table .body-section .simple-table-tbody td.simple-table-cell > .jimu-checkbox {
+  top: unset;
+}
+
+.LRSLocator-widget-setting .jimu-simple-table .checkbox-td.simple-table-cell,
+.LRSLocator-widget-setting-attributesetedit .jimu-simple-table .checkbox-td.simple-table-cell,
+.LRSLocator-widget-setting-networklayeredit .jimu-simple-table .checkbox-td.simple-table-cell {
   padding-left: 42px;
 }
 
-.jimu-simple-table .actions-td.simple-table-cell {
+.LRSLocator-widget-setting .jimu-simple-table .actions-td.simple-table-cell,
+.LRSLocator-widget-setting-attributesetedit .jimu-simple-table .actions-td.simple-table-cell,
+.LRSLocator-widget-setting-networklayeredit .jimu-simple-table .actions-td.simple-table-cell {
   padding-left: 24px;
 }
 
-.jimu-simple-table .simple-table-field,
-.jimu-simple-table .simple-table-cell{
+.LRSLocator-widget-setting .jimu-simple-table .simple-table-field,
+.LRSLocator-widget-setting .jimu-simple-table .simple-table-cell,
+.LRSLocator-widget-setting-attributesetedit .jimu-simple-table .simple-table-field,
+.LRSLocator-widget-setting-attributesetedit .jimu-simple-table .simple-table-cell,
+.LRSLocator-widget-setting-networklayeredit .jimu-simple-table .simple-table-field,
+.LRSLocator-widget-setting-networklayeredit .jimu-simple-table .simple-table-cell {
   vertical-align:middle;
   padding-left:8px;
   padding-right:8px;
@@ -345,59 +581,89 @@ background: center center no-repeat url(images/down_arrow.png);
   text-overflow: ellipsis;
 }
 
-.jimu-simple-table .simple-table-field > *,
-.jimu-simple-table .simple-table-cell > *{
+.LRSLocator-widget-setting .jimu-simple-table .simple-table-field > *,
+.LRSLocator-widget-setting .jimu-simple-table .simple-table-cell > *,
+.LRSLocator-widget-setting-attributesetedit .jimu-simple-table .simple-table-field > *,
+.LRSLocator-widget-setting-attributesetedit .jimu-simple-table .simple-table-cell > *,
+.LRSLocator-widget-setting-networklayeredit .jimu-simple-table .simple-table-field > *,
+.LRSLocator-widget-setting-networklayeredit .jimu-simple-table .simple-table-cell > * {
   text-overflow: ellipsis;
 }
 
-.jimu-simple-table .simple-table-cell > *{
+.LRSLocator-widget-setting .jimu-simple-table .simple-table-cell > *,
+.LRSLocator-widget-setting-attributesetedit .jimu-simple-table .simple-table-cell > *,
+.LRSLocator-widget-setting-networklayeredit .jimu-simple-table .simple-table-cell > * {
   overflow: hidden;
 }
 
-.jimu-simple-table .simple-table-row:last-child .simple-table-cell{
+.LRSLocator-widget-setting .jimu-simple-table .simple-table-row:last-child .simple-table-cell,
+.LRSLocator-widget-setting-attributesetedit .jimu-simple-table .simple-table-row:last-child .simple-table-cell,
+.LRSLocator-widget-setting-networklayeredit .jimu-simple-table .simple-table-row:last-child .simple-table-cell {
   border-bottom: 0;
 }
 
-.jimu-simple-table .simple-table-row .editable-div,
-.jimu-simple-table .simple-table-row .normal-text-div{
+.LRSLocator-widget-setting .jimu-simple-table .simple-table-row .editable-div,
+.LRSLocator-widget-setting .jimu-simple-table .simple-table-row .normal-text-div,
+.LRSLocator-widget-setting-attributesetedit .jimu-simple-table .simple-table-row .editable-div,
+.LRSLocator-widget-setting-attributesetedit .jimu-simple-table .simple-table-row .normal-text-div,
+.LRSLocator-widget-setting-networklayeredit .jimu-simple-table .simple-table-row .editable-div,
+.LRSLocator-widget-setting-networklayeredit .jimu-simple-table .simple-table-row .normal-text-div {
   width: 100%;
-  height: 40px;
+  height: 30px;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.jimu-simple-table .simple-table-row .editable-input{
+.LRSLocator-widget-setting .jimu-simple-table .simple-table-row .editable-input,
+.LRSLocator-widget-setting-attributesetedit .jimu-simple-table .simple-table-row .editable-input,
+.LRSLocator-widget-setting-networklayeredit .jimu-simple-table .simple-table-row .editable-input {
   width:100%;
 }
 
-.jimu-simple-table .simple-table-row > .actions-td .action-item-parent{
+.LRSLocator-widget-setting .jimu-simple-table .simple-table-row > .actions-td .action-item-parent,
+.LRSLocator-widget-setting-attributesetedit .jimu-simple-table .simple-table-row > .actions-td .action-item-parent,
+.LRSLocator-widget-setting-networklayeredit .jimu-simple-table .simple-table-row > .actions-td .action-item-parent {
   display: none;
   vertical-align:middle;
 }
 
-.jimu-simple-table .simple-table-row:hover > .actions-td .action-item-parent{
+.LRSLocator-widget-setting .jimu-simple-table .simple-table-row:hover > .actions-td .action-item-parent,
+.LRSLocator-widget-setting-attributesetedit .jimu-simple-table .simple-table-row:hover > .actions-td .action-item-parent,
+.LRSLocator-widget-setting-networklayeredit .jimu-simple-table .simple-table-row:hover > .actions-td .action-item-parent {
   display: inline-block;
 }
 
-.jimu-simple-table .simple-table-row > .actions-td .action-item{
+.LRSLocator-widget-setting .jimu-simple-table .simple-table-row > .actions-td .action-item,
+.LRSLocator-widget-setting-attributesetedit .jimu-simple-table .simple-table-row > .actions-td .action-item,
+.LRSLocator-widget-setting-networklayeredit .jimu-simple-table .simple-table-row > .actions-td .action-item {
   cursor:pointer;
 }
 
-.jimu-simple-table.jimu-layer-field-chooser,
-.jimu-simple-table.searchLayerFieldsTable{
-  min-height: 500px;
-  max-height: 500px;
+.LRSLocator-widget-setting .jimu-simple-table.jimu-layer-field-chooser,
+.LRSLocator-widget-setting .jimu-simple-table.searchLayerFieldsTable,
+.LRSLocator-widget-setting-attributesetedit .jimu-simple-table.jimu-layer-field-chooser,
+.LRSLocator-widget-setting-attributesetedit .jimu-simple-table.searchLayerFieldsTable,
+.LRSLocator-widget-setting-networklayeredit .jimu-simple-table.jimu-layer-field-chooser,
+.LRSLocator-widget-setting-networklayeredit .jimu-simple-table.searchLayerFieldsTable {
+  min-height: 540px;
+  max-height: 540px;
 }
 
-.jimu-simple-table.searches-table{
+.LRSLocator-widget-setting .jimu-simple-table.searches-table,
+.LRSLocator-widget-setting-attributesetedit .jimu-simple-table.searches-table,
+.LRSLocator-widget-setting-networklayeredit .jimu-simple-table.searches-table {
   max-height: 425px;
   height: 425px;
 }
 
-.jimu-simple-table.values-table{
+.LRSLocator-widget-setting .jimu-simple-table.values-table,
+.LRSLocator-widget-setting-attributesetedit .jimu-simple-table.values-table,
+.LRSLocator-widget-setting-networklayeredit .jimu-simple-table.values-table {
   max-height: 117px;
 }
 
-.jimu-simple-table.user-values-table{
+.LRSLocator-widget-setting .jimu-simple-table.user-values-table,
+.LRSLocator-widget-setting-attributesetedit .jimu-simple-table.user-values-table,
+.LRSLocator-widget-setting-networklayeredit .jimu-simple-table.user-values-table {
   max-height: 306px;
 }

@@ -8,10 +8,27 @@
               <select data-dojo-attach-point="selectDateFormat" data-dojo-type="dijit/form/Select"
                       data-dojo-props="style:{width:'200px'}">
                 <option value='{"date":"d MMM yyyy", "format":"dayShortMonthYear"}' selected="selected">${nls.dayShortMonthYear}</option>
+                <option value='{"date":"d MMM yyyy, h:mm:ss a", "format":"dayShortMonthYearLongTime"}' selected="selected">${nls.dayShortMonthYearLongTime}</option>
+                <option value='{"date":"d MMM yyyy, H:mm:ss", "format":"dayShortMonthYearLongTime24"}' selected="selected">${nls.dayShortMonthYearLongTime24}</option>
+                <option value='{"date":"d MMM yyyy, h:mm a", "format":"dayShortMonthYearShortTime"}' selected="selected">${nls.dayShortMonthYearShortTime}</option>
+                <option value='{"date":"d MMM yyyy, H:mm", "format":"dayShortMonthYearShortTime24"}' selected="selected">${nls.dayShortMonthYearShortTime24}</option>
                 <option value='{"date":"EEEE, MMMM d, yyyy", "format":"longDate"}'>${nls.longDate}</option>
+                <option value='{"date":"EEEE, MMMM d, yyyy, h:mm:ss a", "format":"longDateLongTime"}'>${nls.longDateLongTime}</option>
+                <option value='{"date":"EEEE, MMMM d, yyyy, H:mm:ss", "format":"longDateLongTime24"}'>${nls.longDateLongTime24}</option>
+                <option value='{"date":"EEEE, MMMM d, yyyy, h:mm a", "format":"longDateShortTime"}'>${nls.longDateShortTime}</option>
+                <option value='{"date":"EEEE, MMMM d, yyyy, H:mm", "format":"longDateShortTime24"}'>${nls.longDateShortTime24}</option>
                 <option value='{"date":"MMMM d, yyyy", "format":"longMonthDayYear"}'>${nls.longMonthDayYear}</option>
+                <option value='{"date":"MMMM d, yyyy h:mm:ss a", "format":"longMonthDayYearLongTime"}'>${nls.longMonthDayYearLongTime}</option>
+                <option value='{"date":"MMMM d, yyyy H:mm:ss", "format":"longMonthDayYearLongTime24"}'>${nls.longMonthDayYearLongTime24}</option>
+                <option value='{"date":"MMMM d, yyyy h:mm a", "format":"longMonthDayYearShortTime"}'>${nls.longMonthDayYearShortTime}</option>
+                <option value='{"date":"MMMM d, yyyy H:mm", "format":"longMonthDayYearShortTime24"}'>${nls.longMonthDayYearShortTime24}</option>
                 <option value='{"date":"MMMM yyyy", "format":"longMonthYear"}'>${nls.longMonthYear}</option>
                 <option value='{"date":"M/d/yyyy", "format":"shortDate"}'>${nls.shortDate}</option>
+                <option value='{"date":"d/M/yyyy", "format":"shortDateLE"}'>${nls.shortDateLE}</option>
+                <option value='{"date":"d/M/yyyy h:mm:ss a", "format":"shortDateLELongTime"}'>${nls.shortDateLELongTime}</option>
+                <option value='{"date":"d/M/yyyy H:mm:ss", "format":"shortDateLELongTime24"}'>${nls.shortDateLELongTime24}</option>
+                <option value='{"date":"d/M/yyyy h:mm a", "format":"shortDateLEShortTime"}'>${nls.shortDateLEShortTime}</option>
+                <option value='{"date":"d/M/yyyy H:mm", "format":"shortDateLEShortTime24"}'>${nls.shortDateLEShortTime24}</option>
                 <option value='{"date":"M/d/yyyy h:mm:ss a", "format":"shortDateLongTime"}'>${nls.shortDateLongTime}</option>
                 <option value='{"date":"M/d/yyyy H:mm:ss", "format":"shortDateLongTime24"}'>${nls.shortDateLongTime24}</option>
                 <option value='{"date":"M/d/yyyy h:mm a", "format":"shortDateShortTime"}'>${nls.shortDateShortTime}</option>

@@ -4,15 +4,15 @@
   "2D": true,
   "3D": false,
   "platform": "HTML",
-  "version": "2.0.0",
+  "version": "3.1.8",
   "wabVersion": "2.16",
-  "author": "Liam Welter-Reed, GIS Unit, Michigan Department of Transportation",
-  "description": "Convert Route ID and measure to geometry",
+  "author": "Liam Welter-Reed, Michigan Department of Transportation",
+  "description": "Passed Dev testing on 2/10/2021. Passed QA testing on 2/17/2021.",
   "copyright": "",
   "license": "http://www.apache.org/licenses/LICENSE-2.0",
   "featureActions": [{
-    "name": "FindMilepoint",
-    "uri": "libs/MilepointFeatureAction"
+    "name": "LRSLocatorPoint",
+    "uri": "libs/PointFeatureAction"
   }],
   "properties": {
 		"inPanel":true,

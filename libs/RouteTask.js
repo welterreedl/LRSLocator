@@ -26,6 +26,7 @@ define([
 ) {
 
 return declare(null, {
+    LRSTask: null,
     mapServiceUrl: null,
     networkLayer: null,
     map: null,
@@ -36,6 +37,9 @@ return declare(null, {
         if (params.networkLayer) {
             this.networkLayer = params.networkLayer;
         }
+        if (params.LRSTask) {
+            this.LRSTask = params.LRSTask;
+        }
     },
     
     /*
@@ -44,19 +48,34 @@ return declare(null, {
     setNetworkLayer: function(networkLayer) {
         this.networkLayer = networkLayer;
     },
+
+    /*
+    * Returns true if value is a valid number (even if it is in string form)
+    * Does not work if the string is in a locale that uses different decimal separator (use i18n utils)
+    */
+    isValidNumber: function(value) {
+        return (value != null && value !== "" && !isNaN(value));
+    },
     
     
     /*
      * Returns a Deferred with a feature found based on a route ID.
      */
-    getRouteById: function(routeId, returnGeometry) {
+    getRouteById: function(routeId, returnGeometry, viewDate) {
         if (routeId == null) {
             var defd = new Deferred();
             defd.resolve(null);
             return defd;
         }
         
-        var whereClause = this.networkLayer.compositeRouteIdFieldName + " = '" + routeId + "'";
+        if (viewDate) {
+            var dateValue = new Date(viewDate);
+            var timeView = dateValue.toISOString().slice(0, 19).replace('T', ' ');
+            var whereClause = this.networkLayer.compositeRouteIdFieldName + " = '" + routeId + "' AND (" + this.networkLayer.fromDateFieldName + " <= timestamp '" + timeView + "' OR " + this.networkLayer.fromDateFieldName + " IS NULL) AND (" + this.networkLayer.toDateFieldName + " > timestamp '" + timeView + "' OR " + this.networkLayer.toDateFieldName + " IS NULL)";
+        }
+        else {
+            var whereClause = this.networkLayer.compositeRouteIdFieldName + " = '" + routeId + "'";
+        }
         var errorMessage = "Unable to query route by ID.";
         return this._getRoute(whereClause, returnGeometry, errorMessage);
     },
@@ -67,7 +86,7 @@ return declare(null, {
     _getRoute: function(whereClause, returnGeometry, errorMessage) {
         var defd = new Deferred();
         var query = new Query();
-        query.where = whereClause; 
+        query.where = whereClause;
         query.outFields = ["*"];
         if (returnGeometry) {            
             query.returnGeometry = true;
@@ -75,10 +94,13 @@ return declare(null, {
             query.returnM = true;
         } else {
             query.returnGeometry = false;
-        } 
+        }
         
         var queryUrl = this.mapServiceUrl + "/" + this.networkLayer.id;
-        new QueryTask(queryUrl).execute(query, lang.hitch(this, function(featureSet) {
+        var version = {gdbVersion: this.networkLayer.versionName};
+        var task = new QueryTask(queryUrl, version);
+        task.requestOptions = {usePost: true};
+        task.execute(query, lang.hitch(this, function(featureSet) {
             if (featureSet && featureSet.features && featureSet.features.length > 0) {
                 defd.resolve(featureSet.features[0]);
             } else {
@@ -92,13 +114,73 @@ return declare(null, {
         
         return defd;
     },
+
+    isMeasureOnRoute: function(routeId, measure, viewDate) {
+        var defd = new Deferred();
+        var networkLayer = this.networkLayer;
+        
+        if ((!networkLayer) || (!routeId || routeId.length === 0) || !this.isValidNumber(measure)) {
+            defd.resolve({ valid: false });
+            return defd;
+        }
+        
+        var params = {
+            locations: this.getLocations(routeId, measure),
+            outSR: this.map.spatialReference.toJson()
+        };
+        if (viewDate) {
+            params.temporalViewDate = Date.parse(viewDate);
+        }
+        var task = this.LRSTask;
+        
+        task.measureToGeometry(networkLayer.id, params).then(
+            lang.hitch(this, function(response) {
+                var loc = response.locations[0],
+                    status = loc.status;
+                if (status === "esriLocatingOK") {
+                    defd.resolve({
+                        valid: true,
+                        geometry: loc
+                    });
+                } else {
+                    defd.resolve({ valid: false });
+                }
+            }),
+            lang.hitch(this, function(err) {
+                console.log('Error converting measure to geometry.', err);
+                defd.reject(err);
+            })
+        );            
+
+        return defd;
+    },
+
+    getLocations: function(routeId, fromMeasure, toMeasure, toRouteId) {
+        var validFromMeasure = this.isValidNumber(fromMeasure);
+        var validToMeasure = this.isValidNumber(toMeasure);
+        var location = { routeId: routeId };
+        if (toRouteId && toRouteId.length > 0) {
+            location["toRouteId"] = toRouteId;
+        }
+        
+        if (validFromMeasure && validToMeasure) {
+            location.fromMeasure = fromMeasure;
+            location.toMeasure = toMeasure;
+        } else if (validFromMeasure) {
+            location.measure = fromMeasure;
+        } else if (validToMeasure) {
+            location.measure = toMeasure;
+        }
+        
+        return [location];
+    },
     
     /*
      * Returns a list of routes that match the key.
      * keyField should be the field to search on (route id or route name)
      * limit is the max records to return (default is 10)
      */
-    getRoutesByKey: function(key, limit) {
+    getRoutesByKey: function(key, limit, viewDate) {
         var defd = new Deferred();
         
         // Validate the input fields
@@ -114,14 +196,24 @@ return declare(null, {
         
         limit = limit ? limit : 10;
         var query = new Query();
-        query.where = "UPPER(" + this.networkLayer.compositeRouteIdFieldName + ") LIKE '" + key.toUpperCase() + "%'";; 
+        if (viewDate) {
+            var dateValue = new Date(viewDate);
+            var timeView = dateValue.toISOString().slice(0, 19).replace('T', ' ');
+            query.where = "UPPER(" + this.networkLayer.compositeRouteIdFieldName + ") LIKE '" + key.toUpperCase() + "%' AND (" + this.networkLayer.fromDateFieldName + " <= timestamp '" + timeView +  "' OR " + this.networkLayer.fromDateFieldName + " IS NULL) AND (" + this.networkLayer.toDateFieldName + " > timestamp '" + timeView + "' OR " + this.networkLayer.toDateFieldName + " IS NULL)";
+          }
+        else {
+            query.where = "UPPER(" + this.networkLayer.compositeRouteIdFieldName + ") LIKE '" + key.toUpperCase() + "%'";
+        }
         query.returnGeometry = false;
         query.outFields = [this.networkLayer.compositeRouteIdFieldName];
         query.returnDistinctValues = true;
         query.orderByFields = [this.networkLayer.compositeRouteIdFieldName];
         
         var queryUrl = this.mapServiceUrl + "/" + this.networkLayer.id;
-        new QueryTask(queryUrl).execute(query, lang.hitch(this, function(featureSet) {
+        var version = {gdbVersion: this.networkLayer.versionName};
+        var task = new QueryTask(queryUrl, version);
+        task.requestOptions = {usePost: true};
+        task.execute(query, lang.hitch(this, function(featureSet) {
             var matches = [];
             if (featureSet && featureSet.features) {
                 array.every(featureSet.features, function(feature, i) {

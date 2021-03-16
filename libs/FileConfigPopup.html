@@ -1,0 +1,40 @@
+<div>
+    <fieldset class="fieldset">
+        <legend class="legend">Search by</legend>
+        <div class="radioRowContainer">
+            <label><input type="radio" data-dojo-type="dijit/form/RadioButton" data-dojo-attach-point="byRoute" name="searchType" value="route" checked="checked"/>Route and measure</label>
+            <label><input type="radio" data-dojo-type="dijit/form/RadioButton" data-dojo-attach-point="byGeom" name="searchType" value="geometry"/>Geometry (point)</label>
+        </div>
+    </fieldset>
+    <fieldset class="fieldset">
+        <legend class="legend">Search Settings and Fields</legend>
+        <div data-dojo-attach-point="routeProperties">
+            <div class="rowContainer">
+                <div class="fieldLabel">Network Layer</div>
+                <div data-dojo-type="dijit/form/Select" data-dojo-attach-point="layerList" class="settingInput"></div>
+            </div>
+            <div class="rowContainer">
+                <div class="fieldLabel">Route ID</div>
+                <div data-dojo-type="dijit/form/Select" data-dojo-attach-point="routeIdField" class="settingInput"></div>
+            </div>
+            <div class="rowContainer">
+                <div class="fieldLabel">From Measure</div>
+                <div data-dojo-type="dijit/form/Select" data-dojo-attach-point="fromMeasureField" class="settingInput"></div>
+            </div>
+            <div class="rowContainer">
+                <div class="fieldLabel">To Measure (optional)</div>
+                <div data-dojo-type="dijit/form/Select" data-dojo-attach-point="toMeasureField" class="settingInput"></div>
+            </div>
+        </div>
+        <div data-dojo-attach-point="geometryProperties" style="display: none;">
+            <div class="rowContainer">
+                <div class="fieldLabel">Longitude (X)</div>
+                <div data-dojo-type="dijit/form/Select" data-dojo-attach-point="longitudeField" class="settingInput"></div>
+            </div>
+            <div class="rowContainer">
+                <div class="fieldLabel">Latitude (Y)</div>
+                <div data-dojo-type="dijit/form/Select" data-dojo-attach-point="latitudeField" class="settingInput"></div>
+            </div>
+        </div>
+    </fieldset>
+</div>

@@ -1,0 +1,19 @@
+<div>
+  <fieldset class="fieldset">
+    <legend class="legend">Search Settings</legend>
+    <div class="rowContainer">
+        <div class="fieldLabel">${nls.measurePrecision}</div>
+        <div>
+           <input data-dojo-type="dijit/form/NumberSpinner" data-dojo-attach-point="precisionSpinner" required="required" style="width:80px;" data-dojo-props="smallDelta:1, constraints:{min:0,max:10,places:0}"/>
+           decimal places
+        </div>
+    </div>
+    <div class="rowContainer">
+        <div class="fieldLabel">${nls.searchTolerance}</div>
+        <div>
+            <input data-dojo-type="dijit/form/NumberSpinner" data-dojo-attach-point="toleranceSpinner" required="required" style="width:80px;" data-dojo-props="smallDelta:1, constraints:{min:0,max:100,places:0}"/>
+            ${toleranceUnits}
+        </div>
+    </div>
+  </fieldset>
+</div>

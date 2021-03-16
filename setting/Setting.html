@@ -1,32 +1,92 @@
-<div style="width:100%;height:100%;">
-  <div class="settings-section" data-dojo-attach-point="searchesSection">
-    <table class="setting-table input-table" cellspacing="0">
-      <tbody>
-          <td class="first">LRS-enabled Map Service</td>
-          <td class="second">
-            <input type="text" data-dojo-type="ServiceURLInputValidate" data-dojo-attach-point="mapServiceUrl" data-dojo-attach-event="Blur:_onMapServiceUrlBlur" style="width:100%;" data-dojo-props="style:{width:'100%'},LRSEnabled:true" required="true" placeHolder='https://sampleserver/arcgis/rest/services/servicename/MapServer'/>
-          </td>
-          <td class="third">
-            <span id="tooltip-7" class="tooltip-7 c-tooltip">🛈</span>
-            <div data-dojo-type="dijit/Tooltip" data-dojo-props="connectId: 'tooltip-7'">
-              The map service must have LRSServer or LRServer as a supported extension.
+<div>
+  <div class="main-div">
+    <div style="width:100%;height:100%;margin-top:10px;" data-dojo-attach-point="tabcontainer">
+      <div data-dojo-attach-point="generalNode" class="tab-node">
+        <div class="node-wrapper">
+          <fieldset class="fieldset">
+            <legend class="legend">LRS Status</legend>
+            <div class="flexRow">
+              <span>LRS-enabled Map Service</span>
+              <input type="text" data-dojo-type="jimu/dijit/ServiceURLInput" data-dojo-attach-point="mapServiceInput" data-dojo-attach-event="Blur:_onMapServiceUrlBlur" style="width:75%;" required="true" placeHolder='https://sampleserver/arcgis/rest/services/servicename/MapServer'/>
+              <span id="tooltip-7" class="tooltip"><i class="esri-icon-description"></i></span>
+              <div data-dojo-type="dijit/Tooltip" data-dojo-props="connectId: 'tooltip-7'">
+                The map service must have LRSServer or LRServer as a supported extension.
+              </div>
             </div>
-          </td>
-        </tr>
-        <tr>
-          <td class="first">Intersection Point Layer (optional)</td>
-          <td class="second">
-            <input type="text" data-dojo-type="ServiceURLInputValidate" data-dojo-attach-point="intersectionLayerUrl" data-dojo-attach-event="Blur:_onIntersectionLayerUrlBlur" style="width:100%;" data-dojo-props="style:{width:'100%'},layerType:'esriGeometryPoint'" required="false" placeHolder='Intersection Layer URL (point only)'/>
-          </td>
-          <td class="third">
-            <span id="tooltip-8" class="tooltip-8 c-tooltip">🛈</span>
-            <div data-dojo-type="dijit/Tooltip" data-dojo-props="connectId: 'tooltip-8'">
-              Input the intersection service URL to snapped to. Must be a point layer where supportsQueryWithDistance is enabled.
+            <table data-dojo-attach-point="LRSStatusTable" class="statusTable">
+              <tr>
+                <td data-dojo-attach-point="networkRow" class="statusRow">
+                </td>
+              </tr>
+              <tr>
+                <td data-dojo-attach-point="intersectionRow" class="statusRow">
+                </td>
+              </tr>
+              <tr>
+                <td data-dojo-attach-point="eventRow" class="statusRow">
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div data-dojo-attach-point="LRSLastUpdated" style="margin: 10px;"></div> 
+                </td>
+              </tr>
+            </table>
+          </fieldset>
+          <fieldset class="fieldset">
+            <legend class="legend">Symbology</legend>
+            <div data-dojo-attach-point="symbolContainer" class="symbolContainer">
+              <div><label>Map Click<div data-dojo-attach-point="mapClickSymbolContainer"></div></label></div>
+              <div><label>From Measure<div data-dojo-attach-point="fromMeasureSymbolContainer"></div></label></div>
+              <div><label>To Measure<div data-dojo-attach-point="toMeasureSymbolContainer"></div></label></div>
+              <div><label>Intersection Point<div data-dojo-attach-point="intersectionPointSymbolContainer"></div></label></div>
+              <div><label>Highlight Line<div data-dojo-attach-point="highlightLineSymbolContainer"></div></label></div>
+              <div><label>Highlight Point<div data-dojo-attach-point="highlightPointSymbolContainer"></div></label></div>
             </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <div data-dojo-attach-point="NetworkLayerTable" data-dojo-type="jimu/dijit/SimpleTable" data-dojo-props="_rowHeight:40,autoHeight:false,selectable:false,fields:[{name:'enable',title:'${nls.enable}',type:'checkbox',width:'10%'},{name:'name',title:'${nls.layerTitle}','class':'search-title',type:'text',editable:false},{name:'actions',title:'${nls.actions}','class':'actions',width:'120px',type:'actions',actions:['edit']}]"></div>
+          </fieldset>
+        </div>
+      </div>
+      <div data-dojo-attach-point="networkNode" class="tab-node">
+        <div class="node-wrapper">
+          <fieldset class="fieldset">
+            <legend class="legend">Configure Network Layers</legend>
+            <div data-dojo-attach-point="NetworkLayerTable" data-dojo-type="SimpleTable" style="height: 477px;margin: 10px;width: auto;" data-dojo-props="selectable:false,autoHeight:false,_rowHeight:40,fields:[{name:'enable',title:'${nls.enable}',type:'checkbox',width:'10%'},{name:'name',title:'${nls.layerTitle}','class':'search-title',type:'text',editable:false},{name:'pointSymbol',title:'${nls.pointTitle}',class:'layer-symbol',type:'empty',editable:true},{name:'lineSymbol',title:'${nls.lineTitle}',class:'layer-symbol',type:'empty',editable:true},{name:'id',type:'text',hidden:true},{name:'actions',title:'${nls.actions}','class':'actions',width:'30%',type:'actions',actions:['up','down','edit']}]"></div>
+          </fieldset>
+        </div>
+      </div>
+      <div data-dojo-attach-point="intersectionNode" class="tab-node">
+        <div class="node-wrapper">
+          <fieldset class="fieldset">
+            <legend class="legend">Configure Intersection Layers</legend>
+            <div data-dojo-attach-point="IntersectionLayerTable" data-dojo-type="SimpleTable" style="height: 477px;margin: 10px;width: auto;" data-dojo-props="selectable:false,autoHeight:false,_rowHeight:40,fields:[{name:'enable',title:'${nls.enable}',type:'checkbox',width:'10%'},{name:'name',title:'${nls.intersectionLayerTitle}',type:'text',editable:false, width:'30%'},{name:'alias',title:'${nls.alias}',type:'text',editable:true,width:'30%'},{name:'id',type:'text',hidden:true},{name:'actions', title:'${nls.actions}','class':'actions', width:'30%', type:'actions', actions:['up','down']}]"></div>
+          </fieldset>
+        </div>
+      </div>
+      <div data-dojo-attach-point="attributeNode" class="tab-node">
+        <div class="node-wrapper">
+          <fieldset class="fieldset">
+            <legend class="legend">Configure Attribute Sets</legend>
+            <div class="btn-add-section" data-dojo-attach-point="addAttributeSetBtn">
+              <span class="btn-add-icon"></span>
+              <span class="btn-add-label">${nls.addAttribute}</span>
+            </div>
+            <div data-dojo-attach-point="AttributeSetTable" data-dojo-type="SimpleTable" style="height: 446px;margin: 10px;width: auto;" data-dojo-props="selectable:false,autoHeight:false,_rowHeight:40,fields:[{name:'enable',title:'${nls.enable}',type:'checkbox',width:'10%'},{name:'name',title:'${nls.attributeTitle}','class':'search-title',type:'text',editable:false},{name:'pointSymbol',title:'${nls.pointTitle}',class:'layer-symbol',type:'empty',editable:true},{name:'lineSymbol',title:'${nls.lineTitle}',class:'layer-symbol',type:'empty',editable:true},{name:'actions',title:'${nls.actions}','class':'actions',width:'30%',type:'actions',actions:['up','down','edit','delete']}]"></div>
+          </fieldset>
+        </div>
+      </div>
+      <div data-dojo-attach-point="temporalityNode" class="tab-node">
+        <div class="node-wrapper">
+          <fieldset class="fieldset">
+            <legend class="legend">Configure Temporality Settings</legend>
+            <div class="btn-add-section" data-dojo-attach-point="addDateBtn">
+              <span class="btn-add-icon"></span>
+              <span class="btn-add-label">${nls.timestamp}</span>
+            </div>
+            <div data-dojo-attach-point="TemporalityTable" data-dojo-type="SimpleTable" style="height: 446px;margin: 10px;width: auto;" data-dojo-props="_rowHeight:40,autoHeight:false,selectable:false,fields:[{name:'enable',title:'${nls.enable}',type:'checkbox',width:'10%'},{name:'timestamp',title:'${nls.dateTitle}',type:'text',editable:false, width:'30%'},{name:'alias',title:'${nls.alias}',type:'text',editable:true,width:'30%'},{name:'noDelete',type:'checkbox',hidden:true},{name:'isdate',type:'checkbox',hidden:true},{name:'actions', title:'${nls.actions}','class':'actions', width:'30%', type:'actions', actions:['up','down','edit','delete']}]"></div>
+          </fieldset>
+        </div>
+      </div>
+      
+    </div>
   </div>
 </div>

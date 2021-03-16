@@ -1,8 +1,3 @@
-///////////////////////////////////////////////////////////////////////////
-// Robert Scheitlin WAB eSearch Widget
-///////////////////////////////////////////////////////////////////////////
-/*global define*/
-/*jslint nomen: true, sloppy: true*/
 define(['dojo/_base/declare',
   'dijit/_WidgetBase',
   'dijit/_TemplatedMixin',
@@ -12,7 +7,7 @@ define(['dojo/_base/declare',
   ],
   function (declare, _WidgetBase, _TemplatedMixin, lang, html, on) {
     return declare([_WidgetBase, _TemplatedMixin], {
-      baseClass: 'widgets-Search-setting-include-button',
+      baseClass: 'LRSLocator-widget-setting-include-button',
       templateString: '<div><span nowrap style="white-space:nowrap;">${nls.include}' +
         '</span><div class="include-arrow"></div></div>',
       nls: null,

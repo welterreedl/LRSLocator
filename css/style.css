@@ -1,38 +1,693 @@
-.btn-select-route{
-    background: url(../images/selectRouteGray.png) no-repeat;
-    background-position: center;
-    width: 28px;
-    height: 28px;
-    float: right;
-    background-color: #FFFFFF;
+.LRSLocator-widget {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-width: 265px;
+  min-height: 480px;
+}
+/*start*/
+.LRSLocator-widget .search-btn {
+  cursor: pointer;
+  min-width: 70px;
+  display: inline-block;
+  padding: 12px;
+  font-size: 15px;
+  text-align: center;
+  /*background: none repeat scroll 0% 0% #528CC9;*/
+  vertical-align: middle;
+  color: #FFF;
+  border-radius: 5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
-.btn-select-route-active{
-    background: url(../images/selectRouteWhite.png) no-repeat;
-    background-position: center;
-    width: 28px;
-    height: 28px;
-    float: right;
-    background-color: #777777;
+.LRSLocator-widget .search-btn {
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 1);
 }
 
-.m2g-header{
-    font-size: 14px;
+.LRSLocator-widget .search-btn:hover {
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.7);
 }
 
-.identify-icon{
+.JewelryBoxTheme.default .jimu-draw-box .draw-item.jimu-state-active,
+.FoldableTheme .jimu-draw-box .draw-item.jimu-state-active,
+.JewelryBoxTheme.default .LRSLocator-widget .search-btn,
+.FoldableTheme .LRSLocator-widget .search-btn {
+  background-color: rgb(89, 102, 121);
+  background-color: rgba(89, 102, 121, 1);
+}
+
+.JewelryBoxTheme.default .jimu-draw-box .draw-item:hover,
+.FoldableTheme .jimu-draw-box .draw-item:hover,
+.JewelryBoxTheme.default .LRSLocator-widget .search-btn:hover,
+.FoldableTheme .LRSLocator-widget .search-btn:hover {
+  background-color: rgb(89, 102, 121);
+  background-color: rgba(89, 102, 121, 0.7);
+}
+
+.TabTheme .jimu-draw-box .draw-item.jimu-state-active,
+.TabTheme .LRSLocator-widget .search-btn {
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 1);
+}
+
+.TabTheme .jimu-draw-box .draw-item:hover,
+.TabTheme .LRSLocator-widget .search-btn:hover {
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.BoxTheme.default .jimu-draw-box .draw-item.jimu-state-active,
+.BoxTheme.default .LRSLocator-widget .search-btn {
+  background-color: rgb(100, 100, 100);
+  background-color: rgba(100, 100, 100, 1);
+}
+
+.BoxTheme.default .jimu-draw-box .draw-item:hover,
+.BoxTheme.default .LRSLocator-widget .search-btn:hover {
+  background-color: rgb(100, 100, 100);
+  background-color: rgba(100, 100, 100, 0.7);
+}
+
+.BillboardTheme.blue .jimu-draw-box .draw-item.jimu-state-active,
+.BillboardTheme.default .jimu-draw-box .draw-item.jimu-state-active,
+.BillboardTheme.green .jimu-draw-box .draw-item.jimu-state-active,
+.BillboardTheme.orange .jimu-draw-box .draw-item.jimu-state-active,
+.BillboardTheme.pink .jimu-draw-box .draw-item.jimu-state-active,
+.BillboardTheme.purple .jimu-draw-box .draw-item.jimu-state-active,
+.BillboardTheme.red .jimu-draw-box .draw-item.jimu-state-active,
+.BillboardTheme.turquoise .jimu-draw-box .draw-item.jimu-state-active,
+.BillboardTheme.blue .LRSLocator-widget .search-btn,
+.BillboardTheme.default .LRSLocator-widget .search-btn,
+.BillboardTheme.green .LRSLocator-widget .search-btn,
+.BillboardTheme.orange .LRSLocator-widget .search-btn,
+.BillboardTheme.pink .LRSLocator-widget .search-btn,
+.BillboardTheme.purple .LRSLocator-widget .search-btn,
+.BillboardTheme.red .LRSLocator-widget .search-btn,
+.BillboardTheme.turquoise .LRSLocator-widget .search-btn {
+  background-color: rgb(217, 221, 224);
+  color: #86909C;
+}
+
+.BillboardTheme.blue .jimu-draw-box .draw-item:hover,
+.BillboardTheme.default .jimu-draw-box .draw-item:hover,
+.BillboardTheme.green .jimu-draw-box .draw-item:hover,
+.BillboardTheme.orange .jimu-draw-box .draw-item:hover,
+.BillboardTheme.pink .jimu-draw-box .draw-item:hover,
+.BillboardTheme.purple .jimu-draw-box .draw-item:hover,
+.BillboardTheme.red .jimu-draw-box .draw-item:hover,
+.BillboardTheme.turquoise .jimu-draw-box .draw-item:hover,
+.BillboardTheme.blue .LRSLocator-widget .search-btn:hover,
+.BillboardTheme.default .LRSLocator-widget .search-btn:hover,
+.BillboardTheme.green .LRSLocator-widget .search-btn:hover,
+.BillboardTheme.orange .LRSLocator-widget .search-btn:hover,
+.BillboardTheme.pink .LRSLocator-widget .search-btn:hover,
+.BillboardTheme.purple .LRSLocator-widget .search-btn:hover,
+.BillboardTheme.red .LRSLocator-widget .search-btn:hover,
+.BillboardTheme.turquoise .LRSLocator-widget .search-btn:hover {
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #fff;
+}
+
+.FoldableTheme.default .jimu-draw-box .draw-item.jimu-state-active,
+.FoldableTheme.default .LRSLocator-widget .search-btn {
+  background-color: rgb(89, 102, 121);
+  background-color: rgba(89, 102, 121, 1);
+}
+
+.FoldableTheme.default .jimu-draw-box .draw-item:hover,
+.FoldableTheme.default .LRSLocator-widget .search-btn:hover {
+  background-color: rgb(89, 102, 121);
+  background-color: rgba(89, 102, 121, 0.7);
+}
+
+.FoldableTheme.black .jimu-draw-box .draw-item.jimu-state-active,
+.TabTheme.default .jimu-draw-box .draw-item.jimu-state-active,
+.JewelryBoxTheme.black .jimu-draw-box .draw-item.jimu-state-active,
+.PlateauTheme.black .jimu-draw-box .draw-item.jimu-state-active,
+.FoldableTheme.black .LRSLocator-widget .search-btn,
+.TabTheme.default .LRSLocator-widget .search-btn,
+.JewelryBoxTheme.black .LRSLocator-widget .search-btn,
+.PlateauTheme.black .LRSLocator-widget .search-btn {
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 1);
+}
+
+.FoldableTheme.black .jimu-draw-box .draw-item:hover,
+.TabTheme.default .jimu-draw-box .draw-item:hover,
+.JewelryBoxTheme.black .jimu-draw-box .draw-item:hover,
+.PlateauTheme.black .jimu-draw-box .draw-item:hover,
+.FoldableTheme.black .LRSLocator-widget .search-btn:hover,
+.TabTheme.default .LRSLocator-widget .search-btn:hover,
+.JewelryBoxTheme.black .LRSLocator-widget .search-btn:hover,
+.PlateauTheme.black .LRSLocator-widget .search-btn:hover {
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.PlateauTheme.default .jimu-draw-box .draw-item.jimu-state-active,
+.PlateauTheme.default .LRSLocator-widget .search-btn {
+  background-color: rgb(70, 70, 70);
+  background-color: rgba(70, 70, 70, 1);
+}
+
+.PlateauTheme.default .jimu-draw-box .draw-item:hover,
+.PlateauTheme.default .LRSLocator-widget .search-btn:hover{
+  background-color: rgb(70, 70, 70);
+  background-color: rgba(70, 70, 70, 0.7);
+}
+
+.PlateauTheme.medium-grey .jimu-draw-box .draw-item.jimu-state-active,
+.PlateauTheme.medium-grey .LRSLocator-widget .search-btn {
+  background-color: rgb(110, 110, 110);
+  background-color: rgba(110, 110, 110, 1);
+}
+
+.PlateauTheme.medium-grey .jimu-draw-box .draw-item:hover,
+.PlateauTheme.medium-grey .LRSLocator-widget .search-btn:hover {
+  background-color: rgb(110, 110, 110);
+  background-color: rgba(110, 110, 110, 0.7);
+}
+
+.PlateauTheme.dark-blue .jimu-draw-box .draw-item.jimu-state-active,
+.PlateauTheme.dark-blue .LRSLocator-widget .search-btn {
+  background-color: rgb(0, 69, 117);
+  background-color: rgba(0, 69, 117, 1);
+}
+
+.PlateauTheme.dark-blue .jimu-draw-box .draw-item:hover,
+.PlateauTheme.dark-blue .LRSLocator-widget .search-btn:hover {
+  background-color: rgb(0, 69, 117);
+  background-color: rgba(0, 69, 117, 0.7);
+}
+
+.PlateauTheme.esri-blue .jimu-draw-box .draw-item.jimu-state-active,
+.PlateauTheme.esri-blue .LRSLocator-widget .search-btn {
+  background-color: rgb(0, 122, 194);
+  background-color: rgba(0, 122, 194, 1);
+}
+
+.PlateauTheme.esri-blue .jimu-draw-box .draw-item:hover,
+.PlateauTheme.esri-blue .LRSLocator-widget .search-btn:hover {
+  background-color: rgb(0, 122, 194);
+  background-color: rgba(0, 122, 194, 0.7);
+}
+
+.PlateauTheme.esri-green .jimu-draw-box .draw-item.jimu-state-active,
+.PlateauTheme.esri-green .LRSLocator-widget .search-btn {
+  background-color: rgb(53, 172, 70);
+  background-color: rgba(53, 172, 70, 1);
+}
+
+.PlateauTheme.esri-green .jimu-draw-box .draw-item:hover,
+.PlateauTheme.esri-green .LRSLocator-widget .search-btn:hover {
+  background-color: rgb(53, 172, 70);
+  background-color: rgba(53, 172, 70, 0.7);
+}
+
+.PlateauTheme.dark-green .jimu-draw-box .draw-item.jimu-state-active,
+.PlateauTheme.dark-green .LRSLocator-widget .search-btn {
+  background-color: rgb(42, 116, 51);
+  background-color: rgba(42, 116, 51, 1);
+}
+
+.PlateauTheme.dark-green .jimu-draw-box .draw-item:hover,
+.PlateauTheme.dark-green .LRSLocator-widget .search-btn:hover {
+  background-color: rgb(42, 116, 51);
+  background-color: rgba(42, 116, 51, 0.7);
+}
+
+.PlateauTheme.orange .jimu-draw-box .draw-item.jimu-state-active,
+.PlateauTheme.orange .LRSLocator-widget .search-btn {
+  background-color: rgb(218 ,77, 30);
+  background-color: rgba(218 ,77, 30, 1);
+}
+
+.PlateauTheme.orange .jimu-draw-box .draw-item:hover,
+.PlateauTheme.orange .LRSLocator-widget .search-btn:hover {
+  background-color: rgb(218 ,77, 30);
+  background-color: rgba(218 ,77, 30, 0.7);
+}
+
+.FoldableTheme.cyan .jimu-draw-box .draw-item.jimu-state-active,
+.JewelryBoxTheme.cyan .jimu-draw-box .draw-item.jimu-state-active,
+.FoldableTheme.cyan .LRSLocator-widget .search-btn,
+.JewelryBoxTheme.cyan .LRSLocator-widget .search-btn {
+  background-color: rgb(38, 112, 48);
+  background-color: rgba(38, 112, 48, 1);
+}
+
+.FoldableTheme.cyan .jimu-draw-box .draw-item:hover,
+.JewelryBoxTheme.cyan .jimu-draw-box .draw-item:hover,
+.FoldableTheme.cyan .LRSLocator-widget .search-btn:hover,
+.JewelryBoxTheme.cyan .LRSLocator-widget .search-btn:hover {
+  background-color: rgb(38, 112, 48);
+  background-color: rgba(38, 112, 48, 0.7);
+}
+
+.TabTheme.cyan .jimu-draw-box .draw-item.jimu-state-active,
+.TabTheme.cyan .LRSLocator-widget .search-btn {
+  background-color: rgb(42, 170, 138);
+  background-color: rgba(42, 170, 138, 1);
+}
+
+.TabTheme.cyan .jimu-draw-box .draw-item:hover,
+.TabTheme.cyan .LRSLocator-widget .search-btn:hover {
+  background-color: rga(42, 170, 138);
+  background-color: rgba(42, 170, 138, 0.7);
+}
+
+.TabTheme.green .jimu-draw-box .draw-item.jimu-state-active,
+.TabTheme.green .LRSLocator-widget .search-btn {
+  background-color: rgb(5, 171, 8);
+  background-color: rgba(5, 171, 8, 1);
+}
+
+.TabTheme.green .jimu-draw-box .draw-item:hover,
+.TabTheme.green .LRSLocator-widget .search-btn:hover {
+  background-color: rgb(5, 171, 8);
+  background-color: rgba(5, 171, 8, 0.7);
+}
+
+.BoxTheme.green .jimu-draw-box .draw-item.jimu-state-active,
+.BoxTheme.green .LRSLocator-widget .search-btn {
+  background-color: rgb(128, 171, 0);
+  background-color: rgba(128, 171, 0, 1);
+}
+
+.BoxTheme.green .jimu-draw-box .draw-item:hover,
+.BoxTheme.green .LRSLocator-widget .search-btn:hover {
+  background-color: rgb(128, 171, 0);
+  background-color: rgba(128, 171, 0, 0.7);
+}
+
+.BoxTheme.orange .jimu-draw-box .draw-item.jimu-state-active,
+.BoxTheme.orange .LRSLocator-widget .search-btn {
+  background-color: rgb(255, 155, 0);
+  background-color: rgba(255, 155, 0, 1);
+}
+
+.BoxTheme.orange .jimu-draw-box .draw-item:hover,
+.BoxTheme.orange .LRSLocator-widget .search-btn:hover {
+  background-color: rgb(255, 155, 0);
+  background-color: rgba(255, 155, 0, 0.7);
+}
+
+.FoldableTheme.green .jimu-draw-box .draw-item.jimu-state-active,
+.JewelryBoxTheme.green .jimu-draw-box .draw-item.jimu-state-active,
+.FoldableTheme.green .LRSLocator-widget .search-btn,
+.JewelryBoxTheme.green .LRSLocator-widget .search-btn {
+  background-color: rgb(42, 170, 138);
+  background-color: rgba(42, 170, 138, 1);
+}
+
+.FoldableTheme.green .jimu-draw-box .draw-item:hover,
+.JewelryBoxTheme.green .jimu-draw-box .draw-item:hover,
+.FoldableTheme.green .LRSLocator-widget .search-btn:hover,
+.JewelryBoxTheme.green .LRSLocator-widget .search-btn:hover {
+  background-color: rgb(42, 170, 138);
+  background-color: rgba(42, 170, 138, 0.7);
+}
+
+.BoxTheme.turquoise .jimu-draw-box .draw-item.jimu-state-active,
+.BoxTheme.turquoise .LRSLocator-widget .search-btn {
+  background-color: rgb(47, 170, 205);
+  background-color: rgba(47, 170, 205, 1);
+}
+
+.BoxTheme.turquoise .jimu-draw-box .draw-item:hover,
+.BoxTheme.turquoise .LRSLocator-widget .search-btn:hover {
+  background-color: rgb(47, 170, 205);
+  background-color: rgba(47, 170, 205, 0.7);
+}
+
+.TabTheme.simpleblue .jimu-draw-box .draw-item.jimu-state-active,
+.TabTheme.simpleblue .LRSLocator-widget .search-btn {
+  background-color: rgb(52, 152, 219);
+  background-color: rgba(52, 152, 219, 1);
+}
+
+.TabTheme.simpleblue .jimu-draw-box .draw-item:hover,
+.TabTheme.simpleblue .LRSLocator-widget .search-btn:hover {
+  background-color: rgb(52, 152, 219);
+  background-color: rgba(52, 152, 219, 0.7);
+}
+
+.FoldableTheme.red .jimu-draw-box .draw-item.jimu-state-active,
+.TabTheme.red .jimu-draw-box .draw-item.jimu-state-active,
+.JewelryBoxTheme.red .jimu-draw-box .draw-item.jimu-state-active,
+.FoldableTheme.red .LRSLocator-widget .search-btn,
+.TabTheme.red .LRSLocator-widget .search-btn,
+.JewelryBoxTheme.red .LRSLocator-widget .search-btn {
+  background-color: rgb(201, 46, 73);
+  background-color: rgba(201, 46, 73, 1);
+}
+
+.FoldableTheme.red .jimu-draw-box .draw-item:hover,
+.TabTheme.red .jimu-draw-box .draw-item:hover,
+.JewelryBoxTheme.red .jimu-draw-box .draw-item:hover,
+.FoldableTheme.red .LRSLocator-widget .search-btn:hover,
+.TabTheme.red .LRSLocator-widget .search-btn:hover,
+.JewelryBoxTheme.red .LRSLocator-widget .search-btn:hover {
+  background-color: rgb(201, 46, 73);
+  background-color: rgba(201, 46, 73, 0.7);
+}
+
+.BoxTheme.red .jimu-draw-box .draw-item.jimu-state-active,
+.BoxTheme.red .LRSLocator-widget .search-btn {
+  background-color: rgb(207, 0, 0);
+  background-color: rgba(207, 0, 0, 1);
+}
+
+.BoxTheme.red .jimu-draw-box .draw-item:hover,
+.BoxTheme.red .LRSLocator-widget .search-btn:hover {
+  background-color: rgb(207, 0, 0);
+  background-color: rgba(207, 0, 0, 0.7);
+}
+
+.BoxTheme.pink .jimu-draw-box .draw-item.jimu-state-active,
+.BoxTheme.pink .LRSLocator-widget .search-btn {
+  background-color: rgb(237, 0, 140);
+  background-color: rgba(237, 0, 140, 1);
+}
+
+.BoxTheme.pink .jimu-draw-box .draw-item:hover,
+.BoxTheme.pink .LRSLocator-widget .search-btn:hover {
+  background-color: rgb(237, 0, 140);
+  background-color: rgba(237, 0, 140, 0.7);
+}
+
+.FoldableTheme.yellow .jimu-draw-box .draw-item.jimu-state-active,
+.TabTheme.yellow .jimu-draw-box .draw-item.jimu-state-active,
+.JewelryBoxTheme.yellow .jimu-draw-box .draw-item.jimu-state-active,
+.FoldableTheme.yellow .LRSLocator-widget .search-btn,
+.TabTheme.yellow .LRSLocator-widget .search-btn,
+.JewelryBoxTheme.yellow .LRSLocator-widget .search-btn {
+  background-color: rgb(208, 125, 14);
+  background-color: rgba(208, 125, 14, 1);
+}
+
+.FoldableTheme.yellow .jimu-draw-box .draw-item:hover,
+.TabTheme.yellow .jimu-draw-box .draw-item:hover,
+.JewelryBoxTheme.yellow .jimu-draw-box .draw-item:hover,
+.FoldableTheme.yellow .LRSLocator-widget .search-btn:hover,
+.TabTheme.yellow .LRSLocator-widget .search-btn:hover,
+.JewelryBoxTheme.yellow .LRSLocator-widget .search-btn:hover {
+  background-color: rgb(208, 125, 14);
+  background-color: rgba(208, 125, 14, 0.7);
+}
+
+.FoldableTheme.blue .jimu-draw-box .draw-item.jimu-state-active,
+.TabTheme.blue .jimu-draw-box .draw-item.jimu-state-active,
+.JewelryBoxTheme.blue .jimu-draw-box .draw-item.jimu-state-active,
+.FoldableTheme.blue .LRSLocator-widget .search-btn,
+.TabTheme.blue .LRSLocator-widget .search-btn,
+.JewelryBoxTheme.blue .LRSLocator-widget .search-btn {
+  background-color: rgb(0, 95, 162);
+  background-color: rgba(0, 95, 162, 1);
+}
+
+.FoldableTheme.blue .jimu-draw-box .draw-item:hover,
+.TabTheme.blue .jimu-draw-box .draw-item:hover,
+.JewelryBoxTheme.blue .jimu-draw-box .draw-item:hover,
+.FoldableTheme.blue .LRSLocator-widget .search-btn:hover,
+.TabTheme.blue .LRSLocator-widget .search-btn:hover,
+.JewelryBoxTheme.blue .LRSLocator-widget .search-btn:hover {
+  background-color: rgb(0, 95, 162);
+  background-color: rgba(0, 95, 162, 0.7);
+}
+
+.BoxTheme.blue .jimu-draw-box .draw-item.jimu-state-active,
+.BoxTheme.blue .LRSLocator-widget .search-btn {
+  background-color: rgb(45, 112, 228);
+  background-color: rgba(45, 112, 228, 1);
+}
+
+.BoxTheme.blue .jimu-draw-box .draw-item:hover,
+.BoxTheme.blue .LRSLocator-widget .search-btn:hover {
+  background-color: rgb(45, 112, 228);
+  background-color: rgba(45, 112, 228, 0.7);
+}
+
+.FoldableTheme.purple .jimu-draw-box .draw-item.jimu-state-active,
+.TabTheme.purple .jimu-draw-box .draw-item.jimu-state-active,
+.JewelryBoxTheme.purple .jimu-draw-box .draw-item.jimu-state-active,
+.FoldableTheme.purple .LRSLocator-widget .search-btn,
+.TabTheme.purple .LRSLocator-widget .search-btn,
+.JewelryBoxTheme.purple .LRSLocator-widget .search-btn {
+  background-color: rgb(171, 109, 174);
+  background-color: rgba(171, 109, 174, 1);
+}
+
+.FoldableTheme.purple .jimu-draw-box .draw-item:hover,
+.TabTheme.purple .jimu-draw-box .draw-item:hover,
+.JewelryBoxTheme.purple .jimu-draw-box .draw-item:hover,
+.FoldableTheme.purple .LRSLocator-widget .search-btn:hover,
+.TabTheme.purple .LRSLocator-widget .search-btn:hover,
+.JewelryBoxTheme.purple .LRSLocator-widget .search-btn:hover {
+  background-color: rgb(171, 109, 174);
+  background-color: rgba(171, 109, 174, 0.7);
+}
+
+.BoxTheme.purple .jimu-draw-box .draw-item.jimu-state-active,
+.BoxTheme.purple .LRSLocator-widget .search-btn {
+  background-color: rgb(136, 97, 151);
+  background-color: rgba(136, 97, 151, 1);
+}
+
+.BoxTheme.purple .jimu-draw-box .draw-item:hover,
+.BoxTheme.purple .LRSLocator-widget .search-btn:hover {
+  background-color: rgb(136, 97, 151);
+  background-color: rgba(136, 97, 151, 0.7);
+}
+
+.LaunchpadTheme.style2 .jimu-draw-box .draw-item.jimu-state-active,
+.LaunchpadTheme.default .jimu-draw-box .draw-item.jimu-state-active,
+.LaunchpadTheme.style2 .LRSLocator-widget .search-btn,
+.LaunchpadTheme.default .LRSLocator-widget .search-btn {
+  background-color: rgb(51, 51, 51);
+  background-color: rgba(51, 51, 51, 1);
+}
+
+.LaunchpadTheme.style2 .jimu-draw-box .draw-item:hover,
+.LaunchpadTheme.default .jimu-draw-box .draw-item:hover,
+.LaunchpadTheme.style2 .LRSLocator-widget .search-btn:hover,
+.LaunchpadTheme.default .LRSLocator-widget .search-btn:hover {
+  background-color: rgb(51, 51, 51);
+  background-color: rgba(51, 51, 51, 0.7);
+}
+
+.jimu-draw-box .point-icon.jimu-state-active:before,
+.PlateauTheme .jimu-draw-box .point-icon:hover {
+  color: white;
+}
+
+.jimu-draw-box .line-icon.jimu-state-active:before,
+.PlateauTheme .jimu-draw-box .line-icon:hover {
+  color: white;
+}
+
+.jimu-draw-box .polyline-icon.jimu-state-active:before,
+.PlateauTheme .jimu-draw-box .polyline-icon:hover {
+  color: white;
+}
+
+.jimu-draw-box .freehand-polyline-icon.jimu-state-active:before,
+.PlateauTheme .jimu-draw-box .freehand-polyline-icon:hover {
+  color: white;
+}
+
+.jimu-draw-box .triangle-icon.jimu-state-active:before,
+.PlateauTheme .jimu-draw-box .triangle-icon:hover {
+  color: white;
+}
+
+.jimu-draw-box .extent-icon.jimu-state-active:before,
+.PlateauTheme .jimu-draw-box .extent-icon:hover {
+  color: white;
+}
+
+.jimu-draw-box .circle-icon.jimu-state-active:before,
+.PlateauTheme .jimu-draw-box .circle-icon:hover {
+  color: white;
+}
+
+.jimu-draw-box .ellipse-icon.jimu-state-active:before,
+.PlateauTheme .jimu-draw-box .ellipse-icon:hover {
+  color: white;
+}
+
+.jimu-draw-box .polygon-icon.jimu-state-active:before,
+.PlateauTheme .jimu-draw-box .polygon-icon:hover {
+  color: white;
+}
+
+.jimu-draw-box .freehand-polygon-icon.jimu-state-active:before,
+.PlateauTheme .jimu-draw-box .freehand-polygon-icon:hover {
+  color: white;
+}
+
+.LaunchpadTheme .jimu-draw-box .draw-item:hover {
+  color: #fff;
+}
+/*end*/
+.LRSLocator-widget .tab-node-hidden {
+  position: absolute !important;
+  width: 100% !important;
+  height: auto !important;
+  top: 10px !important;
+  bottom: 0 !important;
+  display: none;
+}
+
+.LRSLocator-widget .tab-node {
+  position: absolute !important;
+  width: 100% !important;
+  height: auto !important;
+  top: 10px !important;
+  bottom: 0 !important;
+}
+
+.LRSLocator-widget .table-row-visible {
+  display: table-row;
+}
+
+.LRSLocator-widget .table-row-hidden {
+  display: none;
+}
+
+.LRSLocator-widget .precisionBtn {
+  background: url(../images/changeMeasure.svg) no-repeat;
+  background-size: 25px;
+  border-radius: 4.5px;
+  background-position: center;
+  background-color: #ffffff5c;
+  filter: invert(0.2);
+  padding: 15px;
+  width: 28px;
+  height: 28px;
+  margin-right: 10px;
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  vertical-align: middle;
+}
+
+.LRSLocator-widget .precisionBtn:hover {
+  background-color: #00000030;
+}
+
+.LRSLocator-widget .precisionContainer {
+  display: inline-block;
+  position: relative;
+  vertical-align: middle;
+  margin-right: 5px;
+  border-right: 1px solid #999999;
+}
+
+.LRSLocator-widget .btn-select-route {
+  background: url(../images/selectRouteGray.png) no-repeat;
+  background-color: #1d1d1d;
+  border-radius: 2.5px;
+  filter: invert(1);
+  cursor: pointer;
+  background-position: center;
+  width: 28px;
+  height: 28px;
+  float: right;
+}
+
+.LRSLocator-widget .btn-select-route-active {
+  background: url(../images/selectRouteWhite.png) no-repeat;
+  background-color: #555;
+  border-radius: 2.5px;
+  filter: invert(1);
+  cursor: pointer;
+  background-position: center;
+  width: 28px;
+  height: 28px;
+  float: right;
+}
+
+.LRSLocator-widget .btn-select-measure {
+  background: url(../images/selectMeasureGray.png) no-repeat;
+  background-color: #1d1d1d;
+  border-radius: 2.5px;
+  filter: invert(1);
+  cursor: pointer;
+  background-position: center;
+  width: 28px;
+  height: 28px;
+  float: right;
+}
+
+.LRSLocator-widget .btn-select-measure-active {
+  background: url(../images/selectMeasureWhite.png) no-repeat;
+  background-color: #555;
+  border-radius: 2.5px;
+  filter: invert(1);
+  cursor: pointer;
+  background-position: center;
+  width: 28px;
+  height: 28px;
+  float: right;
+}
+
+.LRSLocator-widget .m2g-header {
+  font-size: 14px;
+  width: 100px;
+}
+
+.LRSLocator-widget .identify-icon {
   float: left;
   width: 32px;
   height: 32px;
 }
 
-.m2g-input{
+.LRSLocator-widget .m2g-input {
   width: 200px;
   height: 28px;
 }
 
-.m2g-input .dijitTextBox .dijitInputInner{
-    text-align: left !important;
+.LRSLocator-widget .attributeset-input {
+  width: 175px;
+  height: 28px;
+}
+
+.LRSLocator-widget .snapping-status::before {
+  content: "Status: ";
+  font-weight: bold;
+}
+
+.LRSLocator-widget .textFieldContextMenu {
+  position: absolute;
+  overflow: hidden;
+  width: 17px;
+  height: 100%;
+  right: 0px;
+  top: 0px;
+  cursor: pointer;
+}
+
+.LRSLocator-widget .textFieldContextMenuButton {
+  width: 15px;
+  height: 100%;
+  margin-top: 0px;
+  margin-left: 0px;
+  background-image: url('../images/blackDownArrow.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  cursor: pointer;
+}
+
+.LRSLocator-widget .m2g-input .dijitTextBox .dijitInputInner{
+  text-align: left !important;
 }
 
 .LRSLocator-widget .dijitTextBox .dijitInputInner {
@@ -49,53 +704,402 @@
   display: none;
 }
 
-.tooltip{
-  -webkit-touch-callout: none; /* iOS Safari */
-  -webkit-user-select: none; /* Safari */
-  -khtml-user-select: none; /* Konqueror HTML */
-  -moz-user-select: none; /* Old versions of Firefox */
-  -ms-user-select: none; /* Internet Explorer/Edge */
+.LRSLocator-widget .main-table {
+  width: 100%;
+  backdrop-filter: contrast(0.9);
+  border-radius: 10px;
+  border-spacing: 0px 0px;
+  padding-bottom: 5px;
+}
+
+.LRSLocator-widget .searchTabContainer .jimu-tab >.jimu-viewstack {
+  backdrop-filter: contrast(0.9);
+  background-color: unset;
+}
+
+.LRSLocator-widget .searchTabContainer >td {
+  height: 190px;
+  padding-left: 5px;
+  padding-top: 10px;
+  padding-right: 5px;
+}
+
+.LRSLocator-widget .searchContainer {
+  display: flex;
+  flex-direction: column;
+  row-gap: 5px;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.LRSLocator-widget .layerList {
+  width: 201px;
+}
+
+.LRSLocator-widget .container-table {
+  width: 100%;
+  margin-top: 5px;
+  border-radius: 10px;
+  border-spacing: 10px 15px;
+  backdrop-filter: contrast(0.9);
+}
+
+.LRSLocator-widget .identifyRow {
+  display: flex;
+  justify-content: space-between;
+}
+
+.LRSLocator-widget .routeInput {
+  width:170px;
+  height:28px;
+  margin-right:2px
+}
+
+.LRSLocator-widget .byPointContainer {
+  display: flex;
+  flex-wrap: wrap;
+  row-gap: 15px;
+  flex-direction: column;
+  align-items: center;
+  height: 140px;
+}
+
+.LRSLocator-widget .byFileContainer {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 130px;
+  border: 1px dashed #ccc;
+  border-radius: 5px;
+}
+
+.LRSLocator-widget .uploadIcon {
+  text-align: center;
+  font-size: 25px;
+  color: #505050;
+  width: 90%;
+  max-width: 400px;
+  line-height: 20px;
+}
+
+.LRSLocator-widget .fileIcon {
+  text-align: center;
+  font-size: 30px;
+  color: #505050;
+  width: 90%;
+  max-width: 400px;
+  line-height: 20px;
+  padding-bottom: 10px;
+}
+
+.LRSLocator-widget .fileInfoIcon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 15px;
+  filter: invert(0.35);
+  cursor: pointer;
+}
+
+.LRSLocator-widget .dropText {
+  margin: 1px auto;
+  text-align: center;
+  font-size: 14px;
+  color: #505050;
+  width: 90%;
+  max-width: 400px;
+  line-height: 20px;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.LRSLocator-widget-file-config-popup .fieldset,
+.LRSLocator-widget-loadpoint-popup .fieldset,
+.LRSLocator-widget-setting-popup .fieldset,
+.LRSLocator-widget-export-popup .fieldset {
+  height: auto;
+  width: 100%;
+  border: 1px solid #a0acbf;
+  border-radius: 5px;
+  color: #596679;
+  min-width: 0px;
+  margin-bottom: 10px;
+}
+
+.LRSLocator-widget-file-config-popup .legend,
+.LRSLocator-widget-loadpoint-popup .legend,
+.LRSLocator-widget-setting-popup .legend,
+.LRSLocator-widget-export-popup .legend {
+  margin-left: 20px;
+}
+
+.LRSLocator-widget-file-config-popup .fieldLabel,
+.LRSLocator-widget-setting-popup .fieldLabel,
+.LRSLocator-widget-export-popup .fieldLabel {
+  margin-bottom: 5px;
+}
+
+.LRSLocator-widget-file-config-popup .radioRowContainer {
+  display: flex;
+  justify-content: space-around;
+  margin: 10px;
+  margin-bottom: 19px;
+}
+
+.LRSLocator-widget-file-config-popup .rowContainer,
+.LRSLocator-widget-loadpoint-popup .rowContainer,
+.LRSLocator-widget-setting-popup .rowContainer,
+.LRSLocator-widget-export-popup .rowContainer {
+  margin: 10px;
+  margin-bottom: 19px;
+}
+
+.LRSLocator-widget-file-config-popup .settingTextBox {
+  width: 216px;
+  overflow:hidden; 
+  white-space:nowrap; 
+  text-overflow:ellipsis;
+}
+
+.LRSLocator-widget-file-config-popup .settingInput .dijitSelectLabel {
+  text-overflow: ellipsis;
+  overflow-x: hidden;
+  width: 175px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.LRSLocator-widget .coordsInputContainer {
+  padding-top: 6px;
+}
+
+.LRSLocator-widget .coordsLabel {
+  width: 240px;
+  align-self: center;
+}
+
+.LRSLocator-widget .byPointToggle {
+  order: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.LRSLocator-widget .iconContainer {
+  display: inline-block;
+  padding: 5px;
+  line-height: 10px;
+  border-radius: 4.5px;
+  background-color: #ffffff5c;
+  filter: invert(0.2);
+}
+
+.LRSLocator-widget .iconContainer:hover {
+  background-color: #00000030;
+  cursor: pointer;
+}
+
+.LRSLocator-widget .drawPointBtn {
+  background-repeat: no-repeat;
+  background-color: transparent;
+  filter: contrast(0.1);
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.LRSLocator-widget .drawPointBtn-active {
+  background-repeat: no-repeat;
+  background-color: transparent;
+  filter: contrast(0.9);
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.LRSLocator-widget .coordsInput {
+  font-family: 'Avenir Medium';
+  font-size: 12px;
+  resize: none;
+  width: 240px;
+  height: 35px;
+  -webkit-appearance: none;
+  margin: 0;
+  background-color: transparent;
+  background: #FFFFFF;
+  border: 1px solid #999999;
+  color: #000000;
+  padding: 10px 0px 10px 14px;
+  margin: 0;
+  letter-spacing: 0px;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+.LRSLocator-widget .coordsInput::-webkit-inner-spin-button,
+.LRSLocator-widget .coordsInput::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.LRSLocator-widget .buttonRow {
+  text-align: right;
+  padding-bottom: 5px;
+  border-spacing: 5px;
+  padding-right: 10px;
+}
+
+.LRSLocator-widget .buttonRow >div {
+  margin-left: 5px;
+}
+
+.LRSLocator-widget .toggleLabel {
+  font-weight: bold;
+  line-height: 20px;
   user-select: none;
 }
 
-.m2g-select{
-    width: 200px;
-    height: 28px;
-    overflow: hidden;
+.LRSLocator-widget .toggleRow {
+  user-select: none;
 }
 
-.result-row{
-    color: #0000ee;
-    text-decoration: underline;
-    cursor: pointer;
+.LRSLocator-widget .switch-toggle.dijitCheckBox {
+  height: 19px;
+  width: 34px;
+  border: 0 none;
+  background: #999;
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+  margin-right: 15px;
 }
 
-.scrolldiv{
-    width: 100%;
-    height: 550px;
-    overflow: auto;
-    float: left;
+.LRSLocator-widget .switch-toggle.dijitCheckBox:before {
+  content: "";
+  background: #f8f8f8;
+  position: absolute;
+  padding: 0;
+  height: 13px;
+  width: 13px;
+  left: auto;
+  right: 18px;
+  top: 3px;
+  z-index: 1;
+  -webkit-transition: right 0.3s;
+  -moz-transition: right 0.3s;
+  -o-transition: right 0.3s;
+  transition: right 0.3s;
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  border-radius: 50%;
 }
 
-.tabNode1{
-    padding-top: 10px;
+.LRSLocator-widget .switch-toggle.dijitCheckBox input {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  z-index: 2;
+}
+
+.LRSLocator-widget .switch-toggle.dijitCheckBox.dijitCheckBoxChecked {
+  background: #009966;
+}
+
+.LRSLocator-widget .switch-toggle.dijitCheckBox.dijitCheckBoxChecked:before {
+  right: 3px;
+}
+
+.LRSLocator-widget .toggle-button {
+  position: absolute;
+}
+
+.LRSLocator-widget .jimu-toggle-button .inner {
+  width: 13px;
+  height: 13px;
+  background: white;
+  border-radius: 50%;
+  cursor: pointer;
+  margin: 3px;
+}
+
+.LRSLocator-widget .tooltip {
+  float: right;
+  filter: invert(0.35);
+  line-height: 20px;
+  font-size: 15px;
+  user-select: none;
+}
+
+.LRSLocator-widget .attributesetRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.LRSLocator-widget .clickTooltip {
+  filter: invert(0.35);
+  font-size: 15px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.LRSLocator-widget .resultTooltip {
+  filter: invert(0.35);
+  font-size: 15px;
+  user-select: none;
+  vertical-align: middle;
+  margin-left: 5px;
+}
+
+.LRSLocator-widget .m2g-select {
+  width: 100%;
+  height: 28px;
+  overflow: hidden;
+}
+
+.LRSLocator-widget .result-row {
+  color: #0000ee;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.LRSLocator-widget .scrolldiv {
+  width: 100%;
+  height: 550px;
+  overflow: auto;
+  float: left;
+}
+
+.LRSLocator-widget .tabNode1 {
+  padding-top: 10px;
 }
 
 /*used for the controller List*/
-.search-list-container,
-.relate-list-container {
+.LRSLocator-widget .search-list-container,
+.LRSLocator-widget .relate-list-container {
   min-width: 100%;
-  height: 800px;
+  height: 100%;
   vertical-align: middle;
   float: left;
   position: relative;
   overflow: auto;	
 }
 
-.relate-list-item {
-  line-height: 40px;
+.LRSLocator-widget .relate-list-item {
+  line-height: 20px;
   font-size: 11.5px;
-  white-space: pre;
   position: relative;
   margin: 1px 0;
   border-radius: 8px;
@@ -106,156 +1110,217 @@
   cursor: pointer;
 }
 
-.search-list-item {
-  line-height: 30px;
+.LRSLocator-widget .search-list-item {
+  padding-left: 40px;
+  line-height: 20px;
   font-size: 11.5px;
-  white-space: pre;
   position: relative;
   min-height: 40px;
+  margin-top: 4px;
+  margin-bottom: 2px;
+  background-color: #ededed;
+  box-shadow: 0px 1px 2px #9b9b9b;
+  border-radius: 2%;
 }
 
-.result-wrap{
+.LRSLocator-widget .result-wrap {
   white-space: pre-wrap;
 }
 
-.search-list-item .label,
-.relate-list-item .label {
-  padding-left: 40px;
-  padding-right: 10px;
-  padding-bottom: 3px;
+.LRSLocator-widget .resultsDiv {
+  max-height: 100%;
+  height: calc(100% - 40px);
+  margin-top: 5px;
+}
+
+.LRSLocator-widget .flexBanner {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.LRSLocator-widget .controlContainer {
+  display: inline-block;
+  margin-left: 5px;
+}
+
+.LRSLocator-widget .controlBtn {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  padding: 0px;
+  margin: auto;
+  background-color: #555;
+  border: 1px solid #999;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 25px;
+  text-align: center;
+  line-height: 42px;
+  filter: invert(1);
+}
+
+.LRSLocator-widget .controlBtn:hover {
+  background-color: #9f9f9f;
+  cursor: pointer;
+}
+
+.LRSLocator-widget .search-list-item .label,
+.LRSLocator-widget .relate-list-item .label {
   cursor: default;
 }
 
-.search-list-item ._title,
-.relate-list-item ._title{
-  padding-left: 40px;
-  padding-right: 10px;
-  padding-bottom: 3px;
-  margin-right: 22px;
+.LRSLocator-widget .search-list-item ._title,
+.LRSLocator-widget .relate-list-item ._title {
   cursor:default;
+}
+
+.LRSLocator-widget .search-list-item ._title>th,
+.LRSLocator-widget .relate-list-item ._title>th {
+  color: #000;
   font-weight: bolder;
 }
 
-.relate-list-item ._title {
-  cursor:pointer;
+.LRSLocator-widget .search-list-item .result-table {
+  border-spacing: 4px 1px;
 }
 
-.search-list-item .labellink{
-  color: #0000ee;
-  text-decoration: underline;
-  padding-left: 40px;
+.LRSLocator-widget .search-list-item .attribute {
+  color: rgb(73 80 80 / 1);
+  white-space: pre;
+}
+
+.LRSLocator-widget .search-list-item .attribute::after {
+  content: ":"
+}
+
+.LRSLocator-widget .search-list-item .value {
+  color: rgb(0, 0, 0);
+}
+
+.LRSLocator-widget .search-list-item .listlink {
   padding-right: 10px;
-  padding-bottom: 3px;
-  cursor: pointer;
+  padding-bottom: 4.25px;
   outline: none;
-  -webkit-touch-callout: none; /* iOS Safari */
-  -webkit-user-select: none; /* Safari */
-  -khtml-user-select: none; /* Konqueror HTML */
-  -moz-user-select: none; /* Old versions of Firefox */
-  -ms-user-select: none; /* Internet Explorer/Edge */
   user-select: none;
 }
 
-.search-list-item .iconDiv,
-.relate-list-item .iconDiv {
+.LRSLocator-widget .search-list-item .result-link-disabled {
+  appearance: button;
+  user-select: none;
+  background-color: #f2f2f2;
+  padding: 2.5px;
+  margin-right: 5px;
+  border-radius: 3px 3px 3px 3px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #3e44ff;
+  box-shadow: 1px 1px 2px 0px #9b9b9b;
+}
+
+.LRSLocator-widget .search-list-item .result-link-enabled {
+  appearance: button;
+  user-select: none;
+  background-color: #f2f2f2;
+  padding: 2.5px;
+  margin-right: 5px;
+  border-radius: 3px 3px 3px 3px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #3e44ff;
+  box-shadow: inset 1px 1px 2px 0px #9b9b9b;
+}
+
+.LRSLocator-widget .search-list-item .iconDiv,
+.LRSLocator-widget .relate-list-item .iconDiv {
   text-align: center;
   position: absolute;
   height: 100%;
   left: 0;
 }
 
-.relate-list-item .iconDiv {
+.LRSLocator-widget .relate-list-item .iconDiv {
   left: 5px;
   top: 2px;
 }
 
-.search-list-item .linksdiv {
+.LRSLocator-widget .search-list-item .linksdiv {
   text-align: center;
   width: 100%;
   padding-left: 5px;
   padding-right: 5px;
 }
 
-.search-list-item .linkIcon {
+.LRSLocator-widget .search-list-item .linkIcon {
   display: inline-block;
   padding-right: 4px;
 }
 
-.search-list-item .iconDiv:before {
+.LRSLocator-widget .search-list-item .iconDiv:before {
   content: '';
   display: inline-block;
   height: 100%;
   vertical-align: middle;
 }
 
-.search-list-item .iconDiv svg {
+.LRSLocator-widget .search-list-item .iconDiv svg {
   display: inline-block;
   vertical-align: middle;
 }
 
-.search-list-item.alt {
-  background-color: #ebebeb;
+.LRSLocator-widget .search-list-item.alt {
+  /*background-color: #ebebeb;*/
 }
 
-.search-list-item.selected {
+.LRSLocator-widget .search-list-item.selected {
   background-color: #d9dde0;
 }
 
-.search-list-item.selected.alt {
+.LRSLocator-widget .search-list-item.selected.alt {
   background-color: #d9dde0;
 }
 
-.search-list-item:hover,
-.relate-list-item:hover  {
+.LRSLocator-widget .search-list-item:hover,
+.LRSLocator-widget .relate-list-item:hover  {
   background-color: #e3eefa;
   box-shadow:inset 0px 0px 0px 1px #89a4c8;
 }
 
-.search-list-item.alt:hover {
+.LRSLocator-widget .search-list-item.alt:hover {
   background-color: #e3eefa;
   box-shadow:inset 0px 0px 0px 1px #89a4c8;
 }
 
-.search-list-item.selected:hover {
+.LRSLocator-widget .search-list-item.selected:hover {
   background-color: #e3eefa;
   box-shadow:inset 0px 0px 0px 1px #89a4c8;
 }
 
-.search-list-item.selected.alt:hover {
+.LRSLocator-widget .search-list-item.selected.alt:hover {
   background-color: #e3eefa;
   box-shadow:inset 0px 0px 0px 1px #89a4c8;
 }
 
-.search-list-item .removediv:before {
-    content: '';
-    display: inline-block;
-    height: 100%;
-    vertical-align: middle;
-    margin-right: -0.25em;
-    /* Adjusts for spacing */
-  }
+.LRSLocator-widget .search-list-item .removediv:before {
+  content: '';
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+  margin-right: -0.25em;
+  /* Adjusts for spacing */
+}
   
-  .search-list-item .removediv svg {
-    display: inline-block;
-    vertical-align: middle;
-  }
-  
-  .search-list-item .removediv {
-    text-align: center;
-    position: absolute;
-    height: 100%;
-    width: 22px;
-    right: 0;
-    padding-top: 4px;
-  }
-  
-  .search-list-item .removedivImg {
-    display: inline-block;
-    vertical-align: top;
-    /* background-image: url("images/i_remove_info.png"); */
-    background-image: url('../../../jimu.js/css/images/black_close_default.png');
-    background-repeat: no-repeat;
-    width: 16px;
-    height: 16px;
-    cursor: pointer;
-  }
+.LRSLocator-widget .search-list-item .removediv svg {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.LRSLocator-widget .search-list-item .removediv {
+  text-align: center;
+  position: absolute;
+  height: 100%;
+  width: 22px;
+  right: 0;
+  padding-top: 4px;
+}

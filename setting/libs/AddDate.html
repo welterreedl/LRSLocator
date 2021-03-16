@@ -1,0 +1,19 @@
+﻿<div>
+    <table class="main-table">
+        <tr>
+            <td rowspan="3" class="calendarRow">
+                <div data-dojo-attach-point="datePicker" data-dojo-type="dijit/Calendar"></div>
+            </td>
+            <td>
+                <div>Date:</div>
+                <input data-dojo-attach-point="dateValue" data-dojo-type="dijit/form/ValidationTextBox" data-dojo-props="disabled:'disabled'"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div>Alias:</div>
+                <input data-dojo-attach-point="dateAlias" required="true" data-dojo-type="dijit/form/ValidationTextBox" data-dojo-props="regExp:'(.*?)'" maxlength="30"/>  
+            </td>
+        </tr>
+    </table>
+</div>
