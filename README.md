@@ -6,18 +6,18 @@ This widget is designed to help search and view [linear referencing services](ht
 
 ### Features
 
-- Identify mile points for each route by map click
-- Search for a Route ID and mile point
-- Intersection snapping (with configured point service)
+- Identify measures for each route by map click
+- Search for a Route ID and measure (single or range)
+- Snap to Intersections with registered Intersection Layers
 - Identify routes with a map click
-- Export results to CSV, GeoJSON, or ~~Shapefile~~ (needs to be re-worked)
-- Highlight route with arrows to show direction that mile points increase
-- Find mile points of existing points by utilising the 'Find Milepoints' feature action in each popup
+- Search in bulk using a CSV (route or point geometry)
+- Export results to CSV, GeoJSON, or Shapefile (M and Z geometry)
+- Highlight results with arrows to show direction that measures increase
+- Use existing points on the map by utilising the 'Use Point in LRS Locator' feature action in each popup
 
 ### Contributors
 - Liam Welter-Reed: [WelterReedL@michigan.gov](mailto:welterreedl@michigan.gov)
 - Michigan Department of Transportation GIS Unit: [MDOT-GIS@michigan.gov](mailto:mdot-gis@michigan.gov)
-- Esri
 
 ### Contact
 [MDOT-GIS@michigan.gov](mailto:mdot-gis@michigan.gov)
